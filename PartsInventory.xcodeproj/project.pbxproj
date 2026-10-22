@@ -16,6 +16,7 @@
 		28D4A78D16E28E974B33A958 /* PartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0859D5DD4D45CED4958375DC /* PartsView.swift */; };
 		5FA0E2A87818B3E804361FA3 /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C53ACBAA54819CBA63E53F /* Inventory.swift */; };
 		6A612C0CA684636F31C15343 /* PartsInventoryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25C92F78707912366A1B80E /* PartsInventoryApp.swift */; };
+		74D116C4E458AE40ABF6120F /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92F8C5BD14E656AD31951CB /* Camera.swift */; };
 		78CDFEEB85BFE2F79E589570 /* DebugLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BEAA328937AA545FB1E40B /* DebugLaunch.swift */; };
 		8F03B7D2D92AD2F6F402D704 /* Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D353841A3CE5A517615AF25 /* Support.swift */; };
 		97B0FAEE7681E488C8B5E709 /* AskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4E0F744D761C1CD4DFFE0D /* AskView.swift */; };
@@ -57,6 +58,7 @@
 		8CF03CF3008D07287FF07871 /* LookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookModel.swift; sourceTree = "<group>"; };
 		9D353841A3CE5A517615AF25 /* Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support.swift; sourceTree = "<group>"; };
 		A25C92F78707912366A1B80E /* PartsInventoryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartsInventoryApp.swift; sourceTree = "<group>"; };
+		A92F8C5BD14E656AD31951CB /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		B70A42D14D7FB47A436A90DC /* IdentifyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifyModel.swift; sourceTree = "<group>"; };
 		CC21E55EF9E184D2EA488E2D /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
 		D3C53ACBAA54819CBA63E53F /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 		4455A3B0EC9FC731AEC6F3C6 /* Vision */ = {
 			isa = PBXGroup;
 			children = (
+				A92F8C5BD14E656AD31951CB /* Camera.swift */,
 				8CF03CF3008D07287FF07871 /* LookModel.swift */,
 				61352EA1B98C18688E3C2362 /* PhotoReader.swift */,
 			);
@@ -278,6 +281,7 @@
 			files = (
 				F7F780685960BD01A15F783B /* AppleIntelligence.swift in Sources */,
 				97B0FAEE7681E488C8B5E709 /* AskView.swift in Sources */,
+				74D116C4E458AE40ABF6120F /* Camera.swift in Sources */,
 				78CDFEEB85BFE2F79E589570 /* DebugLaunch.swift in Sources */,
 				164605E6A2104EA2FCE1F0FF /* IdentifyModel.swift in Sources */,
 				014A8D2CB09EC6E09293AB8B /* IdentifyView.swift in Sources */,

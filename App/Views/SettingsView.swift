@@ -15,6 +15,8 @@ struct SettingsView: View {
     @State private var exportPhotos = true
     @State private var exportDoc: JSONFile?
     @State private var result = ""
+    @AppStorage(Camera.chosenKey) private var cameraID = ""
+    @State private var cameras: [CameraDevice] = []
 
     var body: some View {
         Form {
@@ -36,6 +38,15 @@ struct SettingsView: View {
             } header: { Text("Backup") } footer: {
                 Text("The same file as the web version (geekychris.github.io/tools/parts-inventory). Importing merges by id: new items are added, items in both keep the newer one, nothing is deleted.")
             }
+            Section {
+                Picker("Camera", selection: $cameraID) {
+                    Text("Automatic").tag("")
+                    ForEach(cameras) { c in Text("\(c.name) — \(c.kind)").tag(c.id) }
+                    if !cameraID.isEmpty, !cameras.contains(where: { $0.id == cameraID }) { Text("Not connected").tag(cameraID) }
+                }
+            } header: { Text("Camera") } footer: {
+                Text("Used by Scan and Identify; you can also switch there. Automatic prefers a plugged-in or Continuity camera.")
+            }
             Section("Recognition") {
                 LabeledContent("Apple Intelligence", value: AppleIntelligence.status)
                 LabeledContent("Recognising by look", value: LookModel.isAvailable ? "MobileCLIP, on this device" : "Not in this build")
@@ -45,6 +56,7 @@ struct SettingsView: View {
         .formStyle(.grouped)
         .navigationTitle("Settings")
         .task { await checkAccount() }
+        .task { cameras = Camera.available() }
         .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { r in
             guard case .success(let url) = r else { return }
             let ok = url.startAccessingSecurityScopedResource()

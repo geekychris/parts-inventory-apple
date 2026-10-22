@@ -1,12 +1,9 @@
 import PartsKit
 import SwiftData
 import SwiftUI
-#if os(iOS)
-import VisionKit
-#endif
 
-/// Scanning bag labels: the camera (live, on iPhone and iPad), a USB or Bluetooth scanner that types
-/// into the box, or pasted text. A label with no code? Identify what's in view instead.
+/// Scanning bag labels: the camera (built in, Continuity Camera, or plugged in — pick which), a USB or
+/// Bluetooth scanner that types into the box, or pasted text. A label with no code? Identify what's in view instead.
 struct ScanView: View {
     @Environment(AppModel.self) private var app
     @Environment(\.modelContext) private var ctx
@@ -14,31 +11,18 @@ struct ScanView: View {
     @State private var found: BagLabel?
     @State private var recent: [String] = []
     @State private var message = ""
-    #if os(iOS)
-    @State private var scanner = ScannerBridge()
-    #endif
+    @State private var camera = Camera()
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 12) {
-                #if os(iOS)
-                if DataScannerViewController.isSupported && DataScannerViewController.isAvailable {
-                    LiveScanner(bridge: scanner) { payload in handle(payload) }
-                        .clipShape(.rect(cornerRadius: 16))
-                        .overlay(alignment: .bottom) {
-                            Button {
-                                Task {
-                                    if let d = await scanner.capture() { app.photoForIdentify = d; app.tab = .identify }
-                                }
-                            } label: { Label("Identify what’s in view", systemImage: "camera.viewfinder") }
-                                .buttonStyle(.borderedProminent).padding()
-                        }
-                } else {
+                if camera.state == .noCamera {
                     unavailable
+                } else {
+                    CameraView(camera: camera, shutterTitle: "Identify what’s in view") { d in
+                        app.photoForIdentify = d; app.tab = .identify
+                    }
                 }
-                #else
-                unavailable
-                #endif
                 TextField("Scanner input or pasted label text", text: $typed)
                     .textFieldStyle(.roundedBorder)
                     .onSubmit { handle(typed); typed = "" }
@@ -47,6 +31,12 @@ struct ScanView: View {
             }
             .padding()
             .navigationTitle("Scan a bag label")
+            .task {
+                camera.scanning = true
+                camera.onCode = { handle($0) }
+                await camera.start()
+            }
+            .onDisappear { camera.stop() }
             .sheet(item: Binding(get: { found.map(FoundLabel.init) }, set: { found = $0?.label })) { f in ReceiveSheet(label: f.label) }
         }
     }
@@ -55,7 +45,7 @@ struct ScanView: View {
         ContentUnavailableView {
             Label("Scan with a photo or a scanner", systemImage: "barcode.viewfinder")
         } description: {
-            Text("Digi-Key, Mouser and LCSC bag labels are read from a photo in Identify, or typed in by a USB barcode scanner below.")
+            Text("Connect a camera, or read Digi-Key, Mouser and LCSC bag labels from a photo in Identify, or type them in with a USB barcode scanner below.")
         } actions: {
             Button("Identify from a photo") { app.tab = .identify }
         }
@@ -133,70 +123,3 @@ struct ReceiveSheet: View {
         .onAppear { qty = label.qty ?? 1 }
     }
 }
-
-#if os(iOS)
-/// Lets SwiftUI ask the live scanner for a photo.
-@Observable
-final class ScannerBridge {
-    weak var controller: DataScannerViewController?
-    func capture() async -> Data? {
-        guard let c = controller, let img = try? await c.capturePhoto() else { return nil }
-        return img.jpegData(compressionQuality: 0.9)
-    }
-}
-
-/// VisionKit's live scanner, looking for 2-D codes and barcodes.
-struct LiveScanner: UIViewControllerRepresentable {
-    let bridge: ScannerBridge
-    var onCode: (String) -> Void
-
-    func makeUIViewController(context: Context) -> DataScannerViewController {
-        let vc = DataScannerViewController(recognizedDataTypes: [.barcode(symbologies: [.dataMatrix, .qr, .code128, .code39, .pdf417, .microQR])],
-                                           qualityLevel: .accurate, recognizesMultipleItems: false, isHighFrameRateTrackingEnabled: false,
-                                           isPinchToZoomEnabled: true, isGuidanceEnabled: true, isHighlightingEnabled: true)
-        vc.delegate = context.coordinator
-        bridge.controller = vc
-        try? vc.startScanning()
-        return vc
-    }
-    func updateUIViewController(_ vc: DataScannerViewController, context: Context) {}
-    static func dismantleUIViewController(_ vc: DataScannerViewController, coordinator: Coordinator) { vc.stopScanning() }
-    func makeCoordinator() -> Coordinator { Coordinator(onCode: onCode) }
-
-    final class Coordinator: NSObject, DataScannerViewControllerDelegate {
-        let onCode: (String) -> Void
-        init(onCode: @escaping (String) -> Void) { self.onCode = onCode }
-        func dataScanner(_ s: DataScannerViewController, didAdd items: [RecognizedItem], allItems: [RecognizedItem]) {
-            for case .barcode(let b) in items { if let p = b.payloadStringValue { onCode(p) } }
-        }
-        func dataScanner(_ s: DataScannerViewController, didTapOn item: RecognizedItem) {
-            if case .barcode(let b) = item, let p = b.payloadStringValue { onCode(p) }
-        }
-    }
-}
-
-/// The system camera, for a still photo.
-struct CameraPicker: UIViewControllerRepresentable {
-    var onPhoto: (Data) -> Void
-    @Environment(\.dismiss) private var dismiss
-
-    func makeUIViewController(context: Context) -> UIImagePickerController {
-        let p = UIImagePickerController()
-        p.sourceType = .camera
-        p.delegate = context.coordinator
-        return p
-    }
-    func updateUIViewController(_ vc: UIImagePickerController, context: Context) {}
-    func makeCoordinator() -> Coordinator { Coordinator(self) }
-
-    final class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        let parent: CameraPicker
-        init(_ p: CameraPicker) { parent = p }
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            if let img = info[.originalImage] as? UIImage, let d = img.jpegData(compressionQuality: 0.9) { parent.onPhoto(d) }
-            parent.dismiss()
-        }
-        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) { parent.dismiss() }
-    }
-}
-#endif

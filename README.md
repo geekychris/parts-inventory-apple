@@ -11,8 +11,12 @@ with SwiftData and synced through your private iCloud database.
   `100n 16V`, `cat:caps`, `loc:drawer`, `low`), stock changes with history, locations, suppliers,
   datasheets and photos.
 - **Scan** — Digi-Key, Mouser (ECIA format 06 Data Matrix) and LCSC (QR) bag labels, live with the
-  camera on iPhone and iPad (VisionKit's DataScanner), from a photo, or typed in by a USB scanner.
-  A bag adds stock to the matching part or makes a new one.
+  camera, from a photo, or typed in by a USB scanner. A bag adds stock to the matching part or makes
+  a new one.
+- **Cameras** — any connected camera, on every device: the Mac's own, a USB webcam or microscope,
+  Continuity Camera (an iPhone) and Desk View; the iPhone's back and front cameras; a USB-C camera on an
+  iPad. Pick one above the picture (or in Settings); the choice is remembered, and cameras plugged in or
+  unplugged are picked up straight away.
 - **Identify** — a photo of any part:
   1. barcodes (a bag label goes straight to receiving);
   2. the markings, read with Vision OCR (tried at four rotations when upright reads nothing useful)

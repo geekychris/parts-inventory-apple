@@ -85,19 +85,13 @@ struct IdentifyView: View {
             .onChange(of: model.mode) { model.rerank(inventory: inventory) }
             .sheet(item: $adding) { c in AddPartSheet(candidate: c, ocrText: model.markings, photo: model.photo) { uid in app.partToShow = uid; app.tab = .parts } }
             .sheet(item: Binding(get: { receiving.map(LabelBox.init) }, set: { receiving = $0?.label })) { b in ReceiveSheet(label: b.label) }
-            #if os(iOS)
-            .fullScreenCover(isPresented: $showCamera) { CameraPicker { d in start(d) }.ignoresSafeArea() }
-            #endif
+            .sheet(isPresented: $showCamera) { CameraSheet { d in start(d) } }
         }
     }
 
     var sources: some View {
         HStack {
-            #if os(iOS)
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                Button { showCamera = true } label: { Label("Take a photo", systemImage: "camera") }.buttonStyle(.borderedProminent)
-            }
-            #endif
+            Button { showCamera = true } label: { Label("Take a photo", systemImage: "camera") }.buttonStyle(.borderedProminent)
             PhotosPicker(selection: $photoItem, matching: .images) { Label("Choose a photo", systemImage: "photo") }.buttonStyle(.bordered)
             Button { importing = true } label: { Label("From a file", systemImage: "folder") }.buttonStyle(.bordered)
             #if os(macOS)
@@ -143,6 +137,28 @@ struct IdentifyView: View {
             Button("Match again") { model.rerank(inventory: inventory) }
             if !model.reading.labels.isEmpty { Text("Vision sees: " + model.reading.labels.joined(separator: ", ")).font(.caption).foregroundStyle(.secondary) }
         }
+    }
+}
+
+/// The camera in a sheet, for one photo.
+private struct CameraSheet: View {
+    var onPhoto: (Data) -> Void
+    @State private var camera = Camera()
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            CameraView(camera: camera) { d in onPhoto(d); dismiss() }
+                .padding()
+                .navigationTitle("Take a photo")
+                #if os(iOS)
+                .navigationBarTitleDisplayMode(.inline)
+                #endif
+                .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
+        }
+        .frame(minWidth: 640, minHeight: 520)
+        .task { await camera.start() }
+        .onDisappear { camera.stop() }
     }
 }
 

@@ -35,6 +35,7 @@ targets:
         aps-environment: development
         com.apple.security.app-sandbox: true
         com.apple.security.network.client: true
+        com.apple.security.device.camera: true
         com.apple.security.files.user-selected.read-write: true
         com.apple.security.personal-information.photos-library: true
     settings:
