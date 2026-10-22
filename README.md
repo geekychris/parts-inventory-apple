@@ -17,6 +17,10 @@ with SwiftData and synced through your private iCloud database.
   Continuity Camera (an iPhone) and Desk View; the iPhone's back and front cameras; a USB-C camera on an
   iPad. Pick one above the picture (or in Settings); the choice is remembered, and cameras plugged in or
   unplugged are picked up straight away.
+- **iPhone camera handoff (Mac)** — *From iPhone* (in Identify and beside the live camera, or File ›
+  Import From Device) uses Continuity Camera's Take Photo: the iPhone's own camera opens on the phone,
+  with zoom, macro and tap to focus, and the photo goes straight to Identify. Best for tiny markings —
+  a Mac app can show the iPhone's live picture but can't zoom it.
 - **Identify** — a photo of any part:
   1. barcodes (a bag label goes straight to receiving);
   2. the markings, read with Vision OCR (tried at four rotations when upright reads nothing useful)

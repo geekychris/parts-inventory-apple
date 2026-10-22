@@ -304,6 +304,9 @@ struct CameraView: View {
         VStack(spacing: 10) {
             HStack {
                 if camera.devices.count > 1 { picker }
+                #if os(macOS)
+                DeviceImportButton(title: "Use iPhone camera") { onPhoto($0) }
+                #endif
                 Spacer()
                 Button {
                     taking = true

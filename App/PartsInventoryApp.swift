@@ -47,8 +47,22 @@ struct PartsInventoryApp: App {
         WindowGroup {
             RootView()
                 .environment(app)
+                #if os(macOS)
+                // File › Import from iPhone or iPad: a photo taken on the phone goes to Identify.
+                .importsItemProviders([.image]) { providers in
+                    guard let p = providers.first else { return false }
+                    _ = p.loadDataRepresentation(for: .image) { data, _ in
+                        guard let data else { return }
+                        Task { @MainActor in app.photoForIdentify = data; app.tab = .identify }
+                    }
+                    return true
+                }
+                #endif
         }
         .modelContainer(container)
+        #if os(macOS)
+        .commands { ImportFromDevicesCommands() }
+        #endif
         #if os(macOS)
         Settings {
             SettingsView().environment(app).modelContainer(container).frame(width: 520, height: 560)

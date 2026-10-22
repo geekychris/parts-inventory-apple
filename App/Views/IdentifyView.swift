@@ -31,7 +31,7 @@ struct IdentifyView: View {
                         ContentUnavailableView {
                             Label("Identify a part", systemImage: "camera.viewfinder")
                         } description: {
-                            Text("Take or choose a photo of a chip, a module, a board or any component. The markings are read and matched; parts without a readable number are recognised by how they look.")
+                            Text("Take or choose a photo of a chip, a module, a board or any component. The markings are read and matched; parts without a readable number are recognised by how they look." + Self.iPhoneHint)
                         }
                         .frame(maxWidth: .infinity)
                     }
@@ -95,6 +95,7 @@ struct IdentifyView: View {
             PhotosPicker(selection: $photoItem, matching: .images) { Label("Choose a photo", systemImage: "photo") }.buttonStyle(.bordered)
             Button { importing = true } label: { Label("From a file", systemImage: "folder") }.buttonStyle(.bordered)
             #if os(macOS)
+            DeviceImportButton { start($0) }
             PasteButton(payloadType: Data.self) { items in if let d = items.first { start(d) } }
             #endif
             if model.image != nil {
@@ -104,6 +105,12 @@ struct IdentifyView: View {
         }
         .labelStyle(.titleAndIcon)
     }
+
+    #if os(macOS)
+    static let iPhoneHint = "\n\nFor tiny markings, use From iPhone: your iPhone’s camera opens on the phone — zoom in, tap to focus — and the photo comes straight here."
+    #else
+    static let iPhoneHint = ""
+    #endif
 
     func start(_ data: Data) {
         model.set(data)
