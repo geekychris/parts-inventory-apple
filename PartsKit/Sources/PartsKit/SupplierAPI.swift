@@ -189,6 +189,11 @@ public enum DigiKeyAPI {
             .min { ($0.prices.first?.qty ?? .max) < ($1.prices.first?.qty ?? .max) } ?? variations.first
         r.spn = best?.spn ?? str(p["DigiKeyProductNumber"])
         r.prices = best?.prices ?? []
+        // Keyword results can leave out the total; the packagings' own counts are there.
+        if r.stock == nil {
+            let counts = ((p["ProductVariations"] as? [JSON]) ?? []).compactMap { num($0["QuantityAvailableforPackageType"]) }
+            if let m = counts.max() { r.stock = Int(m) }
+        }
         if r.prices.isEmpty, let u = num(p["UnitPrice"]), u > 0 { r.prices = [.init(qty: 1, unit: u, currency: currency)] }
         return r
     }
