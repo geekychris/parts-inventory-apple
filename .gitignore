@@ -1,0 +1,10 @@
+.DS_Store
+build/
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+PartsKit/.build/
+PartsKit/.swiftpm/
+tools/.venv/
+App/Resources/MobileCLIPImage.mlpackage/
+tools/__pycache__/

@@ -1,0 +1,363 @@
+{
+ "template": "a photo of {}.",
+ "kinds": [
+  {
+   "ref": "g-ic",
+   "label": "an integrated circuit chip"
+  },
+  {
+   "ref": "g-pcb",
+   "label": "a circuit board module"
+  },
+  {
+   "ref": "g-devboard",
+   "label": "a microcontroller development board"
+  },
+  {
+   "ref": "g-resistor",
+   "label": "a resistor"
+  },
+  {
+   "ref": "g-ceramic",
+   "label": "a ceramic disc capacitor"
+  },
+  {
+   "ref": "g-electrolytic",
+   "label": "an electrolytic capacitor"
+  },
+  {
+   "ref": "g-to92",
+   "label": "a small three-legged transistor"
+  },
+  {
+   "ref": "g-to220",
+   "label": "a power transistor with a metal tab"
+  },
+  {
+   "ref": "g-led",
+   "label": "an LED"
+  },
+  {
+   "ref": "g-crystal",
+   "label": "a crystal oscillator"
+  },
+  {
+   "ref": "g-connector",
+   "label": "a pin header connector"
+  },
+  {
+   "ref": "g-display",
+   "label": "a display screen"
+  },
+  {
+   "ref": "g-sensor",
+   "label": "a sensor breakout board"
+  },
+  {
+   "ref": "g-pot",
+   "label": "a potentiometer"
+  },
+  {
+   "ref": "g-trimpot",
+   "label": "a trimmer potentiometer"
+  },
+  {
+   "ref": "g-button",
+   "label": "a tactile push button switch"
+  },
+  {
+   "ref": "g-switch",
+   "label": "a toggle switch"
+  },
+  {
+   "ref": "g-keypad",
+   "label": "a keypad"
+  },
+  {
+   "ref": "g-relay",
+   "label": "a relay"
+  },
+  {
+   "ref": "g-inductor",
+   "label": "an inductor coil"
+  },
+  {
+   "ref": "g-diode",
+   "label": "a diode"
+  },
+  {
+   "ref": "g-buzzer",
+   "label": "a buzzer"
+  },
+  {
+   "ref": "g-speaker",
+   "label": "a speaker"
+  },
+  {
+   "ref": "g-motor",
+   "label": "a DC motor"
+  },
+  {
+   "ref": "g-gearmotor",
+   "label": "a gear motor"
+  },
+  {
+   "ref": "g-stepper",
+   "label": "a stepper motor"
+  },
+  {
+   "ref": "g-servo",
+   "label": "a servo motor"
+  },
+  {
+   "ref": "g-fan",
+   "label": "a cooling fan"
+  },
+  {
+   "ref": "g-heatsink",
+   "label": "a heatsink"
+  },
+  {
+   "ref": "g-fuse",
+   "label": "a fuse"
+  },
+  {
+   "ref": "g-transformer",
+   "label": "a transformer"
+  },
+  {
+   "ref": "g-battery",
+   "label": "a battery"
+  },
+  {
+   "ref": "g-battery-holder",
+   "label": "a battery holder"
+  },
+  {
+   "ref": "g-usb",
+   "label": "a USB connector"
+  },
+  {
+   "ref": "g-terminal",
+   "label": "a screw terminal block"
+  },
+  {
+   "ref": "g-ic-socket",
+   "label": "an IC socket"
+  },
+  {
+   "ref": "g-jumpers",
+   "label": "jumper wires"
+  },
+  {
+   "ref": "g-breadboard",
+   "label": "a breadboard"
+  },
+  {
+   "ref": "g-7seg",
+   "label": "a seven-segment display"
+  },
+  {
+   "ref": "g-ldr",
+   "label": "a photoresistor"
+  },
+  {
+   "ref": "g-camera",
+   "label": "a camera module"
+  },
+  {
+   "ref": "g-joystick",
+   "label": "a joystick module"
+  },
+  {
+   "ref": "g-antenna",
+   "label": "an antenna"
+  },
+  {
+   "ref": "g-smd-reel",
+   "label": "a strip of SMD components on tape"
+  }
+ ],
+ "boards": [
+  {
+   "ref": "esp32-wroom-32",
+   "label": "an ESP32-WROOM module with a metal shield and a zig-zag PCB antenna"
+  },
+  {
+   "ref": "esp-12f",
+   "label": "a small ESP8266 ESP-12 Wi-Fi module with a metal shield"
+  },
+  {
+   "ref": "ws2812b",
+   "label": "a strip or ring of WS2812B addressable RGB LEDs"
+  },
+  {
+   "ref": "arduino-uno",
+   "label": "an Arduino Uno, a blue rectangular microcontroller board with a USB-B socket, a barrel power jack and a long chip"
+  },
+  {
+   "ref": "arduino-nano",
+   "label": "an Arduino Nano, a small narrow blue board with a mini-USB socket and two rows of pins"
+  },
+  {
+   "ref": "arduino-mega",
+   "label": "an Arduino Mega 2560, a long blue microcontroller board with many header pins"
+  },
+  {
+   "ref": "arduino-pro-mini",
+   "label": "an Arduino Pro Mini, a tiny square microcontroller board with no USB socket"
+  },
+  {
+   "ref": "pro-micro",
+   "label": "a Pro Micro, a small black or blue ATmega32U4 board with a micro-USB socket"
+  },
+  {
+   "ref": "esp32-devkitc",
+   "label": "an ESP32 development board with a metal-shielded Wi-Fi module and a micro-USB socket"
+  },
+  {
+   "ref": "esp32-devkit-v1",
+   "label": "a black ESP32 development board with a metal-shielded module, two buttons and a micro-USB socket"
+  },
+  {
+   "ref": "esp32-cam",
+   "label": "an ESP32-CAM board with a small camera module on a ribbon cable"
+  },
+  {
+   "ref": "nodemcu",
+   "label": "a NodeMCU ESP8266 development board with a metal-shielded module and a micro-USB socket"
+  },
+  {
+   "ref": "wemos-d1-mini",
+   "label": "a small square Wemos D1 mini ESP8266 board"
+  },
+  {
+   "ref": "pico",
+   "label": "a green Raspberry Pi Pico board with castellated edges and a micro-USB socket"
+  },
+  {
+   "ref": "rpi-zero-2w",
+   "label": "a Raspberry Pi Zero, a small thin green computer board with mini-HDMI and micro-USB sockets"
+  },
+  {
+   "ref": "rpi-4",
+   "label": "a Raspberry Pi 4 single-board computer with USB and Ethernet sockets"
+  },
+  {
+   "ref": "blue-pill",
+   "label": "a blue STM32 Blue Pill board with a square chip, two yellow jumpers and a micro-USB socket"
+  },
+  {
+   "ref": "black-pill",
+   "label": "a black STM32 Black Pill board with a square chip and a USB-C socket"
+  },
+  {
+   "ref": "teensy-40",
+   "label": "a small green Teensy microcontroller board"
+  },
+  {
+   "ref": "xiao",
+   "label": "a tiny thumb-sized microcontroller board with a USB-C socket and a metal shield"
+  },
+  {
+   "ref": "hc-05",
+   "label": "an HC-05 Bluetooth serial module on a blue breakout board with six pins"
+  },
+  {
+   "ref": "hc-sr04",
+   "label": "an HC-SR04 ultrasonic distance sensor with two round silver transducers"
+  },
+  {
+   "ref": "dht22",
+   "label": "a white DHT22 temperature and humidity sensor with a grille"
+  },
+  {
+   "ref": "gy-521",
+   "label": "a small blue GY-521 accelerometer breakout board with eight pins"
+  },
+  {
+   "ref": "oled-096",
+   "label": "a small 0.96 inch OLED display module with four pins"
+  },
+  {
+   "ref": "lcd-1602",
+   "label": "a 16x2 character LCD display with a green or blue backlight"
+  },
+  {
+   "ref": "l298n-module",
+   "label": "a red L298N dual motor driver module with a large black heatsink and screw terminals"
+  },
+  {
+   "ref": "stepper-driver-module",
+   "label": "a small stepper motor driver board with a tiny heatsink and a trimmer"
+  },
+  {
+   "ref": "uln2003-board",
+   "label": "a ULN2003 stepper driver board with four red LEDs and a white connector"
+  },
+  {
+   "ref": "relay-module",
+   "label": "a relay module with blue cube relays and green screw terminals"
+  },
+  {
+   "ref": "tp4056-module",
+   "label": "a small blue TP4056 lithium battery charger board with a USB socket and two LEDs"
+  },
+  {
+   "ref": "lm2596-module",
+   "label": "a blue LM2596 buck converter board with a blue trimmer potentiometer and a large inductor"
+  },
+  {
+   "ref": "mt3608-module",
+   "label": "a tiny blue MT3608 boost converter board with a trimmer potentiometer"
+  },
+  {
+   "ref": "max7219-matrix",
+   "label": "a red 8x8 LED dot matrix display module"
+  },
+  {
+   "ref": "pca9685-board",
+   "label": "a blue 16-channel servo driver board with rows of three-pin headers"
+  },
+  {
+   "ref": "hx711-module",
+   "label": "a small green HX711 load cell amplifier board"
+  },
+  {
+   "ref": "rc522-module",
+   "label": "a blue RC522 RFID reader board with a printed coil antenna"
+  },
+  {
+   "ref": "nrf24-module",
+   "label": "a small nRF24L01 radio module with a zig-zag PCB antenna and eight pins"
+  },
+  {
+   "ref": "sim800l",
+   "label": "a small red SIM800L GSM module with a SIM card holder"
+  },
+  {
+   "ref": "neo-6m",
+   "label": "a GPS module with a square tan ceramic patch antenna"
+  },
+  {
+   "ref": "microsd-module",
+   "label": "a micro SD card reader module with a metal card socket"
+  },
+  {
+   "ref": "level-shifter",
+   "label": "a tiny four-channel logic level converter board with two rows of six pins"
+  },
+  {
+   "ref": "usb-ttl",
+   "label": "a USB to TTL serial adapter stick with a USB-A plug and a row of pins"
+  },
+  {
+   "ref": "st-link-v2",
+   "label": "an ST-Link V2 programmer, a small metal USB stick with a ten-pin header"
+  },
+  {
+   "ref": "mb102",
+   "label": "a breadboard power supply module with a barrel jack, a USB socket and yellow jumpers"
+  }
+ ]
+}

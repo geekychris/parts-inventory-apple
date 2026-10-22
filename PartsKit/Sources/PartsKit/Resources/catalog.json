@@ -1,0 +1,2871 @@
+{
+ "source": "geekychris-site parts-identify-core.js",
+ "catalog": [
+  {
+   "id": "atmega328p",
+   "mpn": "ATmega328P",
+   "mfr": "Microchip (Atmel)",
+   "kind": "ic",
+   "cat": "ICs/Microcontrollers",
+   "pkg": "DIP-28 / TQFP-32",
+   "desc": "8-bit AVR microcontroller, 32 KB flash, 2 KB RAM (Arduino Uno, Nano, Pro Mini)",
+   "marks": [
+    "ATMEGA328P",
+    "ATMEGA328",
+    "MEGA328P"
+   ],
+   "ds": "https://ww1.microchip.com/downloads/aemDocuments/documents/MCU08/ProductDocuments/DataSheets/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061B.pdf",
+   "mfrWords": [
+    "ATMEL",
+    "MICROCHIP"
+   ]
+  },
+  {
+   "id": "atmega2560",
+   "mpn": "ATmega2560",
+   "mfr": "Microchip (Atmel)",
+   "kind": "ic",
+   "cat": "ICs/Microcontrollers",
+   "pkg": "TQFP-100",
+   "desc": "8-bit AVR microcontroller, 256 KB flash (Arduino Mega)",
+   "marks": [
+    "ATMEGA2560",
+    "MEGA2560"
+   ],
+   "ds": "https://ww1.microchip.com/downloads/en/devicedoc/atmel-2549-8-bit-avr-microcontroller-atmega640-1280-1281-2560-2561_datasheet.pdf",
+   "mfrWords": [
+    "ATMEL",
+    "MICROCHIP"
+   ]
+  },
+  {
+   "id": "atmega32u4",
+   "mpn": "ATmega32U4",
+   "mfr": "Microchip (Atmel)",
+   "kind": "ic",
+   "cat": "ICs/Microcontrollers",
+   "pkg": "TQFP-44 / QFN-44",
+   "desc": "8-bit AVR microcontroller with USB (Leonardo, Pro Micro)",
+   "marks": [
+    "ATMEGA32U4",
+    "MEGA32U4"
+   ],
+   "ds": "https://ww1.microchip.com/downloads/en/devicedoc/atmel-7766-8-bit-avr-atmega16u4-32u4_datasheet.pdf",
+   "mfrWords": [
+    "ATMEL",
+    "MICROCHIP"
+   ]
+  },
+  {
+   "id": "atmega16u2",
+   "mpn": "ATmega16U2",
+   "mfr": "Microchip (Atmel)",
+   "kind": "ic",
+   "cat": "ICs/Microcontrollers",
+   "pkg": "QFN-32",
+   "desc": "8-bit AVR with USB — the USB-serial chip on an Arduino Uno R3",
+   "marks": [
+    "ATMEGA16U2",
+    "MEGA16U2"
+   ],
+   "ds": "https://ww1.microchip.com/downloads/en/DeviceDoc/doc7799.pdf",
+   "mfrWords": [
+    "ATMEL",
+    "MICROCHIP"
+   ]
+  },
+  {
+   "id": "attiny85",
+   "mpn": "ATtiny85",
+   "mfr": "Microchip (Atmel)",
+   "kind": "ic",
+   "cat": "ICs/Microcontrollers",
+   "pkg": "DIP-8 / SOIC-8",
+   "desc": "8-bit AVR microcontroller, 8 KB flash, 8 pins (Digispark)",
+   "marks": [
+    "ATTINY85",
+    "TINY85",
+    "ATTINY45",
+    "ATTINY25"
+   ],
+   "ds": "https://ww1.microchip.com/downloads/en/devicedoc/atmel-2586-avr-8-bit-microcontroller-attiny25-attiny45-attiny85_datasheet.pdf",
+   "mfrWords": [
+    "ATMEL",
+    "MICROCHIP"
+   ]
+  },
+  {
+   "id": "atsamd21",
+   "mpn": "ATSAMD21G18A",
+   "mfr": "Microchip (Atmel)",
+   "kind": "ic",
+   "cat": "ICs/Microcontrollers",
+   "pkg": "TQFP-48 / QFN-48",
+   "desc": "32-bit Arm Cortex-M0+ microcontroller (Arduino Zero, Feather M0, XIAO)",
+   "marks": [
+    "ATSAMD21G18",
+    "SAMD21G18",
+    "SAMD21E18",
+    "ATSAMD21"
+   ],
+   "mfrWords": [
+    "ATMEL",
+    "MICROCHIP"
+   ]
+  },
+  {
+   "id": "stm32f103c8",
+   "mpn": "STM32F103C8T6",
+   "mfr": "STMicroelectronics",
+   "kind": "ic",
+   "cat": "ICs/Microcontrollers",
+   "pkg": "LQFP-48",
+   "desc": "32-bit Arm Cortex-M3 microcontroller, 64 KB flash (Blue Pill)",
+   "marks": [
+    "STM32F103C8",
+    "STM32F103CB",
+    "STM32F103"
+   ],
+   "mfrWords": [
+    "ST"
+   ]
+  },
+  {
+   "id": "stm32f411",
+   "mpn": "STM32F411CEU6",
+   "mfr": "STMicroelectronics",
+   "kind": "ic",
+   "cat": "ICs/Microcontrollers",
+   "pkg": "UFQFPN-48",
+   "desc": "32-bit Arm Cortex-M4F microcontroller, 512 KB flash (Black Pill)",
+   "marks": [
+    "STM32F411CE",
+    "STM32F411",
+    "STM32F401"
+   ],
+   "mfrWords": [
+    "ST"
+   ]
+  },
+  {
+   "id": "rp2040",
+   "mpn": "RP2040",
+   "mfr": "Raspberry Pi",
+   "kind": "ic",
+   "cat": "ICs/Microcontrollers",
+   "pkg": "QFN-56",
+   "desc": "Dual Arm Cortex-M0+ microcontroller with PIO (Raspberry Pi Pico)",
+   "marks": [
+    "RP2040",
+    "RP2-B2",
+    "RP2-B1",
+    "RP2-B0"
+   ],
+   "ds": "https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf"
+  },
+  {
+   "id": "rp2350",
+   "mpn": "RP2350",
+   "mfr": "Raspberry Pi",
+   "kind": "ic",
+   "cat": "ICs/Microcontrollers",
+   "pkg": "QFN-60 / QFN-80",
+   "desc": "Dual Arm Cortex-M33 / RISC-V microcontroller (Raspberry Pi Pico 2)",
+   "marks": [
+    "RP2350",
+    "RP2350A",
+    "RP2350B"
+   ],
+   "ds": "https://datasheets.raspberrypi.com/rp2350/rp2350-datasheet.pdf"
+  },
+  {
+   "id": "esp32",
+   "mpn": "ESP32-D0WD-V3",
+   "mfr": "Espressif",
+   "kind": "ic",
+   "cat": "ICs/Wireless",
+   "pkg": "QFN-48",
+   "desc": "Wi-Fi + Bluetooth dual-core SoC (the chip inside ESP32-WROOM modules)",
+   "marks": [
+    "ESP32-D0WD",
+    "ESP32-D0WDQ6",
+    "ESP32-D0WD-V3",
+    "ESP32D0WD"
+   ],
+   "ds": "https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf",
+   "mfrWords": [
+    "ESPRESSIF"
+   ]
+  },
+  {
+   "id": "esp32-wroom-32",
+   "mpn": "ESP32-WROOM-32",
+   "mfr": "Espressif",
+   "kind": "module",
+   "cat": "Modules/Wireless",
+   "pkg": "Module",
+   "desc": "ESP32 Wi-Fi + Bluetooth module with PCB antenna and metal shield",
+   "marks": [
+    "ESP32-WROOM-32",
+    "ESP32-WROOM-32E",
+    "ESP32-WROOM-32D",
+    "ESP-WROOM-32",
+    "WROOM-32"
+   ],
+   "ds": "https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf",
+   "mfrWords": [
+    "ESPRESSIF"
+   ],
+   "look": "an ESP32-WROOM module with a metal shield and a zig-zag PCB antenna"
+  },
+  {
+   "id": "esp32-s3-wroom-1",
+   "mpn": "ESP32-S3-WROOM-1",
+   "mfr": "Espressif",
+   "kind": "module",
+   "cat": "Modules/Wireless",
+   "pkg": "Module",
+   "desc": "ESP32-S3 Wi-Fi + Bluetooth LE module (AI/vector instructions, USB)",
+   "marks": [
+    "ESP32-S3-WROOM-1",
+    "ESP32-S3-WROOM-1U",
+    "S3-WROOM-1"
+   ],
+   "ds": "https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf",
+   "mfrWords": [
+    "ESPRESSIF"
+   ]
+  },
+  {
+   "id": "esp32-s3",
+   "mpn": "ESP32-S3",
+   "mfr": "Espressif",
+   "kind": "ic",
+   "cat": "ICs/Wireless",
+   "pkg": "QFN-56",
+   "desc": "Dual-core Xtensa LX7 Wi-Fi + Bluetooth LE SoC",
+   "marks": [
+    "ESP32-S3",
+    "ESP32S3"
+   ],
+   "ds": "https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf",
+   "mfrWords": [
+    "ESPRESSIF"
+   ]
+  },
+  {
+   "id": "esp32-c3",
+   "mpn": "ESP32-C3",
+   "mfr": "Espressif",
+   "kind": "ic",
+   "cat": "ICs/Wireless",
+   "pkg": "QFN-32",
+   "desc": "RISC-V Wi-Fi + Bluetooth LE SoC",
+   "marks": [
+    "ESP32-C3",
+    "ESP32C3",
+    "ESP32-C3FH4"
+   ],
+   "ds": "https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf",
+   "mfrWords": [
+    "ESPRESSIF"
+   ]
+  },
+  {
+   "id": "esp8266ex",
+   "mpn": "ESP8266EX",
+   "mfr": "Espressif",
+   "kind": "ic",
+   "cat": "ICs/Wireless",
+   "pkg": "QFN-32",
+   "desc": "Wi-Fi SoC (the chip in ESP-12 modules, NodeMCU, Wemos D1 mini)",
+   "marks": [
+    "ESP8266EX",
+    "ESP8266"
+   ],
+   "ds": "https://www.espressif.com/sites/default/files/documentation/0a-esp8266ex_datasheet_en.pdf",
+   "mfrWords": [
+    "ESPRESSIF"
+   ]
+  },
+  {
+   "id": "esp-12f",
+   "mpn": "ESP-12F",
+   "mfr": "Ai-Thinker",
+   "kind": "module",
+   "cat": "Modules/Wireless",
+   "pkg": "Module",
+   "desc": "ESP8266 Wi-Fi module with metal shield and PCB antenna",
+   "marks": [
+    "ESP-12F",
+    "ESP-12E",
+    "ESP-12S",
+    "ESP12F",
+    "ESP8266MOD"
+   ],
+   "mfrWords": [
+    "AI-THINKER",
+    "AITHINKER"
+   ],
+   "look": "a small ESP8266 ESP-12 Wi-Fi module with a metal shield"
+  },
+  {
+   "id": "nrf52840",
+   "mpn": "nRF52840",
+   "mfr": "Nordic Semiconductor",
+   "kind": "ic",
+   "cat": "ICs/Wireless",
+   "pkg": "aQFN-73",
+   "desc": "Bluetooth LE / Thread / Zigbee SoC, Arm Cortex-M4F with USB",
+   "marks": [
+    "NRF52840",
+    "N52840"
+   ],
+   "ds": "https://www.nordicsemi.com/Products/nRF52840",
+   "mfrWords": [
+    "NORDIC"
+   ]
+  },
+  {
+   "id": "nrf24l01",
+   "mpn": "nRF24L01+",
+   "mfr": "Nordic Semiconductor",
+   "kind": "ic",
+   "cat": "ICs/Wireless",
+   "pkg": "QFN-20",
+   "desc": "2.4 GHz transceiver (the cheap \"NRF24\" radio modules)",
+   "marks": [
+    "NRF24L01P",
+    "NRF24L01+",
+    "NRF24L01",
+    "24L01"
+   ],
+   "ds": "https://www.sparkfun.com/datasheets/Components/SMD/nRF24L01Pluss_Preliminary_Product_Specification_v1_0.pdf",
+   "mfrWords": [
+    "NORDIC"
+   ]
+  },
+  {
+   "id": "sx1276",
+   "mpn": "SX1276",
+   "mfr": "Semtech",
+   "kind": "ic",
+   "cat": "ICs/Wireless",
+   "pkg": "QFN-28",
+   "desc": "LoRa long-range transceiver, 137–1020 MHz (SX1278: 137–525 MHz)",
+   "marks": [
+    "SX1276",
+    "SX1278",
+    "SX1262"
+   ],
+   "ds": "https://www.semtech.com/products/wireless-rf/lora-connect/sx1276",
+   "mfrWords": [
+    "SEMTECH"
+   ]
+  },
+  {
+   "id": "ch340",
+   "mpn": "CH340G",
+   "mfr": "WCH (Nanjing Qinheng)",
+   "kind": "ic",
+   "cat": "ICs/Interface",
+   "pkg": "SOP-16",
+   "desc": "USB to serial UART bridge (cheap Arduino and ESP boards)",
+   "marks": [
+    "CH340G",
+    "CH340C",
+    "CH340E",
+    "CH340N",
+    "CH340K",
+    "CH340"
+   ],
+   "ds": "https://www.wch-ic.com/downloads/CH340DS1_PDF.html",
+   "mfrWords": [
+    "WCH"
+   ]
+  },
+  {
+   "id": "ch9102",
+   "mpn": "CH9102F",
+   "mfr": "WCH (Nanjing Qinheng)",
+   "kind": "ic",
+   "cat": "ICs/Interface",
+   "pkg": "QFN-24",
+   "desc": "USB to serial UART bridge (newer ESP32 boards)",
+   "marks": [
+    "CH9102F",
+    "CH9102X",
+    "CH9102"
+   ],
+   "mfrWords": [
+    "WCH"
+   ]
+  },
+  {
+   "id": "cp2102",
+   "mpn": "CP2102",
+   "mfr": "Silicon Labs",
+   "kind": "ic",
+   "cat": "ICs/Interface",
+   "pkg": "QFN-28",
+   "desc": "USB to serial UART bridge",
+   "marks": [
+    "CP2102",
+    "CP2102N",
+    "CP2104",
+    "CP2104N"
+   ],
+   "mfrWords": [
+    "SILABS",
+    "SILICON"
+   ]
+  },
+  {
+   "id": "ft232rl",
+   "mpn": "FT232RL",
+   "mfr": "FTDI",
+   "kind": "ic",
+   "cat": "ICs/Interface",
+   "pkg": "SSOP-28",
+   "desc": "USB to serial UART bridge",
+   "marks": [
+    "FT232RL",
+    "FT232RQ",
+    "FT232R"
+   ],
+   "mfrWords": [
+    "FTDI"
+   ]
+  },
+  {
+   "id": "max232",
+   "mpn": "MAX232",
+   "mfr": "Texas Instruments / Analog Devices",
+   "kind": "ic",
+   "cat": "ICs/Interface",
+   "pkg": "DIP-16 / SOIC-16",
+   "desc": "Dual RS-232 driver/receiver, 5 V",
+   "marks": [
+    "MAX232",
+    "MAX232N",
+    "MAX232CPE"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/max232.pdf"
+  },
+  {
+   "id": "max3232",
+   "mpn": "MAX3232",
+   "mfr": "Texas Instruments / Analog Devices",
+   "kind": "ic",
+   "cat": "ICs/Interface",
+   "pkg": "SOIC-16",
+   "desc": "Dual RS-232 driver/receiver, 3–5.5 V",
+   "marks": [
+    "MAX3232",
+    "MAX3232E",
+    "MAX3232CSE"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/max3232.pdf"
+  },
+  {
+   "id": "max485",
+   "mpn": "MAX485",
+   "mfr": "Analog Devices (Maxim)",
+   "kind": "ic",
+   "cat": "ICs/Interface",
+   "pkg": "DIP-8 / SOIC-8",
+   "desc": "RS-485 / RS-422 transceiver",
+   "marks": [
+    "MAX485",
+    "MAX485ESA",
+    "MAX485CPA",
+    "MAX485E"
+   ],
+   "mfrWords": [
+    "MAXIM"
+   ]
+  },
+  {
+   "id": "mcp2515",
+   "mpn": "MCP2515",
+   "mfr": "Microchip",
+   "kind": "ic",
+   "cat": "ICs/Interface",
+   "pkg": "SOIC-18 / DIP-18",
+   "desc": "Stand-alone CAN controller with SPI",
+   "marks": [
+    "MCP2515"
+   ],
+   "ds": "https://ww1.microchip.com/downloads/en/DeviceDoc/MCP2515-Stand-Alone-CAN-Controller-with-SPI-20001801J.pdf",
+   "mfrWords": [
+    "MICROCHIP"
+   ]
+  },
+  {
+   "id": "enc28j60",
+   "mpn": "ENC28J60",
+   "mfr": "Microchip",
+   "kind": "ic",
+   "cat": "ICs/Interface",
+   "pkg": "SOIC-28",
+   "desc": "10BASE-T Ethernet controller with SPI",
+   "marks": [
+    "ENC28J60"
+   ],
+   "ds": "https://ww1.microchip.com/downloads/en/DeviceDoc/39662e.pdf",
+   "mfrWords": [
+    "MICROCHIP"
+   ]
+  },
+  {
+   "id": "txs0108e",
+   "mpn": "TXS0108E",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Interface",
+   "pkg": "TSSOP-20",
+   "desc": "8-bit bidirectional level shifter",
+   "marks": [
+    "TXS0108E",
+    "TXS0108",
+    "YF08E"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/txs0108e.pdf"
+  },
+  {
+   "id": "pcf8574",
+   "mpn": "PCF8574",
+   "mfr": "Texas Instruments / NXP",
+   "kind": "ic",
+   "cat": "ICs/Interface",
+   "pkg": "DIP-16 / SOIC-16",
+   "desc": "8-bit I²C I/O expander (the LCD \"I2C backpack\")",
+   "marks": [
+    "PCF8574",
+    "PCF8574T",
+    "PCF8574A",
+    "PCF8574AT"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/pcf8574.pdf"
+  },
+  {
+   "id": "mcp23017",
+   "mpn": "MCP23017",
+   "mfr": "Microchip",
+   "kind": "ic",
+   "cat": "ICs/Interface",
+   "pkg": "DIP-28 / SOIC-28",
+   "desc": "16-bit I²C I/O expander",
+   "marks": [
+    "MCP23017",
+    "MCP23S17"
+   ],
+   "ds": "https://ww1.microchip.com/downloads/en/devicedoc/20001952c.pdf",
+   "mfrWords": [
+    "MICROCHIP"
+   ]
+  },
+  {
+   "id": "w25q",
+   "mpn": "W25Q128JV",
+   "mfr": "Winbond",
+   "kind": "ic",
+   "cat": "ICs/Memory",
+   "pkg": "SOIC-8",
+   "desc": "SPI NOR flash (W25Q32 = 4 MB, W25Q64 = 8 MB, W25Q128 = 16 MB)",
+   "marks": [
+    "W25Q128",
+    "W25Q64",
+    "W25Q32",
+    "W25Q16",
+    "W25Q80",
+    "25Q128",
+    "25Q64",
+    "25Q32"
+   ],
+   "mfrWords": [
+    "WINBOND"
+   ]
+  },
+  {
+   "id": "24lc256",
+   "mpn": "24LC256",
+   "mfr": "Microchip",
+   "kind": "ic",
+   "cat": "ICs/Memory",
+   "pkg": "DIP-8 / SOIC-8",
+   "desc": "256 Kbit I²C EEPROM",
+   "marks": [
+    "24LC256",
+    "24AA256",
+    "24FC256",
+    "24LC512"
+   ],
+   "ds": "https://ww1.microchip.com/downloads/en/DeviceDoc/24AA256-24LC256-24FC256-Data-Sheet-20001203W.pdf",
+   "mfrWords": [
+    "MICROCHIP"
+   ]
+  },
+  {
+   "id": "ams1117",
+   "mpn": "AMS1117",
+   "mfr": "Advanced Monolithic Systems",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "SOT-223",
+   "desc": "1 A low-dropout regulator (AMS1117-3.3 on most 3.3 V boards)",
+   "marks": [
+    "AMS1117",
+    "AMS1117-3.3",
+    "AMS1117-5.0",
+    "AMS1117-33",
+    "AM1117"
+   ]
+  },
+  {
+   "id": "lm1117",
+   "mpn": "LM1117",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "SOT-223",
+   "desc": "800 mA low-dropout regulator",
+   "marks": [
+    "LM1117",
+    "LM1117-3.3",
+    "LM1117MP"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/lm1117.pdf"
+  },
+  {
+   "id": "l7805",
+   "mpn": "L7805CV",
+   "mfr": "STMicroelectronics",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "TO-220",
+   "desc": "5 V 1.5 A linear regulator (78xx series: 7809, 7812…)",
+   "marks": [
+    "L7805",
+    "L7805CV",
+    "LM7805",
+    "MC7805",
+    "KA7805",
+    "7805",
+    "L7812",
+    "LM7812",
+    "L7809"
+   ]
+  },
+  {
+   "id": "ua78l05",
+   "mpn": "UA78L05",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "TO-92 / SOT-89",
+   "desc": "5 V 100 mA linear regulator",
+   "marks": [
+    "78L05",
+    "UA78L05",
+    "L78L05",
+    "78L33"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/ua78l.pdf"
+  },
+  {
+   "id": "lm317",
+   "mpn": "LM317",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "TO-220",
+   "desc": "Adjustable 1.5 A linear regulator",
+   "marks": [
+    "LM317",
+    "LM317T",
+    "LM317K"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/lm317.pdf"
+  },
+  {
+   "id": "lm2940",
+   "mpn": "LM2940",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "TO-220",
+   "desc": "1 A low-dropout regulator",
+   "marks": [
+    "LM2940",
+    "LM2940CT"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/lm2940-n.pdf"
+  },
+  {
+   "id": "mcp1700",
+   "mpn": "MCP1700",
+   "mfr": "Microchip",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "TO-92 / SOT-23",
+   "desc": "Low-quiescent-current 250 mA LDO",
+   "marks": [
+    "MCP1700",
+    "1700-33",
+    "1700-3302"
+   ],
+   "ds": "https://ww1.microchip.com/downloads/en/DeviceDoc/MCP1700-Low-Quiescent-Current-LDO-20001826E.pdf",
+   "mfrWords": [
+    "MICROCHIP"
+   ]
+  },
+  {
+   "id": "ap2112",
+   "mpn": "AP2112K-3.3",
+   "mfr": "Diodes Inc.",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "SOT-23-5",
+   "desc": "600 mA CMOS LDO regulator",
+   "marks": [
+    "AP2112",
+    "AP2112K"
+   ],
+   "ds": "https://www.diodes.com/assets/Datasheets/AP2112.pdf"
+  },
+  {
+   "id": "lm2596",
+   "mpn": "LM2596",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "TO-263-5",
+   "desc": "3 A step-down (buck) switching regulator",
+   "marks": [
+    "LM2596",
+    "LM2596S",
+    "LM2596S-ADJ",
+    "LM2596T"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/lm2596.pdf"
+  },
+  {
+   "id": "lm2577",
+   "mpn": "LM2577",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "TO-263-5",
+   "desc": "3 A step-up (boost) switching regulator",
+   "marks": [
+    "LM2577",
+    "LM2577S"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/lm2577.pdf"
+  },
+  {
+   "id": "mt3608",
+   "mpn": "MT3608",
+   "mfr": "Aerosemi",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "SOT-23-6",
+   "desc": "2 A step-up (boost) converter (the tiny boost modules)",
+   "marks": [
+    "MT3608"
+   ]
+  },
+  {
+   "id": "xl6009",
+   "mpn": "XL6009",
+   "mfr": "XLSEMI",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "TO-263-5",
+   "desc": "4 A step-up / SEPIC converter",
+   "marks": [
+    "XL6009",
+    "XL6009E1",
+    "XL4015",
+    "XL4016"
+   ]
+  },
+  {
+   "id": "tps63020",
+   "mpn": "TPS63020",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "VSON-14",
+   "desc": "Buck-boost converter, 4 A switch",
+   "marks": [
+    "TPS63020"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/tps63020.pdf"
+  },
+  {
+   "id": "tp4056",
+   "mpn": "TP4056",
+   "mfr": "NanJing Top Power",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "SOP-8",
+   "desc": "1 A single-cell Li-ion charger",
+   "marks": [
+    "TP4056",
+    "TC4056",
+    "4056"
+   ],
+   "ds": "https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdf"
+  },
+  {
+   "id": "tl431",
+   "mpn": "TL431",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Power",
+   "pkg": "TO-92 / SOT-23",
+   "desc": "Adjustable precision shunt regulator",
+   "marks": [
+    "TL431",
+    "TL431A",
+    "TL432"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/tl431.pdf"
+  },
+  {
+   "id": "lm358",
+   "mpn": "LM358",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "DIP-8 / SOIC-8",
+   "desc": "Dual general-purpose op-amp",
+   "marks": [
+    "LM358",
+    "LM358N",
+    "LM358P",
+    "LM358DR",
+    "LM2904"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/lm358.pdf"
+  },
+  {
+   "id": "lm324",
+   "mpn": "LM324",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "DIP-14 / SOIC-14",
+   "desc": "Quad general-purpose op-amp",
+   "marks": [
+    "LM324",
+    "LM324N",
+    "LM2902"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/lm324.pdf"
+  },
+  {
+   "id": "lm393",
+   "mpn": "LM393",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "DIP-8 / SOIC-8",
+   "desc": "Dual comparator (most \"sensor modules\" with a trimmer)",
+   "marks": [
+    "LM393",
+    "LM393N",
+    "LM393P",
+    "LM2903"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/lm393.pdf"
+  },
+  {
+   "id": "lm741",
+   "mpn": "LM741",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "DIP-8",
+   "desc": "Single general-purpose op-amp (the classic)",
+   "marks": [
+    "LM741",
+    "UA741",
+    "LM741CN"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/lm741.pdf"
+  },
+  {
+   "id": "tl072",
+   "mpn": "TL072",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "DIP-8 / SOIC-8",
+   "desc": "Dual low-noise JFET-input op-amp (TL071 single, TL074 quad)",
+   "marks": [
+    "TL072",
+    "TL072CP",
+    "TL071",
+    "TL074",
+    "TL082",
+    "TL084"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/tl072.pdf"
+  },
+  {
+   "id": "ne5532",
+   "mpn": "NE5532",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "DIP-8 / SOIC-8",
+   "desc": "Dual low-noise audio op-amp",
+   "marks": [
+    "NE5532",
+    "NE5532P",
+    "SA5532",
+    "NE5534"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/ne5532.pdf"
+  },
+  {
+   "id": "opa2134",
+   "mpn": "OPA2134",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "DIP-8 / SOIC-8",
+   "desc": "Dual high-performance audio op-amp",
+   "marks": [
+    "OPA2134",
+    "OPA2134PA"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/opa2134.pdf"
+  },
+  {
+   "id": "lm386",
+   "mpn": "LM386",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "DIP-8 / SOIC-8",
+   "desc": "Low-voltage audio power amplifier",
+   "marks": [
+    "LM386",
+    "LM386N",
+    "LM386N-1"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/lm386.pdf"
+  },
+  {
+   "id": "ne555",
+   "mpn": "NE555",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "DIP-8 / SOIC-8",
+   "desc": "555 timer (NE556 is the dual)",
+   "marks": [
+    "NE555",
+    "NE555P",
+    "NE555N",
+    "LM555",
+    "SE555",
+    "SA555",
+    "NA555",
+    "NE556"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/ne555.pdf"
+  },
+  {
+   "id": "tlc555",
+   "mpn": "TLC555",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "DIP-8 / SOIC-8",
+   "desc": "CMOS 555 timer",
+   "marks": [
+    "TLC555",
+    "TLC555CP",
+    "LMC555",
+    "ICM7555"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/tlc555.pdf"
+  },
+  {
+   "id": "ads1115",
+   "mpn": "ADS1115",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "VSSOP-10",
+   "desc": "16-bit 4-channel I²C ADC with PGA (marked BOGI)",
+   "marks": [
+    "ADS1115",
+    "BOGI"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/ads1115.pdf"
+  },
+  {
+   "id": "ads1015",
+   "mpn": "ADS1015",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "VSSOP-10",
+   "desc": "12-bit 4-channel I²C ADC with PGA (marked BRPI)",
+   "marks": [
+    "ADS1015",
+    "BRPI"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/ads1015.pdf"
+  },
+  {
+   "id": "mcp3008",
+   "mpn": "MCP3008",
+   "mfr": "Microchip",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "DIP-16 / SOIC-16",
+   "desc": "10-bit 8-channel SPI ADC",
+   "marks": [
+    "MCP3008",
+    "MCP3004"
+   ],
+   "ds": "https://ww1.microchip.com/downloads/en/DeviceDoc/21295d.pdf",
+   "mfrWords": [
+    "MICROCHIP"
+   ]
+  },
+  {
+   "id": "ina219",
+   "mpn": "INA219",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "SOIC-8 / SOT-23-8",
+   "desc": "I²C current / power monitor",
+   "marks": [
+    "INA219",
+    "INA219A",
+    "INA219B"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/ina219.pdf"
+  },
+  {
+   "id": "hx711",
+   "mpn": "HX711",
+   "mfr": "Avia Semiconductor",
+   "kind": "ic",
+   "cat": "ICs/Analog",
+   "pkg": "SOP-16",
+   "desc": "24-bit ADC for load cells (weigh scales)",
+   "marks": [
+    "HX711"
+   ],
+   "ds": "https://cdn.sparkfun.com/datasheets/Sensors/ForceFlex/hx711_english.pdf"
+  },
+  {
+   "id": "acs712",
+   "mpn": "ACS712",
+   "mfr": "Allegro MicroSystems",
+   "kind": "ic",
+   "cat": "ICs/Sensors",
+   "pkg": "SOIC-8",
+   "desc": "Hall-effect current sensor, ±5/20/30 A",
+   "marks": [
+    "ACS712",
+    "ACS712ELC",
+    "ACS712T"
+   ],
+   "ds": "https://www.allegromicro.com/-/media/files/datasheets/acs712-datasheet.pdf",
+   "mfrWords": [
+    "ALLEGRO"
+   ]
+  },
+  {
+   "id": "max31855",
+   "mpn": "MAX31855",
+   "mfr": "Analog Devices (Maxim)",
+   "kind": "ic",
+   "cat": "ICs/Sensors",
+   "pkg": "SOIC-8",
+   "desc": "Thermocouple-to-digital converter (K-type)",
+   "marks": [
+    "MAX31855",
+    "MAX31855K",
+    "MAX6675"
+   ],
+   "mfrWords": [
+    "MAXIM"
+   ]
+  },
+  {
+   "id": "pcm5102a",
+   "mpn": "PCM5102A",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Audio",
+   "pkg": "TSSOP-20",
+   "desc": "Stereo audio DAC with I²S input",
+   "marks": [
+    "PCM5102A",
+    "PCM5102"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/pcm5102a.pdf"
+  },
+  {
+   "id": "max98357a",
+   "mpn": "MAX98357A",
+   "mfr": "Analog Devices (Maxim)",
+   "kind": "ic",
+   "cat": "ICs/Audio",
+   "pkg": "TQFN-16",
+   "desc": "I²S class-D mono amplifier",
+   "marks": [
+    "MAX98357A",
+    "MAX98357"
+   ],
+   "mfrWords": [
+    "MAXIM"
+   ]
+  },
+  {
+   "id": "74hc595",
+   "mpn": "SN74HC595N",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "DIP-16 / SOIC-16",
+   "desc": "8-bit serial-in, parallel-out shift register with latch",
+   "marks": [
+    "74HC595",
+    "HC595",
+    "74HCT595"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/sn74hc595.pdf"
+  },
+  {
+   "id": "74hc165",
+   "mpn": "SN74HC165N",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "DIP-16 / SOIC-16",
+   "desc": "8-bit parallel-in, serial-out shift register",
+   "marks": [
+    "74HC165",
+    "HC165"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/sn74hc165.pdf"
+  },
+  {
+   "id": "74hc00",
+   "mpn": "SN74HC00N",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "DIP-14 / SOIC-14",
+   "desc": "Quad 2-input NAND gate",
+   "marks": [
+    "74HC00",
+    "HC00"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/sn74hc00.pdf"
+  },
+  {
+   "id": "74ls00",
+   "mpn": "SN74LS00N",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "DIP-14",
+   "desc": "Quad 2-input NAND gate (LS-TTL)",
+   "marks": [
+    "74LS00",
+    "LS00"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/sn74ls00.pdf"
+  },
+  {
+   "id": "74hc04",
+   "mpn": "SN74HC04N",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "DIP-14 / SOIC-14",
+   "desc": "Hex inverter",
+   "marks": [
+    "74HC04",
+    "HC04"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/sn74hc04.pdf"
+  },
+  {
+   "id": "74hc14",
+   "mpn": "SN74HC14N",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "DIP-14 / SOIC-14",
+   "desc": "Hex Schmitt-trigger inverter",
+   "marks": [
+    "74HC14",
+    "HC14"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/sn74hc14.pdf"
+  },
+  {
+   "id": "74hc74",
+   "mpn": "SN74HC74N",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "DIP-14 / SOIC-14",
+   "desc": "Dual D-type flip-flop",
+   "marks": [
+    "74HC74",
+    "HC74"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/sn74hc74.pdf"
+  },
+  {
+   "id": "74hc138",
+   "mpn": "SN74HC138N",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "DIP-16 / SOIC-16",
+   "desc": "3-to-8 line decoder",
+   "marks": [
+    "74HC138",
+    "HC138"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/sn74hc138.pdf"
+  },
+  {
+   "id": "74hc245",
+   "mpn": "SN74HC245N",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "DIP-20 / SOIC-20",
+   "desc": "Octal bus transceiver",
+   "marks": [
+    "74HC245",
+    "HC245",
+    "74HCT245"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/sn74hc245.pdf"
+  },
+  {
+   "id": "74hc4067",
+   "mpn": "CD74HC4067",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "DIP-24 / SOIC-24",
+   "desc": "16-channel analog multiplexer",
+   "marks": [
+    "74HC4067",
+    "HC4067",
+    "CD74HC4067"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/cd74hc4067.pdf"
+  },
+  {
+   "id": "sn74lvc1t45",
+   "mpn": "SN74LVC1T45",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "SOT-23-6",
+   "desc": "Single-bit dual-supply level translator",
+   "marks": [
+    "SN74LVC1T45",
+    "74LVC1T45"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/sn74lvc1t45.pdf"
+  },
+  {
+   "id": "cd4017",
+   "mpn": "CD4017B",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "DIP-16",
+   "desc": "Decade counter with 10 decoded outputs",
+   "marks": [
+    "CD4017",
+    "CD4017BE",
+    "HEF4017",
+    "4017B"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/cd4017b.pdf"
+  },
+  {
+   "id": "cd4051",
+   "mpn": "CD4051B",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "DIP-16",
+   "desc": "8-channel analog multiplexer",
+   "marks": [
+    "CD4051",
+    "CD4051BE",
+    "HEF4051",
+    "74HC4051"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/cd4051b.pdf"
+  },
+  {
+   "id": "cd4060",
+   "mpn": "CD4060B",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "DIP-16",
+   "desc": "14-stage ripple counter with oscillator",
+   "marks": [
+    "CD4060",
+    "CD4060BE",
+    "HEF4060"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/cd4060b.pdf"
+  },
+  {
+   "id": "cd4094",
+   "mpn": "CD4094B",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Logic",
+   "pkg": "DIP-16",
+   "desc": "8-stage shift-and-store bus register",
+   "marks": [
+    "CD4094",
+    "CD4094BE",
+    "HEF4094"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/cd4094b.pdf"
+  },
+  {
+   "id": "uln2003",
+   "mpn": "ULN2003A",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "DIP-16 / SOIC-16",
+   "desc": "7-channel Darlington sink driver (28BYJ-48 stepper boards)",
+   "marks": [
+    "ULN2003A",
+    "ULN2003",
+    "ULN2003AN",
+    "ULQ2003"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/uln2003a.pdf"
+  },
+  {
+   "id": "uln2803",
+   "mpn": "ULN2803A",
+   "mfr": "STMicroelectronics / Toshiba",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "DIP-18",
+   "desc": "8-channel Darlington sink driver",
+   "marks": [
+    "ULN2803A",
+    "ULN2803",
+    "ULN2803APG"
+   ]
+  },
+  {
+   "id": "l298n",
+   "mpn": "L298N",
+   "mfr": "STMicroelectronics",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "Multiwatt-15",
+   "desc": "Dual full-bridge motor driver, 2 A per channel",
+   "marks": [
+    "L298N",
+    "L298"
+   ],
+   "mfrWords": [
+    "ST"
+   ]
+  },
+  {
+   "id": "l293d",
+   "mpn": "L293D",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "DIP-16",
+   "desc": "Quad half-H driver, 600 mA (motor shields)",
+   "marks": [
+    "L293D",
+    "L293DNE",
+    "L293"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/l293d.pdf"
+  },
+  {
+   "id": "drv8833",
+   "mpn": "DRV8833",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "HTSSOP-16",
+   "desc": "Dual H-bridge motor driver, 1.5 A",
+   "marks": [
+    "DRV8833"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/drv8833.pdf"
+  },
+  {
+   "id": "drv8825",
+   "mpn": "DRV8825",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "HTSSOP-28",
+   "desc": "Stepper motor driver, 1/32 microstepping",
+   "marks": [
+    "DRV8825"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/drv8825.pdf"
+  },
+  {
+   "id": "a4988",
+   "mpn": "A4988",
+   "mfr": "Allegro MicroSystems",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "QFN-28",
+   "desc": "Stepper motor driver, 1/16 microstepping",
+   "marks": [
+    "A4988",
+    "A4988SETTR"
+   ],
+   "ds": "https://www.allegromicro.com/-/media/files/datasheets/a4988-datasheet.pdf",
+   "mfrWords": [
+    "ALLEGRO"
+   ]
+  },
+  {
+   "id": "tmc2209",
+   "mpn": "TMC2209",
+   "mfr": "Analog Devices (Trinamic)",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "QFN-28",
+   "desc": "Silent stepper motor driver with UART (3-D printers)",
+   "marks": [
+    "TMC2209",
+    "TMC2208",
+    "TMC2130"
+   ],
+   "mfrWords": [
+    "TRINAMIC"
+   ]
+  },
+  {
+   "id": "tb6612fng",
+   "mpn": "TB6612FNG",
+   "mfr": "Toshiba",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "SSOP-24",
+   "desc": "Dual DC motor driver, 1.2 A",
+   "marks": [
+    "TB6612FNG",
+    "TB6612"
+   ],
+   "mfrWords": [
+    "TOSHIBA"
+   ]
+  },
+  {
+   "id": "max7219",
+   "mpn": "MAX7219",
+   "mfr": "Analog Devices (Maxim)",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "DIP-24",
+   "desc": "8-digit LED display / 8×8 matrix driver",
+   "marks": [
+    "MAX7219",
+    "MAX7219CNG",
+    "MAX7219ENG",
+    "MAX7221"
+   ],
+   "mfrWords": [
+    "MAXIM"
+   ]
+  },
+  {
+   "id": "ht16k33",
+   "mpn": "HT16K33",
+   "mfr": "Holtek",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "SOP-28",
+   "desc": "I²C LED matrix / keyscan driver",
+   "marks": [
+    "HT16K33"
+   ],
+   "ds": "https://cdn-shop.adafruit.com/datasheets/ht16K33v110.pdf",
+   "mfrWords": [
+    "HOLTEK"
+   ]
+  },
+  {
+   "id": "pca9685",
+   "mpn": "PCA9685",
+   "mfr": "NXP",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "TSSOP-28",
+   "desc": "16-channel 12-bit PWM controller, I²C (servo boards)",
+   "marks": [
+    "PCA9685",
+    "PCA9685PW"
+   ],
+   "mfrWords": [
+    "NXP"
+   ]
+  },
+  {
+   "id": "tlc5940",
+   "mpn": "TLC5940",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "DIP-28 / HTSSOP-28",
+   "desc": "16-channel LED driver with grayscale PWM",
+   "marks": [
+    "TLC5940",
+    "TLC5940NT"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/tlc5940.pdf"
+  },
+  {
+   "id": "ws2812b",
+   "mpn": "WS2812B",
+   "mfr": "Worldsemi",
+   "kind": "ic",
+   "cat": "Optoelectronics/LEDs",
+   "pkg": "5050",
+   "desc": "Addressable RGB LED with built-in driver (\"NeoPixel\")",
+   "marks": [
+    "WS2812B",
+    "WS2812",
+    "SK6812",
+    "WS2811"
+   ],
+   "ds": "https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf",
+   "look": "a strip or ring of WS2812B addressable RGB LEDs"
+  },
+  {
+   "id": "ds3231",
+   "mpn": "DS3231",
+   "mfr": "Analog Devices (Maxim)",
+   "kind": "ic",
+   "cat": "ICs/Timing",
+   "pkg": "SOIC-16",
+   "desc": "Temperature-compensated I²C real-time clock",
+   "marks": [
+    "DS3231",
+    "DS3231SN",
+    "DS3231M"
+   ],
+   "mfrWords": [
+    "MAXIM"
+   ]
+  },
+  {
+   "id": "ds1307",
+   "mpn": "DS1307",
+   "mfr": "Analog Devices (Maxim)",
+   "kind": "ic",
+   "cat": "ICs/Timing",
+   "pkg": "DIP-8 / SOIC-8",
+   "desc": "I²C real-time clock",
+   "marks": [
+    "DS1307",
+    "DS1307Z"
+   ],
+   "mfrWords": [
+    "MAXIM"
+   ]
+  },
+  {
+   "id": "ds18b20",
+   "mpn": "DS18B20",
+   "mfr": "Analog Devices (Maxim)",
+   "kind": "ic",
+   "cat": "ICs/Sensors",
+   "pkg": "TO-92",
+   "desc": "1-Wire digital thermometer",
+   "marks": [
+    "DS18B20",
+    "18B20"
+   ],
+   "mfrWords": [
+    "MAXIM",
+    "DALLAS"
+   ]
+  },
+  {
+   "id": "lm35",
+   "mpn": "LM35",
+   "mfr": "Texas Instruments",
+   "kind": "ic",
+   "cat": "ICs/Sensors",
+   "pkg": "TO-92",
+   "desc": "Analog temperature sensor, 10 mV/°C",
+   "marks": [
+    "LM35",
+    "LM35DZ"
+   ],
+   "ds": "https://www.ti.com/lit/ds/symlink/lm35.pdf"
+  },
+  {
+   "id": "mpu6050",
+   "mpn": "MPU-6050",
+   "mfr": "TDK InvenSense",
+   "kind": "ic",
+   "cat": "ICs/Sensors",
+   "pkg": "QFN-24",
+   "desc": "6-axis accelerometer + gyroscope, I²C",
+   "marks": [
+    "MPU-6050",
+    "MPU6050",
+    "MPU-6500",
+    "MPU-9250"
+   ],
+   "mfrWords": [
+    "INVENSENSE"
+   ]
+  },
+  {
+   "id": "bme280",
+   "mpn": "BME280",
+   "mfr": "Bosch Sensortec",
+   "kind": "ic",
+   "cat": "ICs/Sensors",
+   "pkg": "LGA-8",
+   "desc": "Humidity, pressure and temperature sensor",
+   "marks": [
+    "BME280",
+    "GY-BME280",
+    "BME280-3.3"
+   ],
+   "ds": "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf",
+   "mfrWords": [
+    "BOSCH"
+   ]
+  },
+  {
+   "id": "bmp280",
+   "mpn": "BMP280",
+   "mfr": "Bosch Sensortec",
+   "kind": "ic",
+   "cat": "ICs/Sensors",
+   "pkg": "LGA-8",
+   "desc": "Barometric pressure and temperature sensor",
+   "marks": [
+    "BMP280",
+    "GY-BMP280",
+    "BMP180",
+    "BMP085"
+   ],
+   "ds": "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp280-ds001.pdf",
+   "mfrWords": [
+    "BOSCH"
+   ]
+  },
+  {
+   "id": "ssd1306",
+   "mpn": "SSD1306",
+   "mfr": "Solomon Systech",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "COG",
+   "desc": "128×64 OLED controller (on the controller-glass of small OLEDs)",
+   "marks": [
+    "SSD1306",
+    "SH1106"
+   ],
+   "ds": "https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf"
+  },
+  {
+   "id": "ili9341",
+   "mpn": "ILI9341",
+   "mfr": "Ilitek",
+   "kind": "ic",
+   "cat": "ICs/Drivers",
+   "pkg": "COG",
+   "desc": "240×320 TFT LCD controller",
+   "marks": [
+    "ILI9341",
+    "ST7789",
+    "ST7735"
+   ],
+   "ds": "https://cdn-shop.adafruit.com/datasheets/ILI9341.pdf"
+  },
+  {
+   "id": "mfrc522",
+   "mpn": "MFRC522",
+   "mfr": "NXP",
+   "kind": "ic",
+   "cat": "ICs/Wireless",
+   "pkg": "HVQFN-32",
+   "desc": "13.56 MHz RFID / NFC reader (RC522 boards)",
+   "marks": [
+    "MFRC522",
+    "RC522"
+   ],
+   "mfrWords": [
+    "NXP"
+   ]
+  },
+  {
+   "id": "2n2222",
+   "mpn": "PN2222A",
+   "mfr": "onsemi",
+   "kind": "discrete",
+   "cat": "Semiconductors/Transistors",
+   "pkg": "TO-92",
+   "desc": "NPN general-purpose transistor, 40 V 600 mA",
+   "marks": [
+    "2N2222",
+    "2N2222A",
+    "PN2222",
+    "PN2222A",
+    "P2N2222A"
+   ],
+   "mfrWords": [
+    "ON"
+   ]
+  },
+  {
+   "id": "2n3904",
+   "mpn": "2N3904",
+   "mfr": "onsemi",
+   "kind": "discrete",
+   "cat": "Semiconductors/Transistors",
+   "pkg": "TO-92",
+   "desc": "NPN small-signal transistor (2N3906 is the PNP)",
+   "marks": [
+    "2N3904",
+    "2N3906"
+   ]
+  },
+  {
+   "id": "bc547",
+   "mpn": "BC547",
+   "mfr": "onsemi",
+   "kind": "discrete",
+   "cat": "Semiconductors/Transistors",
+   "pkg": "TO-92",
+   "desc": "NPN small-signal transistor (BC557 is the PNP)",
+   "marks": [
+    "BC547",
+    "BC547B",
+    "BC548",
+    "BC549",
+    "BC557",
+    "BC337",
+    "BC327"
+   ]
+  },
+  {
+   "id": "irf540n",
+   "mpn": "IRF540N",
+   "mfr": "Infineon",
+   "kind": "discrete",
+   "cat": "Semiconductors/Transistors",
+   "pkg": "TO-220",
+   "desc": "N-channel MOSFET, 100 V 33 A",
+   "marks": [
+    "IRF540N",
+    "IRF540",
+    "IRF540NPBF"
+   ],
+   "ds": "https://www.infineon.com/dgdl/irf540npbf.pdf?fileId=5546d462533600a4015355e39f0d19a1",
+   "mfrWords": [
+    "INFINEON",
+    "IR"
+   ]
+  },
+  {
+   "id": "irlz44n",
+   "mpn": "IRLZ44N",
+   "mfr": "Infineon",
+   "kind": "discrete",
+   "cat": "Semiconductors/Transistors",
+   "pkg": "TO-220",
+   "desc": "Logic-level N-channel MOSFET, 55 V 47 A",
+   "marks": [
+    "IRLZ44N",
+    "IRLZ44",
+    "IRLZ44NPBF",
+    "IRFZ44N"
+   ],
+   "ds": "https://www.infineon.com/dgdl/irlz44npbf.pdf?fileId=5546d462533600a40153567217c32725",
+   "mfrWords": [
+    "INFINEON",
+    "IR"
+   ]
+  },
+  {
+   "id": "1n4148",
+   "mpn": "1N4148",
+   "mfr": "onsemi / Vishay",
+   "kind": "discrete",
+   "cat": "Semiconductors/Diodes",
+   "pkg": "DO-35",
+   "desc": "Small-signal switching diode",
+   "marks": [
+    "1N4148",
+    "1N914"
+   ]
+  },
+  {
+   "id": "1n4007",
+   "mpn": "1N4007",
+   "mfr": "onsemi / Vishay",
+   "kind": "discrete",
+   "cat": "Semiconductors/Diodes",
+   "pkg": "DO-41",
+   "desc": "1 A 1000 V rectifier diode (1N4001–1N4007)",
+   "marks": [
+    "1N4007",
+    "1N4001",
+    "1N4004",
+    "1N4002"
+   ]
+  },
+  {
+   "id": "1n5819",
+   "mpn": "1N5819",
+   "mfr": "onsemi / Vishay",
+   "kind": "discrete",
+   "cat": "Semiconductors/Diodes",
+   "pkg": "DO-41",
+   "desc": "1 A 40 V Schottky diode",
+   "marks": [
+    "1N5819",
+    "1N5817",
+    "1N5822",
+    "SS34",
+    "SS14"
+   ]
+  },
+  {
+   "id": "pc817",
+   "mpn": "PC817",
+   "mfr": "Sharp",
+   "kind": "discrete",
+   "cat": "Optoelectronics/Optocouplers",
+   "pkg": "DIP-4",
+   "desc": "Phototransistor optocoupler (relay modules)",
+   "marks": [
+    "PC817",
+    "EL817",
+    "PC817C"
+   ]
+  },
+  {
+   "id": "srd-05vdc",
+   "mpn": "SRD-05VDC-SL-C",
+   "mfr": "Songle",
+   "kind": "discrete",
+   "cat": "Electromechanical/Relays",
+   "pkg": "PCB",
+   "desc": "5 V coil relay, 10 A contacts (the blue cube on relay modules)",
+   "marks": [
+    "SRD-05VDC-SL-C",
+    "SRD-05VDC",
+    "SRD-12VDC-SL-C",
+    "SRD-12VDC",
+    "SRD-03VDC"
+   ],
+   "mfrWords": [
+    "SONGLE"
+   ]
+  },
+  {
+   "id": "arduino-uno",
+   "mpn": "A000066",
+   "mfr": "Arduino",
+   "kind": "board",
+   "cat": "Boards/Microcontroller",
+   "pkg": "Board",
+   "name": "Arduino Uno R3",
+   "desc": "ATmega328P development board with USB-B, barrel jack and shield headers",
+   "marks": [
+    "ARDUINO UNO",
+    "UNO R3",
+    "UNO"
+   ],
+   "ds": "https://docs.arduino.cc/resources/datasheets/A000066-datasheet.pdf",
+   "look": "an Arduino Uno, a blue rectangular microcontroller board with a USB-B socket, a barrel power jack and a long chip"
+  },
+  {
+   "id": "arduino-nano",
+   "mpn": "A000005",
+   "mfr": "Arduino",
+   "kind": "board",
+   "cat": "Boards/Microcontroller",
+   "pkg": "Board",
+   "name": "Arduino Nano",
+   "desc": "Small ATmega328P board with mini-USB (clones use a CH340)",
+   "marks": [
+    "ARDUINO NANO",
+    "NANO V3",
+    "NANO V3.0",
+    "NANO"
+   ],
+   "ds": "https://docs.arduino.cc/resources/datasheets/A000005-datasheet.pdf",
+   "look": "an Arduino Nano, a small narrow blue board with a mini-USB socket and two rows of pins"
+  },
+  {
+   "id": "arduino-mega",
+   "mpn": "A000067",
+   "mfr": "Arduino",
+   "kind": "board",
+   "cat": "Boards/Microcontroller",
+   "pkg": "Board",
+   "name": "Arduino Mega 2560",
+   "desc": "ATmega2560 development board with 54 digital pins",
+   "marks": [
+    "MEGA 2560",
+    "MEGA2560",
+    "ARDUINO MEGA"
+   ],
+   "ds": "https://docs.arduino.cc/resources/datasheets/A000067-datasheet.pdf",
+   "look": "an Arduino Mega 2560, a long blue microcontroller board with many header pins"
+  },
+  {
+   "id": "arduino-pro-mini",
+   "mpn": "Pro Mini",
+   "mfr": "Arduino (SparkFun design)",
+   "kind": "board",
+   "cat": "Boards/Microcontroller",
+   "pkg": "Board",
+   "name": "Arduino Pro Mini",
+   "desc": "Tiny ATmega328P board without USB (needs a serial adapter)",
+   "marks": [
+    "PRO MINI",
+    "PROMINI"
+   ],
+   "look": "an Arduino Pro Mini, a tiny square microcontroller board with no USB socket"
+  },
+  {
+   "id": "pro-micro",
+   "mpn": "Pro Micro",
+   "mfr": "SparkFun (and clones)",
+   "kind": "board",
+   "cat": "Boards/Microcontroller",
+   "pkg": "Board",
+   "name": "Pro Micro (ATmega32U4)",
+   "desc": "Small ATmega32U4 board with native USB (keyboards)",
+   "marks": [
+    "PRO MICRO",
+    "PROMICRO"
+   ],
+   "look": "a Pro Micro, a small black or blue ATmega32U4 board with a micro-USB socket"
+  },
+  {
+   "id": "esp32-devkitc",
+   "mpn": "ESP32-DevKitC",
+   "mfr": "Espressif",
+   "kind": "board",
+   "cat": "Boards/Wireless",
+   "pkg": "Board",
+   "name": "ESP32-DevKitC",
+   "desc": "ESP32-WROOM development board with USB-serial and two rows of pins",
+   "marks": [
+    "ESP32-DEVKITC",
+    "DEVKITC"
+   ],
+   "ds": "https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html",
+   "look": "an ESP32 development board with a metal-shielded Wi-Fi module and a micro-USB socket"
+  },
+  {
+   "id": "esp32-devkit-v1",
+   "mpn": "ESP32 DevKit V1",
+   "mfr": "DOIT (and clones)",
+   "kind": "board",
+   "cat": "Boards/Wireless",
+   "pkg": "Board",
+   "name": "ESP32 DevKit V1 (30-pin)",
+   "desc": "Common ESP32-WROOM-32 board, 30 pins, CP2102 or CH340",
+   "marks": [
+    "ESP32 DEVKIT",
+    "DEVKIT V1",
+    "DOIT"
+   ],
+   "look": "a black ESP32 development board with a metal-shielded module, two buttons and a micro-USB socket"
+  },
+  {
+   "id": "esp32-cam",
+   "mpn": "ESP32-CAM",
+   "mfr": "Ai-Thinker",
+   "kind": "board",
+   "cat": "Boards/Wireless",
+   "pkg": "Board",
+   "name": "ESP32-CAM",
+   "desc": "ESP32 board with OV2640 camera and micro-SD slot",
+   "marks": [
+    "ESP32-CAM",
+    "ESP32CAM"
+   ],
+   "look": "an ESP32-CAM board with a small camera module on a ribbon cable"
+  },
+  {
+   "id": "nodemcu",
+   "mpn": "NodeMCU v3",
+   "mfr": "NodeMCU / LoLin (and clones)",
+   "kind": "board",
+   "cat": "Boards/Wireless",
+   "pkg": "Board",
+   "name": "NodeMCU (ESP8266)",
+   "desc": "ESP-12 Wi-Fi development board with USB-serial",
+   "marks": [
+    "NODEMCU",
+    "NODEMCU V3",
+    "NODEMCU V2",
+    "LOLIN"
+   ],
+   "look": "a NodeMCU ESP8266 development board with a metal-shielded module and a micro-USB socket"
+  },
+  {
+   "id": "wemos-d1-mini",
+   "mpn": "D1 mini",
+   "mfr": "WEMOS / LOLIN",
+   "kind": "board",
+   "cat": "Boards/Wireless",
+   "pkg": "Board",
+   "name": "Wemos D1 mini",
+   "desc": "Small square ESP8266 board",
+   "marks": [
+    "D1 MINI",
+    "D1MINI",
+    "WEMOS"
+   ],
+   "look": "a small square Wemos D1 mini ESP8266 board"
+  },
+  {
+   "id": "pico",
+   "mpn": "SC0915",
+   "mfr": "Raspberry Pi",
+   "kind": "board",
+   "cat": "Boards/Microcontroller",
+   "pkg": "Board",
+   "name": "Raspberry Pi Pico",
+   "desc": "RP2040 microcontroller board",
+   "marks": [
+    "RASPBERRY PI PICO",
+    "PICO"
+   ],
+   "ds": "https://datasheets.raspberrypi.com/pico/pico-datasheet.pdf",
+   "look": "a green Raspberry Pi Pico board with castellated edges and a micro-USB socket"
+  },
+  {
+   "id": "pico-w",
+   "mpn": "SC0918",
+   "mfr": "Raspberry Pi",
+   "kind": "board",
+   "cat": "Boards/Wireless",
+   "pkg": "Board",
+   "name": "Raspberry Pi Pico W",
+   "desc": "RP2040 board with Wi-Fi and Bluetooth",
+   "marks": [
+    "PICO W",
+    "PICOW",
+    "PICO WH"
+   ],
+   "ds": "https://datasheets.raspberrypi.com/picow/pico-w-datasheet.pdf"
+  },
+  {
+   "id": "pico-2",
+   "mpn": "SC1631",
+   "mfr": "Raspberry Pi",
+   "kind": "board",
+   "cat": "Boards/Microcontroller",
+   "pkg": "Board",
+   "name": "Raspberry Pi Pico 2",
+   "desc": "RP2350 microcontroller board",
+   "marks": [
+    "PICO 2",
+    "PICO2"
+   ],
+   "ds": "https://datasheets.raspberrypi.com/pico/pico-2-datasheet.pdf"
+  },
+  {
+   "id": "rpi-zero-2w",
+   "mpn": "SC0510",
+   "mfr": "Raspberry Pi",
+   "kind": "board",
+   "cat": "Boards/Computers",
+   "pkg": "Board",
+   "name": "Raspberry Pi Zero 2 W",
+   "desc": "Small quad-core single-board computer with Wi-Fi",
+   "marks": [
+    "RASPBERRY PI ZERO",
+    "ZERO 2 W",
+    "ZERO W",
+    "PI ZERO"
+   ],
+   "ds": "https://datasheets.raspberrypi.com/rpizero2/raspberry-pi-zero-2-w-product-brief.pdf",
+   "look": "a Raspberry Pi Zero, a small thin green computer board with mini-HDMI and micro-USB sockets"
+  },
+  {
+   "id": "rpi-4",
+   "mpn": "Raspberry Pi 4 Model B",
+   "mfr": "Raspberry Pi",
+   "kind": "board",
+   "cat": "Boards/Computers",
+   "pkg": "Board",
+   "name": "Raspberry Pi 4 Model B",
+   "desc": "Single-board computer, 2 × micro-HDMI, USB 3, gigabit Ethernet",
+   "marks": [
+    "RASPBERRY PI 4",
+    "PI 4 MODEL B"
+   ],
+   "ds": "https://datasheets.raspberrypi.com/rpi4/raspberry-pi-4-datasheet.pdf",
+   "look": "a Raspberry Pi 4 single-board computer with USB and Ethernet sockets"
+  },
+  {
+   "id": "rpi-5",
+   "mpn": "Raspberry Pi 5",
+   "mfr": "Raspberry Pi",
+   "kind": "board",
+   "cat": "Boards/Computers",
+   "pkg": "Board",
+   "name": "Raspberry Pi 5",
+   "desc": "Single-board computer with PCIe and RP1 I/O chip",
+   "marks": [
+    "RASPBERRY PI 5"
+   ],
+   "ds": "https://datasheets.raspberrypi.com/rpi5/raspberry-pi-5-product-brief.pdf"
+  },
+  {
+   "id": "blue-pill",
+   "mpn": "Blue Pill",
+   "mfr": "Generic",
+   "kind": "board",
+   "cat": "Boards/Microcontroller",
+   "pkg": "Board",
+   "name": "STM32 Blue Pill",
+   "desc": "STM32F103C8T6 board with micro-USB and two boot jumpers",
+   "marks": [
+    "BLUE PILL",
+    "BLUEPILL"
+   ],
+   "look": "a blue STM32 Blue Pill board with a square chip, two yellow jumpers and a micro-USB socket"
+  },
+  {
+   "id": "black-pill",
+   "mpn": "Black Pill",
+   "mfr": "WeAct Studio",
+   "kind": "board",
+   "cat": "Boards/Microcontroller",
+   "pkg": "Board",
+   "name": "STM32 Black Pill",
+   "desc": "STM32F401/F411 board with USB-C",
+   "marks": [
+    "BLACK PILL",
+    "BLACKPILL",
+    "WEACT"
+   ],
+   "look": "a black STM32 Black Pill board with a square chip and a USB-C socket"
+  },
+  {
+   "id": "teensy-40",
+   "mpn": "Teensy 4.0",
+   "mfr": "PJRC",
+   "kind": "board",
+   "cat": "Boards/Microcontroller",
+   "pkg": "Board",
+   "name": "Teensy 4.0",
+   "desc": "600 MHz Arm Cortex-M7 board (Teensy 4.1 is the larger one)",
+   "marks": [
+    "TEENSY 4.0",
+    "TEENSY4",
+    "TEENSY 4.1",
+    "TEENSY"
+   ],
+   "ds": "https://www.pjrc.com/store/teensy40.html",
+   "look": "a small green Teensy microcontroller board"
+  },
+  {
+   "id": "xiao",
+   "mpn": "Seeed XIAO",
+   "mfr": "Seeed Studio",
+   "kind": "board",
+   "cat": "Boards/Microcontroller",
+   "pkg": "Board",
+   "name": "Seeed Studio XIAO",
+   "desc": "Thumb-sized board (SAMD21, RP2040, ESP32-C3 or nRF52840 versions)",
+   "marks": [
+    "XIAO",
+    "SEEED"
+   ],
+   "ds": "https://wiki.seeedstudio.com/XIAO_ESP32C3_Getting_Started/",
+   "look": "a tiny thumb-sized microcontroller board with a USB-C socket and a metal shield"
+  },
+  {
+   "id": "hc-05",
+   "mpn": "HC-05",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Wireless",
+   "pkg": "Module",
+   "name": "HC-05 Bluetooth module",
+   "desc": "Bluetooth Classic serial module (HC-06 is slave-only)",
+   "marks": [
+    "HC-05",
+    "HC-06",
+    "ZS-040",
+    "HC05"
+   ],
+   "look": "an HC-05 Bluetooth serial module on a blue breakout board with six pins"
+  },
+  {
+   "id": "hc-sr04",
+   "mpn": "HC-SR04",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Sensors",
+   "pkg": "Module",
+   "name": "HC-SR04 ultrasonic sensor",
+   "desc": "Ultrasonic distance sensor, 2–400 cm",
+   "marks": [
+    "HC-SR04",
+    "HCSR04",
+    "RCWL-1601"
+   ],
+   "look": "an HC-SR04 ultrasonic distance sensor with two round silver transducers"
+  },
+  {
+   "id": "dht22",
+   "mpn": "DHT22 / AM2302",
+   "mfr": "Aosong",
+   "kind": "module",
+   "cat": "Modules/Sensors",
+   "pkg": "Module",
+   "name": "DHT22 temperature and humidity sensor",
+   "desc": "Digital temperature and humidity sensor (DHT11 is the blue, cheaper one)",
+   "marks": [
+    "DHT22",
+    "AM2302",
+    "DHT11",
+    "AM2320"
+   ],
+   "ds": "https://cdn-shop.adafruit.com/datasheets/DHT22.pdf",
+   "look": "a white DHT22 temperature and humidity sensor with a grille"
+  },
+  {
+   "id": "gy-521",
+   "mpn": "GY-521",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Sensors",
+   "pkg": "Module",
+   "name": "GY-521 MPU-6050 module",
+   "desc": "MPU-6050 accelerometer + gyro breakout",
+   "marks": [
+    "GY-521",
+    "GY521"
+   ],
+   "look": "a small blue GY-521 accelerometer breakout board with eight pins"
+  },
+  {
+   "id": "oled-096",
+   "mpn": "0.96\" OLED 128×64",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Displays",
+   "pkg": "Module",
+   "name": "0.96\" OLED display (SSD1306)",
+   "desc": "128×64 monochrome OLED, I²C or SPI",
+   "marks": [
+    "OLED",
+    "128X64"
+   ],
+   "look": "a small 0.96 inch OLED display module with four pins"
+  },
+  {
+   "id": "lcd-1602",
+   "mpn": "LCD1602",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Displays",
+   "pkg": "Module",
+   "name": "16×2 character LCD (HD44780)",
+   "desc": "16×2 character LCD, often with a PCF8574 I²C backpack",
+   "marks": [
+    "1602A",
+    "LCD1602",
+    "1602",
+    "HD44780"
+   ],
+   "look": "a 16x2 character LCD display with a green or blue backlight"
+  },
+  {
+   "id": "l298n-module",
+   "mpn": "L298N module",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Motor drivers",
+   "pkg": "Module",
+   "name": "L298N motor driver module",
+   "desc": "Dual H-bridge board with heatsink, 5 V regulator and screw terminals",
+   "marks": [],
+   "look": "a red L298N dual motor driver module with a large black heatsink and screw terminals"
+  },
+  {
+   "id": "stepper-driver-module",
+   "mpn": "StepStick",
+   "mfr": "Generic (Pololu format)",
+   "kind": "module",
+   "cat": "Modules/Motor drivers",
+   "pkg": "Module",
+   "name": "Stepper driver carrier (A4988 / DRV8825 / TMC)",
+   "desc": "Pololu-format stepper driver board",
+   "marks": [
+    "STEPSTICK"
+   ],
+   "look": "a small stepper motor driver board with a tiny heatsink and a trimmer"
+  },
+  {
+   "id": "uln2003-board",
+   "mpn": "ULN2003 stepper board",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Motor drivers",
+   "pkg": "Module",
+   "name": "ULN2003 stepper driver board (28BYJ-48)",
+   "desc": "ULN2003 board with four LEDs and a white motor connector",
+   "marks": [],
+   "look": "a ULN2003 stepper driver board with four red LEDs and a white connector"
+  },
+  {
+   "id": "relay-module",
+   "mpn": "Relay module",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Relays",
+   "pkg": "Module",
+   "name": "Relay module",
+   "desc": "1–8 channel 5 V relay board with optocouplers and screw terminals",
+   "marks": [],
+   "look": "a relay module with blue cube relays and green screw terminals"
+  },
+  {
+   "id": "tp4056-module",
+   "mpn": "TP4056 module",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Power",
+   "pkg": "Module",
+   "name": "TP4056 Li-ion charger module",
+   "desc": "Single-cell charger, often with DW01 protection",
+   "marks": [],
+   "look": "a small blue TP4056 lithium battery charger board with a USB socket and two LEDs"
+  },
+  {
+   "id": "lm2596-module",
+   "mpn": "LM2596 module",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Power",
+   "pkg": "Module",
+   "name": "LM2596 buck converter module",
+   "desc": "Adjustable step-down converter with trimmer",
+   "marks": [],
+   "look": "a blue LM2596 buck converter board with a blue trimmer potentiometer and a large inductor"
+  },
+  {
+   "id": "mt3608-module",
+   "mpn": "MT3608 module",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Power",
+   "pkg": "Module",
+   "name": "MT3608 boost converter module",
+   "desc": "Small adjustable step-up converter",
+   "marks": [],
+   "look": "a tiny blue MT3608 boost converter board with a trimmer potentiometer"
+  },
+  {
+   "id": "max7219-matrix",
+   "mpn": "MAX7219 dot matrix module",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Displays",
+   "pkg": "Module",
+   "name": "MAX7219 8×8 LED matrix module",
+   "desc": "8×8 red LED matrix with MAX7219 driver, chainable",
+   "marks": [],
+   "look": "a red 8x8 LED dot matrix display module"
+  },
+  {
+   "id": "pca9685-board",
+   "mpn": "PCA9685 servo board",
+   "mfr": "Generic (Adafruit design)",
+   "kind": "module",
+   "cat": "Modules/Motor drivers",
+   "pkg": "Module",
+   "name": "PCA9685 16-channel servo driver",
+   "desc": "16 servo outputs over I²C",
+   "marks": [],
+   "look": "a blue 16-channel servo driver board with rows of three-pin headers"
+  },
+  {
+   "id": "hx711-module",
+   "mpn": "HX711 module",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Sensors",
+   "pkg": "Module",
+   "name": "HX711 load cell amplifier",
+   "desc": "HX711 breakout for load cells",
+   "marks": [],
+   "look": "a small green HX711 load cell amplifier board"
+  },
+  {
+   "id": "rc522-module",
+   "mpn": "RFID-RC522",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Wireless",
+   "pkg": "Module",
+   "name": "RC522 RFID reader",
+   "desc": "MFRC522 13.56 MHz reader board with printed antenna",
+   "marks": [
+    "RFID-RC522",
+    "RC522"
+   ],
+   "look": "a blue RC522 RFID reader board with a printed coil antenna"
+  },
+  {
+   "id": "nrf24-module",
+   "mpn": "nRF24L01 module",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Wireless",
+   "pkg": "Module",
+   "name": "nRF24L01 radio module",
+   "desc": "2.4 GHz radio with 8-pin header (PA+LNA version has an antenna)",
+   "marks": [],
+   "look": "a small nRF24L01 radio module with a zig-zag PCB antenna and eight pins"
+  },
+  {
+   "id": "lora-ra02",
+   "mpn": "Ra-02",
+   "mfr": "Ai-Thinker",
+   "kind": "module",
+   "cat": "Modules/Wireless",
+   "pkg": "Module",
+   "name": "Ra-02 LoRa module (SX1278)",
+   "desc": "433 MHz LoRa module with IPEX antenna socket",
+   "marks": [
+    "RA-02",
+    "RA-01",
+    "RA-01H"
+   ],
+   "mfrWords": [
+    "AI-THINKER"
+   ]
+  },
+  {
+   "id": "sim800l",
+   "mpn": "SIM800L",
+   "mfr": "SIMCom",
+   "kind": "module",
+   "cat": "Modules/Wireless",
+   "pkg": "Module",
+   "name": "SIM800L GSM module",
+   "desc": "Quad-band 2G GSM/GPRS module",
+   "marks": [
+    "SIM800L",
+    "SIM800",
+    "SIM900"
+   ],
+   "look": "a small red SIM800L GSM module with a SIM card holder"
+  },
+  {
+   "id": "neo-6m",
+   "mpn": "NEO-6M",
+   "mfr": "u-blox",
+   "kind": "module",
+   "cat": "Modules/Wireless",
+   "pkg": "Module",
+   "name": "NEO-6M GPS module",
+   "desc": "GPS receiver (GY-NEO6MV2 board with ceramic patch antenna)",
+   "marks": [
+    "NEO-6M",
+    "NEO-6M-0-001",
+    "GY-NEO6MV2",
+    "NEO-M8N",
+    "NEO-7M"
+   ],
+   "ds": "https://content.u-blox.com/sites/default/files/products/documents/NEO-6_DataSheet_(GPS.G6-HW-09005).pdf",
+   "mfrWords": [
+    "U-BLOX",
+    "UBLOX"
+   ],
+   "look": "a GPS module with a square tan ceramic patch antenna"
+  },
+  {
+   "id": "microsd-module",
+   "mpn": "Micro SD module",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Storage",
+   "pkg": "Module",
+   "name": "Micro-SD card module",
+   "desc": "SPI micro-SD card socket with level shifter",
+   "marks": [],
+   "look": "a micro SD card reader module with a metal card socket"
+  },
+  {
+   "id": "level-shifter",
+   "mpn": "Logic level converter",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Interface",
+   "pkg": "Module",
+   "name": "4-channel logic level converter",
+   "desc": "BSS138-based bidirectional 3.3 V ↔ 5 V shifter",
+   "marks": [],
+   "look": "a tiny four-channel logic level converter board with two rows of six pins"
+  },
+  {
+   "id": "usb-ttl",
+   "mpn": "USB-TTL adapter",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Interface",
+   "pkg": "Module",
+   "name": "USB to TTL serial adapter",
+   "desc": "USB-A stick with CP2102, CH340 or FT232 and a pin header",
+   "marks": [],
+   "look": "a USB to TTL serial adapter stick with a USB-A plug and a row of pins"
+  },
+  {
+   "id": "st-link-v2",
+   "mpn": "ST-LINK/V2 (clone)",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Tools/Programmers",
+   "pkg": "Module",
+   "name": "ST-Link V2 programmer (clone)",
+   "desc": "USB stick SWD programmer for STM32",
+   "marks": [
+    "ST-LINK",
+    "STLINK",
+    "ST-LINK V2"
+   ],
+   "look": "an ST-Link V2 programmer, a small metal USB stick with a ten-pin header"
+  },
+  {
+   "id": "mb102",
+   "mpn": "MB102 power module",
+   "mfr": "Generic",
+   "kind": "module",
+   "cat": "Modules/Power",
+   "pkg": "Module",
+   "name": "MB102 breadboard power supply",
+   "desc": "3.3 V / 5 V breadboard power supply with barrel jack and USB",
+   "marks": [
+    "MB102",
+    "MB-102"
+   ],
+   "look": "a breadboard power supply module with a barrel jack, a USB socket and yellow jumpers"
+  }
+ ],
+ "generic": [
+  {
+   "id": "g-ic",
+   "name": "An integrated circuit (chip)",
+   "cat": "ICs",
+   "look": "an integrated circuit chip"
+  },
+  {
+   "id": "g-pcb",
+   "name": "A circuit board",
+   "cat": "Boards",
+   "look": "a circuit board module"
+  },
+  {
+   "id": "g-devboard",
+   "name": "A microcontroller board",
+   "cat": "Boards",
+   "look": "a microcontroller development board"
+  },
+  {
+   "id": "g-resistor",
+   "name": "A resistor",
+   "cat": "Passives/Resistors",
+   "look": "a resistor"
+  },
+  {
+   "id": "g-ceramic",
+   "name": "A ceramic capacitor",
+   "cat": "Passives/Capacitors/Ceramic",
+   "look": "a ceramic disc capacitor"
+  },
+  {
+   "id": "g-electrolytic",
+   "name": "An electrolytic capacitor",
+   "cat": "Passives/Capacitors/Electrolytic",
+   "look": "an electrolytic capacitor"
+  },
+  {
+   "id": "g-to92",
+   "name": "A transistor or regulator (TO-92)",
+   "cat": "Semiconductors/Transistors",
+   "look": "a small three-legged transistor"
+  },
+  {
+   "id": "g-to220",
+   "name": "A power device (TO-220)",
+   "cat": "Semiconductors",
+   "look": "a power transistor with a metal tab"
+  },
+  {
+   "id": "g-led",
+   "name": "An LED",
+   "cat": "Optoelectronics/LEDs",
+   "look": "an LED"
+  },
+  {
+   "id": "g-crystal",
+   "name": "A crystal",
+   "cat": "Passives/Crystals",
+   "look": "a crystal oscillator"
+  },
+  {
+   "id": "g-connector",
+   "name": "A connector",
+   "cat": "Electromechanical/Connectors",
+   "look": "a pin header connector"
+  },
+  {
+   "id": "g-display",
+   "name": "A display",
+   "cat": "Modules/Displays",
+   "look": "a display screen"
+  },
+  {
+   "id": "g-sensor",
+   "name": "A sensor module",
+   "cat": "Modules/Sensors",
+   "look": "a sensor breakout board"
+  },
+  {
+   "id": "g-pot",
+   "name": "A potentiometer",
+   "cat": "Passives/Potentiometers",
+   "look": "a potentiometer"
+  },
+  {
+   "id": "g-trimpot",
+   "name": "A trimmer potentiometer",
+   "cat": "Passives/Potentiometers",
+   "look": "a trimmer potentiometer"
+  },
+  {
+   "id": "g-button",
+   "name": "A push button",
+   "cat": "Electromechanical/Switches",
+   "look": "a tactile push button switch"
+  },
+  {
+   "id": "g-switch",
+   "name": "A toggle or slide switch",
+   "cat": "Electromechanical/Switches",
+   "look": "a toggle switch"
+  },
+  {
+   "id": "g-keypad",
+   "name": "A keypad",
+   "cat": "Electromechanical/Switches",
+   "look": "a keypad"
+  },
+  {
+   "id": "g-relay",
+   "name": "A relay",
+   "cat": "Electromechanical/Relays",
+   "look": "a relay"
+  },
+  {
+   "id": "g-inductor",
+   "name": "An inductor",
+   "cat": "Passives/Inductors",
+   "look": "an inductor coil"
+  },
+  {
+   "id": "g-diode",
+   "name": "A diode",
+   "cat": "Semiconductors/Diodes",
+   "look": "a diode"
+  },
+  {
+   "id": "g-buzzer",
+   "name": "A buzzer",
+   "cat": "Electromechanical/Audio",
+   "look": "a buzzer"
+  },
+  {
+   "id": "g-speaker",
+   "name": "A speaker",
+   "cat": "Electromechanical/Audio",
+   "look": "a speaker"
+  },
+  {
+   "id": "g-motor",
+   "name": "A DC motor",
+   "cat": "Electromechanical/Motors",
+   "look": "a DC motor"
+  },
+  {
+   "id": "g-gearmotor",
+   "name": "A geared motor",
+   "cat": "Electromechanical/Motors",
+   "look": "a gear motor"
+  },
+  {
+   "id": "g-stepper",
+   "name": "A stepper motor",
+   "cat": "Electromechanical/Motors",
+   "look": "a stepper motor"
+  },
+  {
+   "id": "g-servo",
+   "name": "A hobby servo",
+   "cat": "Electromechanical/Motors",
+   "look": "a servo motor"
+  },
+  {
+   "id": "g-fan",
+   "name": "A fan",
+   "cat": "Hardware/Thermal",
+   "look": "a cooling fan"
+  },
+  {
+   "id": "g-heatsink",
+   "name": "A heatsink",
+   "cat": "Hardware/Thermal",
+   "look": "a heatsink"
+  },
+  {
+   "id": "g-fuse",
+   "name": "A fuse",
+   "cat": "Circuit protection/Fuses",
+   "look": "a fuse"
+  },
+  {
+   "id": "g-transformer",
+   "name": "A transformer",
+   "cat": "Passives/Transformers",
+   "look": "a transformer"
+  },
+  {
+   "id": "g-battery",
+   "name": "A battery",
+   "cat": "Power/Batteries",
+   "look": "a battery"
+  },
+  {
+   "id": "g-battery-holder",
+   "name": "A battery holder",
+   "cat": "Power/Batteries",
+   "look": "a battery holder"
+  },
+  {
+   "id": "g-usb",
+   "name": "A USB socket",
+   "cat": "Electromechanical/Connectors",
+   "look": "a USB connector"
+  },
+  {
+   "id": "g-terminal",
+   "name": "A screw terminal block",
+   "cat": "Electromechanical/Connectors",
+   "look": "a screw terminal block"
+  },
+  {
+   "id": "g-ic-socket",
+   "name": "An IC socket",
+   "cat": "Electromechanical/Connectors",
+   "look": "an IC socket"
+  },
+  {
+   "id": "g-jumpers",
+   "name": "Jumper wires",
+   "cat": "Hardware/Wire",
+   "look": "jumper wires"
+  },
+  {
+   "id": "g-breadboard",
+   "name": "A breadboard",
+   "cat": "Hardware/Prototyping",
+   "look": "a breadboard"
+  },
+  {
+   "id": "g-7seg",
+   "name": "A 7-segment display",
+   "cat": "Optoelectronics/Displays",
+   "look": "a seven-segment display"
+  },
+  {
+   "id": "g-ldr",
+   "name": "A photoresistor",
+   "cat": "Optoelectronics/Sensors",
+   "look": "a photoresistor"
+  },
+  {
+   "id": "g-camera",
+   "name": "A camera module",
+   "cat": "Modules/Cameras",
+   "look": "a camera module"
+  },
+  {
+   "id": "g-joystick",
+   "name": "A joystick module",
+   "cat": "Modules/Input",
+   "look": "a joystick module"
+  },
+  {
+   "id": "g-antenna",
+   "name": "An antenna",
+   "cat": "RF/Antennas",
+   "look": "an antenna"
+  },
+  {
+   "id": "g-smd-reel",
+   "name": "A reel or cut tape of SMD parts",
+   "cat": "Passives",
+   "look": "a strip of SMD components on tape"
+  }
+ ],
+ "boardish": [
+  "g-pcb",
+  "g-devboard",
+  "g-sensor",
+  "g-display",
+  "g-camera"
+ ]
+}
