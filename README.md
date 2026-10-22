@@ -37,7 +37,7 @@ with SwiftData and synced through your private iCloud database.
   *Keep the iPhone camera open* the phone's camera opens again after each photo — the live camera, or a
   pile of photos or files). Each is read, identified and looked up at Digi-Key and Mouser while you carry
   on; Return (*Add & next*) adds it with both suppliers' numbers, prices and stock, the datasheet, package,
-  parameters and the photo (or adds to the stock of a part you already have), ⌘⌫ skips, ↑/↓ move. When the
+  parameters and the photo (or adds to the stock of a part you already have), ⌘⌫ skips, ⌘↑/⌘↓ move. When the
   queue is done, the photo source opens again. *Add sure matches without asking* adds a photo straight away
   when the number read on the part matches exactly one listing. In Identify, *Add and take another* (⌘Return)
   does the same for one part at a time. (`partlookup --read "<markings>" <number>` shows the batch decision.)

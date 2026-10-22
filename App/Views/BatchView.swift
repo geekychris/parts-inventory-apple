@@ -327,9 +327,9 @@ struct BatchReviewCard: View {
                 Stepper("Quantity: \(item.qty)", value: $item.qty, in: 0...1_000_000)
                 Spacer()
                 Button { model.move(-1) } label: { Image(systemName: "chevron.up") }
-                    .keyboardShortcut(.upArrow, modifiers: []).help("Previous (↑)")
+                    .keyboardShortcut(.upArrow, modifiers: .command).help("Previous (⌘↑)")
                 Button { model.move(1) } label: { Image(systemName: "chevron.down") }
-                    .keyboardShortcut(.downArrow, modifiers: []).help("Next (↓)")
+                    .keyboardShortcut(.downArrow, modifiers: .command).help("Next (⌘↓)")
                 if item.status == .added {
                     Button("Show part") { if let id = item.partID { app.partToShow = id; app.tab = .parts } }
                 } else {
