@@ -8,9 +8,11 @@ struct ProjectsView: View {
     @Query(sort: \Project.name) private var projects: [Project]
     @Query private var parts: [Part]
     @State private var selection: Project.ID?
+    /// Always open with the list showing: a restored split can come back with it collapsed to nothing.
+    @State private var columns = NavigationSplitViewVisibility.all
 
     var body: some View {
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility: $columns) {
             List(projects, selection: $selection) { pr in
                 VStack(alignment: .leading) {
                     Text(pr.name).font(.headline)
@@ -19,6 +21,7 @@ struct ProjectsView: View {
                 .tag(pr.id)
             }
             .navigationTitle("Projects")
+            .navigationSplitViewColumnWidth(min: 260, ideal: 320)
             .overlay {
                 if projects.isEmpty {
                     ContentUnavailableView("No projects", systemImage: "list.bullet.clipboard",

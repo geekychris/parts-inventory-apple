@@ -7,6 +7,7 @@ import SwiftData
 ///   -demo             add a few sample parts and locations when the inventory is empty
 ///   -tab <name>       open a tab (parts, scan, identify, locations, projects, ask, settings)
 ///   -identify <path>  identify the photo at a path
+///   -batch <dir>      open Batch and queue every photo in a folder
 ///   -supplierKeysFromEnv  save DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET and MOUSER_API_KEY from the environment
 ///                     as the supplier keys (so they needn't be typed into Settings)
 @MainActor
@@ -20,6 +21,12 @@ enum DebugLaunch {
             let env = ProcessInfo.processInfo.environment, keys = SupplierKeys.shared
             keys.save(digikeyID: env["DIGIKEY_CLIENT_ID"] ?? keys.digikeyID, digikeySecret: env["DIGIKEY_CLIENT_SECRET"] ?? keys.digikeySecret,
                       mouserKey: env["MOUSER_API_KEY"] ?? keys.mouserKey)
+        }
+        if let dir = value("-batch") {
+            let urls = (try? FileManager.default.contentsOfDirectory(at: URL(fileURLWithPath: dir), includingPropertiesForKeys: nil)) ?? []
+            app.tab = .batch
+            app.photosForBatch = urls.filter { ["jpg", "jpeg", "png", "heic"].contains($0.pathExtension.lowercased()) }
+                .sorted { $0.lastPathComponent < $1.lastPathComponent }.compactMap { try? Data(contentsOf: $0) }
         }
         if let p = value("-identify"), let d = try? Data(contentsOf: URL(fileURLWithPath: p)) { app.tab = .identify; app.photoForIdentify = d }
     }

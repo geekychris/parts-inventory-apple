@@ -14,10 +14,17 @@ typealias PlatformImage = NSImage
 /// App-wide state: the selected tab, and a photo handed from one screen to another.
 @Observable
 final class AppModel {
-    enum Tab: String, Hashable { case parts, scan, identify, locations, projects, ask, settings }
+    enum Tab: String, Hashable { case parts, scan, identify, batch, locations, projects, ask, settings }
     var tab: Tab = .parts
     /// A photo for Identify to read (from Scan's "Identify what's in view").
     var photoForIdentify: Data?
+    /// Photos for Batch to queue (from File › Import From Device while Batch is open).
+    var photosForBatch: [Data] = []
+    /// The batch queue (kept here so it survives switching tabs).
+    let batch = BatchModel()
+    /// Called with each part added from a photo (Identify, Batch) — a hook for things like printing its label.
+    @ObservationIgnored var partAddedHandlers: [(Part) -> Void] = []
+    func didAdd(_ part: Part) { partAddedHandlers.forEach { $0(part) } }
     /// A part to show in Parts.
     var partToShow: String?
 }

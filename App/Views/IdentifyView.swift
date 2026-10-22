@@ -18,6 +18,14 @@ struct IdentifyView: View {
     @State private var listing: SupplierProduct?
     @State private var addAfterLookup: Candidate?
     @State private var receiving: BagLabel?
+    @State private var choosingPhoto = false
+    /// Where the last photo came from, so "Add and take another" can open it again.
+    @State private var lastSource = BatchSource.camera
+    /// Set by "Add and take another": open the photo source once the sheet has closed.
+    @State private var takeAnother = false
+    #if os(macOS)
+    @State private var iPhone = DeviceImportHandle()
+    #endif
     @AppStorage("lookWhen") private var lookWhen = IdentifyModel.LookWhen.auto
     @AppStorage("useAppleIntelligence") private var useAI = true
 
@@ -87,9 +95,14 @@ struct IdentifyView: View {
                 start(d)
             }
             .onChange(of: model.mode) { model.rerank(inventory: inventory) }
-            .sheet(item: $adding, onDismiss: { listing = nil }) { c in
-                AddPartSheet(candidate: c, ocrText: model.markings, photo: model.photo, listing: listing) { uid in app.partToShow = uid; app.tab = .parts }
+            .sheet(item: $adding, onDismiss: {
+                listing = nil
+                if takeAnother { takeAnother = false; reopenSource() }
+            }) { c in
+                AddPartSheet(candidate: c, ocrText: model.markings, photo: model.photo, listing: listing,
+                             another: { takeAnother = true }) { uid in app.partToShow = uid; app.tab = .parts }
             }
+            .photosPicker(isPresented: $choosingPhoto, selection: $photoItem, matching: .images)
             .sheet(item: $lookingUp, onDismiss: { if let c = addAfterLookup { addAfterLookup = nil; adding = c } }) { c in
                 SupplierLookupView(query: CandidateCard.searchable(c) ?? "", applyTitle: "Add to inventory…") { p in listing = p; addAfterLookup = c }
             }
@@ -100,12 +113,12 @@ struct IdentifyView: View {
 
     var sources: some View {
         HStack {
-            Button { showCamera = true } label: { Label("Take a photo", systemImage: "camera") }.buttonStyle(.borderedProminent)
-            PhotosPicker(selection: $photoItem, matching: .images) { Label("Choose a photo", systemImage: "photo") }.buttonStyle(.bordered)
-            Button { importing = true } label: { Label("From a file", systemImage: "folder") }.buttonStyle(.bordered)
+            Button { lastSource = .camera; showCamera = true } label: { Label("Take a photo", systemImage: "camera") }.buttonStyle(.borderedProminent)
+            Button { lastSource = .photos; choosingPhoto = true } label: { Label("Choose a photo", systemImage: "photo") }.buttonStyle(.bordered)
+            Button { lastSource = .files; importing = true } label: { Label("From a file", systemImage: "folder") }.buttonStyle(.bordered)
             #if os(macOS)
-            DeviceImportButton { start($0) }
-            PasteButton(payloadType: Data.self) { items in if let d = items.first { start(d) } }
+            DeviceImportButton(handle: iPhone) { lastSource = .iPhone; start($0) }
+            PasteButton(payloadType: Data.self) { items in if let d = items.first { lastSource = .paste; start(d) } }
             #endif
             if model.image != nil {
                 Button { Task { await model.identify(inventory: inventory, lookWhen: .always, useAI: useAI) } } label: { Label("Again", systemImage: "arrow.clockwise") }
@@ -120,6 +133,23 @@ struct IdentifyView: View {
     #else
     static let iPhoneHint = ""
     #endif
+
+    /// Open the photo source used last, for the next part.
+    func reopenSource() {
+        Task {
+            try? await Task.sleep(for: .milliseconds(350))  // let the sheet finish closing
+            switch lastSource {
+            case .camera: showCamera = true
+            case .photos: choosingPhoto = true
+            case .files: importing = true
+            case .iPhone:
+                #if os(macOS)
+                if !DeviceImportView.takePhoto() { iPhone.showMenu() }
+                #endif
+            case .paste: break
+            }
+        }
+    }
 
     func start(_ data: Data) {
         model.set(data)
@@ -255,7 +285,10 @@ struct AddPartSheet: View {
     let photo: Data?
     /// A supplier listing chosen in a lookup, filling in what the candidate doesn't say.
     var listing: SupplierProduct? = nil
+    /// "Add and take another": called after adding, instead of `done`.
+    var another: (() -> Void)? = nil
     var done: (String) -> Void
+    @Environment(AppModel.self) private var app
     @Environment(\.modelContext) private var ctx
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \StorageLocation.name) private var locations: [StorageLocation]
@@ -291,11 +324,14 @@ struct AddPartSheet: View {
             .navigationTitle("Add to inventory")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Add") {
-                        let p = Inventory.add(draft, photo: keepPhoto ? photo.flatMap { Images.jpeg($0, maxSide: 1600) } : nil, location: location, in: ctx)
-                        dismiss(); done(p.uid)
+                if let another {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button("Add and take another") { save(); dismiss(); another() }
+                            .keyboardShortcut(.return, modifiers: .command)
                     }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Add") { let p = save(); dismiss(); done(p.uid) }
                 }
             }
         }
@@ -305,5 +341,12 @@ struct AddPartSheet: View {
             if let listing { draft.fill(from: listing) }
         }
         .sheet(isPresented: $lookingUp) { SupplierLookupView(query: draft.mpn) { draft.fill(from: $0) } }
+    }
+
+    @discardableResult
+    func save() -> Part {
+        let p = Inventory.add(draft, photo: keepPhoto ? photo.flatMap { Images.jpeg($0, maxSide: 1600) } : nil, location: location, in: ctx)
+        app.didAdd(p)
+        return p
     }
 }
