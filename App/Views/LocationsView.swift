@@ -8,7 +8,6 @@ struct LocationsView: View {
     @Query(sort: \StorageLocation.name) private var all: [StorageLocation]
     @State private var selection: StorageLocation.ID?
     /// Always open with the list showing: a restored split can come back with it collapsed to nothing.
-    @State private var columns = NavigationSplitViewVisibility.all
     @State private var newPath = ""
     @State private var renaming: StorageLocation?
     @State private var newName = ""
@@ -16,7 +15,7 @@ struct LocationsView: View {
     var roots: [StorageLocation] { all.filter { $0.parent == nil }.sorted { ($0.order, $0.name) < ($1.order, $1.name) } }
 
     var body: some View {
-        NavigationSplitView(columnVisibility: $columns) {
+        MasterDetail {
             List(selection: $selection) {
                 Section {
                     HStack {
@@ -39,7 +38,6 @@ struct LocationsView: View {
                 }
             }
             .navigationTitle("Locations")
-            .navigationSplitViewColumnWidth(min: 260, ideal: 320)
             .overlay { if all.isEmpty { ContentUnavailableView("No locations yet", systemImage: "archivebox", description: Text("Add “Cabinet A / Drawer 3” to make both at once.")) } }
         } detail: {
             if let id = selection, let l = all.first(where: { $0.id == id }) {

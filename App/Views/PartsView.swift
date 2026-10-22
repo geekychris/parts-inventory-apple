@@ -10,7 +10,6 @@ struct PartsView: View {
     @State private var search = ""
     @State private var selection: Part.ID?
     /// Always open with the list showing: a restored split can come back with it collapsed to nothing.
-    @State private var columns = NavigationSplitViewVisibility.all
     @State private var category = ""
     @AppStorage("defaultLowStock") private var defaultLow = 0
     @State private var printingShown = false
@@ -26,7 +25,7 @@ struct PartsView: View {
     }
 
     var body: some View {
-        NavigationSplitView(columnVisibility: $columns) {
+        MasterDetail {
             List(selection: $selection) {
                 if parts.isEmpty {
                     ContentUnavailableView {
@@ -64,7 +63,6 @@ struct PartsView: View {
                         .keyboardShortcut("n")
                 }
             }
-            .navigationSplitViewColumnWidth(min: 280, ideal: 340)
         } detail: {
             if let id = selection, let p = parts.first(where: { $0.id == id }) {
                 PartDetailView(part: p).id(p.id)

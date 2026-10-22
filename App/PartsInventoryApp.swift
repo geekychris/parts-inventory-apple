@@ -16,7 +16,9 @@ struct PartsInventoryApp: App {
         let schema = Schema(Schema1.models)
         defer { APIService.shared.attach(container) }
         // Under XCTest the app is only the tests' host: keep its data in memory, away from the real inventory.
-        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+        // `-memoryStore` does the same for a run (with `-demo`, for screenshots).
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+            || ProcessInfo.processInfo.arguments.contains("-memoryStore") {
             container = try! ModelContainer(for: schema, configurations: ModelConfiguration(schema: schema, isStoredInMemoryOnly: true))
             return
         }

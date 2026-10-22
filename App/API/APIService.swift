@@ -32,6 +32,8 @@ final class APIService {
         let args = ProcessInfo.processInfo.arguments
         if let i = args.firstIndex(of: "-apiToken"), i + 1 < args.count { token = args[i + 1] }
         if args.contains("-apiServer") { enabled = true }
+        // A run on a throwaway store (screenshots, demos) doesn't serve it on the real port with the real token.
+        else if args.contains("-memoryStore") { enabled = false }
         if let i = args.firstIndex(of: "-apiPort"), i + 1 < args.count, let p = Int(args[i + 1]) { port = p }
         #endif
     }
@@ -42,11 +44,18 @@ final class APIService {
         if enabled { start() }
     }
 
-    /// The token, made (and kept in the Keychain) the first time it's needed.
-    func ensureToken() -> String {
-        if token.isEmpty { token = KeychainStore.get("api.token") }
-        if token.isEmpty { regenerateToken() }
-        return token
+    /// The token, made (and kept in the Keychain) the first time it's needed. Nil when the Keychain wouldn't
+    /// give it up (access denied, say, after a rebuild): a new one would break every tool set up with the old one.
+    @discardableResult
+    func ensureToken() -> String? {
+        if token.isEmpty {
+            switch KeychainStore.read("api.token") {
+            case .value(let t): token = t
+            case .missing: regenerateToken()
+            case .failed: return nil
+            }
+        }
+        return token.isEmpty ? nil : token
     }
 
     func regenerateToken() {
@@ -58,7 +67,10 @@ final class APIService {
     func start() {
         guard let api else { return }
         server?.stop()
-        let tokenNow = ensureToken()
+        guard let tokenNow = ensureToken() else {
+            state = .failed("the token couldn’t be read from the Keychain")
+            return
+        }
         let mcp = MCPEndpoint(name: "parts-inventory", version: Self.appVersion, instructions: Self.instructions, provider: InventoryTools(api: api))
         currentToken.value = tokenNow
         let box = currentToken

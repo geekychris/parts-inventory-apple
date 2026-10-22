@@ -17,14 +17,26 @@ nonisolated enum KeychainStore {
         return q
     }
 
-    static func get(_ account: String) -> String {
+    enum Read { case value(String), missing, failed(OSStatus) }
+
+    /// The item, or whether it's missing or couldn't be read (access denied, keychain locked) — which matters
+    /// before replacing it.
+    static func read(_ account: String) -> Read {
+        var failure: OSStatus?
         for synced in [true, false] {
             var q = base(account, synced: synced)
             q[kSecReturnData] = true
             q[kSecMatchLimit] = kSecMatchLimitOne
             var out: CFTypeRef?
-            if SecItemCopyMatching(q as CFDictionary, &out) == errSecSuccess, let d = out as? Data { return String(decoding: d, as: UTF8.self) }
+            let status = SecItemCopyMatching(q as CFDictionary, &out)
+            if status == errSecSuccess, let d = out as? Data { return .value(String(decoding: d, as: UTF8.self)) }
+            if status != errSecItemNotFound, status != errSecMissingEntitlement { failure = failure ?? status }
         }
+        return failure.map { .failed($0) } ?? .missing
+    }
+
+    static func get(_ account: String) -> String {
+        if case .value(let v) = read(account) { return v }
         return ""
     }
 
