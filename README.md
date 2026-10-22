@@ -72,3 +72,14 @@ Debug builds accept `-demo` (sample parts), `-tab identify` and `-identify <path
   Models (`Intelligence/`) and the screens (`Views/`).
 - `tools/` — `make-clip-embeddings.py` (text embeddings for the look labels, and the image encoder)
   and `export-catalog.sh`.
+
+## Licences
+
+The look model is Apple's **MobileCLIP-S2** image encoder, from the Core ML conversions at
+[apple/coreml-mobileclip](https://huggingface.co/apple/coreml-mobileclip) (revision 3e0a7bf,
+2024-11-19), with text embeddings computed from its matching text encoder. That repository states the
+Apple Sample Code License, which allows redistribution in binary form. Apple's MobileCLIP GitHub
+repository has since moved its weights to the Apple Machine Learning Research Model License, which
+allows non-commercial research only. Personal use is fine either way; before selling the app or putting
+it on the App Store, check the terms or switch to a model with a clear commercial licence. The model
+isn't stored in this repository.
