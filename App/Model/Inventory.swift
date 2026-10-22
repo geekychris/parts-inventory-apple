@@ -187,6 +187,16 @@ enum Inventory {
         return r
     }
 
+    /// A part as the web tool's backup file has it.
+    static func backupPart(_ p: Part) -> Backup.Part {
+        var x = Backup.Part(id: p.uid)
+        x.mpn = p.mpn; x.manufacturer = p.manufacturer; x.description = p.partDescription; x.category = p.category; x.package = p.package
+        x.params = p.params; x.qty = Double(p.qty); x.locationId = p.location?.uid; x.suppliers = p.suppliers; x.prices = p.prices
+        x.datasheet = p.datasheet; x.image = p.imageURL; x.notes = p.notes; x.photoIds = p.sortedPhotos.map(\.uid)
+        x.lowStock = p.lowStock.map(Double.init); x.tags = p.tags; x.created = p.created.jsTime; x.updated = p.updated.jsTime
+        return x
+    }
+
     /// The whole inventory as the web tool's backup file.
     static func backup(in ctx: ModelContext, photos includePhotos: Bool) -> Backup {
         var b = Backup()
@@ -195,14 +205,7 @@ enum Inventory {
         b.settings = ["currency": .string(UserDefaults.standard.string(forKey: "currency") ?? "USD"),
                       "defaultLowStock": .number(Double(UserDefaults.standard.integer(forKey: "defaultLowStock")))]
         let parts = allParts(ctx)
-        b.parts = parts.map { p in
-            var x = Backup.Part(id: p.uid)
-            x.mpn = p.mpn; x.manufacturer = p.manufacturer; x.description = p.partDescription; x.category = p.category; x.package = p.package
-            x.params = p.params; x.qty = Double(p.qty); x.locationId = p.location?.uid; x.suppliers = p.suppliers; x.prices = p.prices
-            x.datasheet = p.datasheet; x.image = p.imageURL; x.notes = p.notes; x.photoIds = p.sortedPhotos.map(\.uid)
-            x.lowStock = p.lowStock.map(Double.init); x.tags = p.tags; x.created = p.created.jsTime; x.updated = p.updated.jsTime
-            return x
-        }
+        b.parts = parts.map(backupPart)
         b.locations = ((try? ctx.fetch(FetchDescriptor<StorageLocation>())) ?? []).map { l in
             var x = Backup.Location(id: l.uid, parentId: l.parent?.uid, name: l.name)
             x.notes = l.notes; x.order = l.order; x.created = l.created.jsTime; x.updated = l.updated.jsTime

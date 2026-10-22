@@ -50,6 +50,59 @@ with SwiftData and synced through your private iCloud database.
 - **Projects** — BOMs imported in the web tool, shown against stock (how many boards you can build).
 - **Backups** — import and export the web tool's JSON backup (`gw-parts-inventory` v1), so you can
   move between the two. Import merges by id; the newer copy of each item wins.
+- **API and MCP** — other programs can use the inventory while the app runs: a REST API and an MCP
+  server for Claude Code and other assistants (below).
+
+## API and MCP
+
+Settings › **API & MCP** › *Enable API and MCP server* (off until you turn it on). The app then serves
+`http://127.0.0.1:8765` — this Mac only, unless *Allow other devices on my network* is on. Every request
+needs the token shown there (made once, kept in the Keychain, *Make a new token* to replace it):
+`Authorization: Bearer <token>`. Requests from web pages on other sites are refused (Origin check).
+On iPhone and iPad it answers only while the app is open.
+
+**Claude Code** — copy the command from Settings, or:
+
+```sh
+claude mcp add --transport http parts-inventory http://127.0.0.1:8765/mcp \
+  --header "Authorization: Bearer <token>"
+```
+
+Tools: `search_parts` (the same search as the app: "10k 0603 1%", "cat:caps", "loc:drawer 2", "low"),
+`get_part`, `add_part` (with `lookup` to fill in from Digi-Key and Mouser), `update_part`, `adjust_stock`,
+`set_stock`, `delete_part` (needs `confirm`), `list_locations`, `add_location`, `list_projects`,
+`get_project`, `supplier_lookup`, `identify_photo` (base64 photo) and `low_stock`. The endpoint speaks
+MCP's Streamable HTTP transport with JSON responses (protocol 2025-11-25, 2025-06-18 and 2025-03-26).
+
+**REST** — JSON under `/api`, described by `/api/openapi.json`. Parts look like the backup file's parts
+(ids are the same), plus `locationPath`, `photoCount`, `isLow` and `summary`.
+
+| | |
+|---|---|
+| `GET /api/health` | up? (no token needed) |
+| `GET /api/parts?q=&category=&location=&low=true&limit=&offset=` | search |
+| `POST /api/parts` | add (`{"mpn": …, "qty": 5, "location": "Cabinet A / Drawer 3", "lookup": true}`) |
+| `GET` · `PATCH` · `DELETE /api/parts/{id}` | one part (GET includes recent stock history) |
+| `POST /api/parts/{id}/stock` | `{"delta": -2, "note": "…"}` or `{"set": 40}` — recorded in its history |
+| `GET /api/parts/{id}/photos/{n}` | a photo |
+| `GET` · `POST /api/locations` | locations; `{"path": "Shelf / Box 2"}` makes one |
+| `GET /api/projects`, `GET /api/projects/{id}` | BOMs with need, have and the matched part |
+| `GET /api/lookup?q=LM358DR` | Digi-Key and Mouser listings |
+| `POST /api/identify` | a photo (raw image, form upload, or `{"image": "<base64>"}`) → markings and candidates |
+| `GET /api/export`, `POST /api/import` | the backup file both ways (`?photos=true` to include photos) |
+
+```sh
+T=<token>
+curl -H "Authorization: Bearer $T" "http://127.0.0.1:8765/api/parts?q=10k%200603"
+curl -H "Authorization: Bearer $T" -H "Content-Type: application/json" \
+  -d '{"mpn":"NE555P","qty":10,"location":"Cabinet A / Drawer 2","lookup":true}' http://127.0.0.1:8765/api/parts
+curl -H "Authorization: Bearer $T" -H "Content-Type: application/json" \
+  -d '{"delta":-2,"note":"timer kit"}' http://127.0.0.1:8765/api/parts/<id>/stock
+curl -H "Authorization: Bearer $T" --data-binary @chip.jpg -H "Content-Type: image/jpeg" http://127.0.0.1:8765/api/identify
+```
+
+Changes made through the API are the same as changes made in the app: stock changes go into the part's
+history ("API — <note>"), and everything syncs through iCloud like any other edit.
 
 ## Building
 
@@ -97,16 +150,20 @@ TEST_RUNNER_TEST_PHOTOS_DIR=/path/to/photos \
 The second runs the real pipeline (Vision, MobileCLIP, Apple Intelligence) on `chip.jpg`, `pot.jpg`,
 `stepper.jpg` and `tact.jpg` in that folder.
 
-Debug builds accept `-demo` (sample parts), `-tab identify` and `-identify <path>` at launch.
+Debug builds accept `-demo` (sample parts), `-tab identify` and `-identify <path>` at launch, and
+`-apiServer` (start the API and MCP server for this run), `-apiToken <t>` and `-apiPort <n>`. The app's
+tests run against an in-memory store, never the real inventory; `APITests` drive the REST API and MCP
+over HTTP.
 
 ## Layout
 
 - `PartsKit/` — a Swift package with no UI: engineering values and packages, the search, bag-label
   parsing, the built-in catalog (`Resources/catalog.json`, shared with the web tool via
   `tools/export-catalog.sh`), marking matching and ranking, look scoring, the backup format, and the
-  Digi-Key and Mouser clients (`SupplierAPI.swift`, with the `partlookup` command).
+  Digi-Key and Mouser clients (`SupplierAPI.swift`, with the `partlookup` command), and the HTTP server,
+  request checks and MCP endpoint behind the API (`Server/`).
 - `App/` — the SwiftUI app: SwiftData models (`Model/`), Vision and Core ML (`Vision/`), Foundation
-  Models (`Intelligence/`) and the screens (`Views/`).
+  Models (`Intelligence/`), the REST routes and MCP tools (`API/`) and the screens (`Views/`).
 - `tools/` — `make-clip-embeddings.py` (text embeddings for the look labels, and the image encoder)
   and `export-catalog.sh`.
 

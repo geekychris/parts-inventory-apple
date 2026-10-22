@@ -14,6 +14,12 @@ struct PartsInventoryApp: App {
 
     init() {
         let schema = Schema(Schema1.models)
+        defer { APIService.shared.attach(container) }
+        // Under XCTest the app is only the tests' host: keep its data in memory, away from the real inventory.
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            container = try! ModelContainer(for: schema, configurations: ModelConfiguration(schema: schema, isStoredInMemoryOnly: true))
+            return
+        }
         // CloudKit traps (rather than throwing) when the app isn't signed with the iCloud
         // entitlement, so only ask for it when the entitlement is there.
         if Self.hasCloudKitEntitlement,

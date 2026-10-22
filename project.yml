@@ -36,6 +36,7 @@ targets:
         com.apple.security.app-sandbox: true
         com.apple.security.network.client: true
         com.apple.security.device.camera: true
+        com.apple.security.network.server: true
         com.apple.security.files.user-selected.read-write: true
         com.apple.security.personal-information.photos-library: true
     settings:
@@ -48,6 +49,7 @@ targets:
         INFOPLIST_KEY_CFBundleDisplayName: Parts Inventory
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.productivity
         INFOPLIST_KEY_NSCameraUsageDescription: "The camera scans bag labels and photographs parts to identify them."
+        INFOPLIST_KEY_NSLocalNetworkUsageDescription: "The app's API and MCP server can answer other devices on your network when you allow it in Settings."
         INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "Photos of parts are read to identify them."
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
         INFOPLIST_KEY_UILaunchScreen_Generation: YES

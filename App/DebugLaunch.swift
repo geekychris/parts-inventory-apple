@@ -8,6 +8,7 @@ import SwiftData
 ///   -tab <name>       open a tab (parts, scan, identify, locations, projects, ask, settings)
 ///   -identify <path>  identify the photo at a path
 ///   -batch <dir>      open Batch and queue every photo in a folder
+///   -apiServer, -apiToken <t>, -apiPort <n>  start the API and MCP server for this run (read by APIService)
 ///   -supplierKeysFromEnv  save DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET and MOUSER_API_KEY from the environment
 ///                     as the supplier keys (so they needn't be typed into Settings)
 @MainActor

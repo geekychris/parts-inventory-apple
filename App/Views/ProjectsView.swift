@@ -55,15 +55,7 @@ struct ProjectDetail: View {
     }
 
     /// The line's part: linked, by part number, or by value and package.
-    func match(_ ln: Backup.Project.Line) -> Part? {
-        if let id = ln.partId, let p = parts.first(where: { $0.uid == id }) { return p }
-        let n = Identify.squash(ln.mpn)
-        if !n.isEmpty, let p = parts.first(where: { Identify.squash($0.mpn) == n || $0.suppliers.contains { Identify.squash($0.pn) == n } }) { return p }
-        guard ln.params.value != nil else { return nil }
-        var q = PartQuery("")
-        q.value = ln.params.value; q.kind = ln.params.kind; q.pkg = ln.params.pkg
-        return parts.filter { q.matches($0.params.withPackage($0.package)) }.max { $0.qty < $1.qty }
-    }
+    func match(_ ln: Backup.Project.Line) -> Part? { BOM.match(ln, in: parts) }
 
     var canBuild: Int {
         let lines = rows.filter { $0.line.qty > 0 && !$0.line.dnp }
