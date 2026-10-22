@@ -77,21 +77,50 @@ struct RootView: View {
     @Environment(AppModel.self) private var app
     @Environment(\.modelContext) private var ctx
 
+    /// The sections, in sidebar order.
+    static let sections: [(tab: AppModel.Tab, title: String, icon: String)] = [
+        (.parts, "Parts", "shippingbox"), (.scan, "Scan", "barcode.viewfinder"), (.identify, "Identify", "camera.viewfinder"),
+        (.batch, "Batch", "square.stack.3d.down.right"), (.locations, "Locations", "archivebox"),
+        (.projects, "Projects", "list.bullet.clipboard"), (.ask, "Ask", "apple.intelligence"),
+    ]
+
+    @ViewBuilder func section(_ tab: AppModel.Tab) -> some View {
+        switch tab {
+        case .parts: PartsView()
+        case .scan: ScanView()
+        case .identify: IdentifyView()
+        case .batch: BatchView()
+        case .locations: LocationsView()
+        case .projects: ProjectsView()
+        case .ask: AskView()
+        case .settings: NavigationStack { SettingsView() }
+        }
+    }
+
     var body: some View {
         @Bindable var app = app
+        Group {
+        #if os(macOS)
+        // A plain sidebar with a sensible width: the adaptable tab view let a restored layout stretch the sidebar
+        // across the window and squeeze each section's own list to nothing.
+        NavigationSplitView {
+            List(Self.sections, id: \.tab, selection: Binding(get: { app.tab }, set: { if let t = $0 { app.tab = t } })) { s in
+                Label(s.title, systemImage: s.icon).tag(s.tab)
+            }
+            .navigationSplitViewColumnWidth(min: 180, ideal: 200, max: 260)
+        } detail: {
+            section(app.tab)
+        }
+        #else
         TabView(selection: $app.tab) {
-            Tab("Parts", systemImage: "shippingbox", value: AppModel.Tab.parts) { PartsView() }
-            Tab("Scan", systemImage: "barcode.viewfinder", value: AppModel.Tab.scan) { ScanView() }
-            Tab("Identify", systemImage: "camera.viewfinder", value: AppModel.Tab.identify) { IdentifyView() }
-            Tab("Batch", systemImage: "square.stack.3d.down.right", value: AppModel.Tab.batch) { BatchView() }
-            Tab("Locations", systemImage: "archivebox", value: AppModel.Tab.locations) { LocationsView() }
-            Tab("Projects", systemImage: "list.bullet.clipboard", value: AppModel.Tab.projects) { ProjectsView() }
-            Tab("Ask", systemImage: "apple.intelligence", value: AppModel.Tab.ask) { AskView() }
-            #if !os(macOS)
-            Tab("Settings", systemImage: "gearshape", value: AppModel.Tab.settings) { NavigationStack { SettingsView() } }
-            #endif
+            ForEach(Self.sections, id: \.tab) { s in
+                Tab(s.title, systemImage: s.icon, value: s.tab) { section(s.tab) }
+            }
+            Tab("Settings", systemImage: "gearshape", value: AppModel.Tab.settings) { section(.settings) }
         }
         .tabViewStyle(.sidebarAdaptable)
+        #endif
+        }
         #if DEBUG
         .task { DebugLaunch.apply(app, ctx) }
         #endif

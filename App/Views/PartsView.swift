@@ -9,6 +9,8 @@ struct PartsView: View {
     @Query(sort: \Part.mpn) private var parts: [Part]
     @State private var search = ""
     @State private var selection: Part.ID?
+    /// Always open with the list showing: a restored split can come back with it collapsed to nothing.
+    @State private var columns = NavigationSplitViewVisibility.all
     @State private var category = ""
     @AppStorage("defaultLowStock") private var defaultLow = 0
 
@@ -23,7 +25,7 @@ struct PartsView: View {
     }
 
     var body: some View {
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility: $columns) {
             List(selection: $selection) {
                 if parts.isEmpty {
                     ContentUnavailableView {
