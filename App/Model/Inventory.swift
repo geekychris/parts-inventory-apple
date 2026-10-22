@@ -72,6 +72,7 @@ enum Inventory {
         let what = [Supplier.named(label.supplier ?? "")?.name, label.salesOrder.isEmpty ? nil : "order \(label.salesOrder)"].compactMap { $0 }.joined(separator: " ")
         if q > 0 { adjust(p, by: q, reason: what.isEmpty ? "Scanned bag" : "Scanned bag — \(what)", in: ctx, supplier: label.supplier, lot: label.lot.isEmpty ? nil : label.lot) }
         p.updated = .now
+        if isNew { LabelPrinter.shared.partAdded(p) }
         return (p, isNew)
     }
 
@@ -88,6 +89,7 @@ enum Inventory {
             ph.part = p
         }
         adjust(p, by: d.qty, reason: "Identified from a photo", in: ctx)
+        LabelPrinter.shared.partAdded(p)
         return p
     }
 

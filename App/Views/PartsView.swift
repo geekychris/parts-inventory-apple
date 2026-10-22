@@ -13,6 +13,7 @@ struct PartsView: View {
     @State private var columns = NavigationSplitViewVisibility.all
     @State private var category = ""
     @AppStorage("defaultLowStock") private var defaultLow = 0
+    @State private var printingShown = false
 
     var filtered: [Part] {
         let q = PartQuery(search)
@@ -53,6 +54,10 @@ struct PartsView: View {
                     } label: { Label("Category", systemImage: category.isEmpty ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill") }
                 }
                 ToolbarItem {
+                    Button { printingShown = true } label: { Label("Print labels for these parts", systemImage: "printer") }
+                        .disabled(filtered.isEmpty)
+                }
+                ToolbarItem {
                     Button { addPart() } label: { Label("Add part", systemImage: "plus") }
                         .keyboardShortcut("n")
                 }
@@ -65,6 +70,7 @@ struct PartsView: View {
                 ContentUnavailableView("Choose a part", systemImage: "shippingbox", description: Text("\(parts.count) parts, \(parts.reduce(0) { $0 + $1.qty }) units."))
             }
         }
+        .sheet(isPresented: $printingShown) { LabelPrintSheet(parts: filtered) }
         .onChange(of: app.partToShow, initial: true) { _, uid in
             guard let uid, let p = parts.first(where: { $0.uid == uid }) else { return }
             selection = p.id
@@ -102,7 +108,10 @@ struct PartRow: View {
         }
     }
 
-    var icon: String {
+    var icon: String { Self.symbol(for: part) }
+
+    /// The SF Symbol for a kind of part (also drawn on its label).
+    static func symbol(for part: Part) -> String {
         switch part.params.kind {
         case "R": "line.3.horizontal"
         case "C": "pause"
