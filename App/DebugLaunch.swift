@@ -7,6 +7,8 @@ import SwiftData
 ///   -demo             add a few sample parts and locations when the inventory is empty
 ///   -tab <name>       open a tab (parts, scan, identify, locations, projects, ask, settings)
 ///   -identify <path>  identify the photo at a path
+///   -supplierKeysFromEnv  save DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET and MOUSER_API_KEY from the environment
+///                     as the supplier keys (so they needn't be typed into Settings)
 @MainActor
 enum DebugLaunch {
     static func apply(_ app: AppModel, _ ctx: ModelContext) {
@@ -14,6 +16,11 @@ enum DebugLaunch {
         func value(_ flag: String) -> String? { args.firstIndex(of: flag).flatMap { $0 + 1 < args.count ? args[$0 + 1] : nil } }
         if args.contains("-demo"), (try? ctx.fetchCount(FetchDescriptor<Part>())) == 0 { demo(ctx) }
         if let t = value("-tab"), let tab = AppModel.Tab(rawValue: t) { app.tab = tab }
+        if args.contains("-supplierKeysFromEnv") {
+            let env = ProcessInfo.processInfo.environment, keys = SupplierKeys.shared
+            keys.save(digikeyID: env["DIGIKEY_CLIENT_ID"] ?? keys.digikeyID, digikeySecret: env["DIGIKEY_CLIENT_SECRET"] ?? keys.digikeySecret,
+                      mouserKey: env["MOUSER_API_KEY"] ?? keys.mouserKey)
+        }
         if let p = value("-identify"), let d = try? Data(contentsOf: URL(fileURLWithPath: p)) { app.tab = .identify; app.photoForIdentify = d }
     }
 
