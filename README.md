@@ -37,6 +37,16 @@ with SwiftData and synced through your private iCloud database.
   asks Digi-Key's and Mouser's APIs at once: manufacturer, description, stock, price breaks, datasheet,
   package and parameters. *Fill in from this* fills only the empty fields and adds the supplier's part
   number with its prices. Needs free keys (below), kept in the Keychain.
+- **Label printing** — part labels on NIIMBOT printers over Bluetooth, on the Mac, iPhone and iPad:
+  the small ones (D11, D110, D101, H1…: 12–15 mm labels) and the wide ones (B1, B21, B3S…: up to
+  50 mm). The app asks the printer what it is (model, print head, darkness range), what's loaded (the
+  roll's RFID tag: label type and labels left; on newer printers the label size) and lays the label out
+  to suit — one or two lines on a 12 mm label, an icon, a QR code and three or four lines on 40 × 30 mm.
+  Three layouts: description only, icon + number + description, and the same with a QR code. The QR
+  code opens the datasheet (or a supplier's page), or a public inventory page from an address template
+  (`https://…/parts/{uid}/`, also {mpn}, {manufacturer}, {category}) for when the inventory is
+  published; more targets are one more `LabelLinkProvider`. *Print label* on a part, *Print labels for
+  these parts* on the list, and optionally a label for every part added.
 - **Ask** — questions about your inventory in plain words ("do I have a 3.3 V regulator?"),
   answered by Apple Intelligence using the app's own search as a tool. Nothing leaves the device.
 - **Projects** — BOMs imported in the web tool, shown against stock (how many boards you can build).
@@ -77,6 +87,18 @@ cd PartsKit
 DIGIKEY_CLIENT_ID=… DIGIKEY_CLIENT_SECRET=… MOUSER_API_KEY=… swift run partlookup LM358DR
 ```
 
+**Label printer.** Settings › Label printer › *Connect…* finds printers nearby (the printer can't be
+connected to the NIIMBOT app at the same time); the app reconnects to the same one later. If the
+printer doesn't report its label size, choose it there. From a terminal, without printing:
+
+```sh
+cd PartsKit
+swift run niimbot           # printers nearby
+swift run niimbot --info    # connect to one and show model, print head, darkness, roll
+```
+
+The terminal app needs Bluetooth permission the first time (macOS asks).
+
 ## Tests
 
 ```sh
@@ -96,9 +118,12 @@ Debug builds accept `-demo` (sample parts), `-tab identify` and `-identify <path
 - `PartsKit/` — a Swift package with no UI: engineering values and packages, the search, bag-label
   parsing, the built-in catalog (`Resources/catalog.json`, shared with the web tool via
   `tools/export-catalog.sh`), marking matching and ranking, look scoring, the backup format, and the
-  Digi-Key and Mouser clients (`SupplierAPI.swift`, with the `partlookup` command).
+  Digi-Key and Mouser clients (`SupplierAPI.swift`, with the `partlookup` command), and NIIMBOT
+  printing: the protocol, models and print jobs (`Niimbot.swift`), Bluetooth (`NiimbotBluetooth.swift`,
+  with the `niimbot` command) and label layout and QR targets (`LabelLayout.swift`).
 - `App/` — the SwiftUI app: SwiftData models (`Model/`), Vision and Core ML (`Vision/`), Foundation
-  Models (`Intelligence/`) and the screens (`Views/`).
+  Models (`Intelligence/`), label rendering and the printer screens (`Labels/`) and the other screens
+  (`Views/`).
 - `tools/` — `make-clip-embeddings.py` (text embeddings for the look labels, and the image encoder)
   and `export-catalog.sh`.
 
@@ -112,3 +137,7 @@ repository has since moved its weights to the Apple Machine Learning Research Mo
 allows non-commercial research only. Personal use is fine either way; before selling the app or putting
 it on the App Store, check the terms or switch to a model with a clear commercial licence. The model
 isn't stored in this repository.
+
+The NIIMBOT protocol is ported from [NiimBlue's niimbluelib](https://github.com/MultiMote/niimbluelib)
+(MIT, © 2024 MultiMote): packet format, commands and replies, printer models and the print sequence for
+each model family.

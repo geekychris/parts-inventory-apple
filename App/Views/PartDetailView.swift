@@ -15,6 +15,7 @@ struct PartDetailView: View {
     @State private var newPN = ""
     @State private var paramText = ""
     @State private var lookingUp = false
+    @State private var printingLabel = false
 
     var body: some View {
         Form {
@@ -135,6 +136,10 @@ struct PartDetailView: View {
         }
         .formStyle(.grouped)
         .navigationTitle(part.title)
+        .toolbar {
+            ToolbarItem { Button { printingLabel = true } label: { Label("Print label", systemImage: "printer") }.keyboardShortcut("p") }
+        }
+        .sheet(isPresented: $printingLabel) { LabelPrintSheet(parts: [part]) }
         .sheet(isPresented: $lookingUp) {
             SupplierLookupView(query: part.mpn.isEmpty ? part.suppliers.first?.pn ?? "" : part.mpn) { Inventory.fill(part, from: $0) }
         }

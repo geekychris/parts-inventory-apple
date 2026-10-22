@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>CFBundleIdentifier</key><string>com.hitorro.niimbot-cli</string>
+<key>CFBundleName</key><string>niimbot</string>
+<key>NSBluetoothAlwaysUsageDescription</key><string>niimbot looks for NIIMBOT label printers and reads their settings.</string>
+</dict></plist>
