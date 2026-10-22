@@ -7,15 +7,25 @@ import SwiftUI
 /// app, so this is the way to get a sharp close-up of small markings.
 struct DeviceImportButton: NSViewRepresentable {
     var title = "From iPhone"
+    /// Lets the screen open this button's menu (for a keyboard shortcut).
+    var handle: DeviceImportHandle?
     var onImage: (Data) -> Void
 
     func makeNSView(context: Context) -> DeviceImportView {
         let v = DeviceImportView(title: title)
         v.onImage = onImage
+        handle?.view = v
         return v
     }
-    func updateNSView(_ v: DeviceImportView, context: Context) { v.onImage = onImage }
+    func updateNSView(_ v: DeviceImportView, context: Context) { v.onImage = onImage; handle?.view = v }
     func sizeThatFits(_ proposal: ProposedViewSize, nsView v: DeviceImportView, context: Context) -> CGSize? { v.intrinsicContentSize }
+}
+
+/// A way to reach a `DeviceImportButton` from SwiftUI.
+final class DeviceImportHandle {
+    weak var view: DeviceImportView?
+    /// Open the device menu, as clicking the button does.
+    func showMenu() { view?.showMenu() }
 }
 
 /// A button that opens the system's "Import from iPhone or iPad" menu (Take Photo, Scan Documents, Add Sketch
@@ -39,7 +49,7 @@ final class DeviceImportView: NSButton, NSServicesMenuRequestor {
 
     override var acceptsFirstResponder: Bool { true }
 
-    @objc private func showMenu() {
+    @objc func showMenu() {
         // The system fills in the nearby devices only for a responder that can take the image. Inside SwiftUI the
         // window's own one is used, so show the File menu's Import From Device items (they reach the app's
         // `importsItemProviders`, which sends the photo to Identify); this button is the fallback taker.
@@ -53,6 +63,29 @@ final class DeviceImportView: NSButton, NSServicesMenuRequestor {
             menu.addItem(item)
         }
         menu.popUp(positioning: nil, at: NSPoint(x: 0, y: bounds.height + 4), in: self)
+    }
+
+    /// Choose Take Photo for the first nearby device straight from File › Import From Device, without showing a
+    /// menu — so the iPhone's camera opens again for the next photo. False when no device offers it.
+    @discardableResult
+    static func takePhoto() -> Bool {
+        for top in NSApp.mainMenu?.items ?? [] {
+            guard let m = top.submenu else { continue }
+            m.update()
+            for item in m.items where item.identifier == NSMenuItem.importFromDeviceIdentifier || item.submenu?.items.contains(where: isTakePhoto) == true {
+                guard let sub = item.submenu else { continue }
+                sub.update()
+                if let i = sub.items.firstIndex(where: isTakePhoto) {
+                    sub.performActionForItem(at: i)
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    private static func isTakePhoto(_ item: NSMenuItem) -> Bool {
+        item.isEnabled && item.action != nil && (item.title == "Take Photo" || item.title.localizedCaseInsensitiveContains("photo"))
     }
 
     /// Copies of the devices under File › Import From Device (each with Take Photo, Scan Documents, Add Sketch).

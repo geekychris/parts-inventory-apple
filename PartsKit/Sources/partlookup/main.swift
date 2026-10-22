@@ -4,9 +4,14 @@ import PartsKit
 // Looks part numbers up at Digi-Key and Mouser with the keys in the environment:
 //   DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET, MOUSER_API_KEY
 // Usage: swift run partlookup LM358DR [more part numbers…]
+//        swift run partlookup --read "ATMEL ATMEGA328P-PU 1932" ATMEGA328P-PU
+//          (--read: the markings read off a part — ranks the listings as Batch does and says whether it's sure)
 
 let env = ProcessInfo.processInfo.environment
-let queries = Array(CommandLine.arguments.dropFirst())
+var args = Array(CommandLine.arguments.dropFirst())
+var readText: String?
+if let i = args.firstIndex(of: "--read"), i + 1 < args.count { readText = args[i + 1]; args.removeSubrange(i...(i + 1)) }
+let queries = args
 guard !queries.isEmpty else {
     print("usage: partlookup <part number>…  (keys from DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET, MOUSER_API_KEY)")
     exit(2)
@@ -23,6 +28,17 @@ var failed = false
 for q in queries {
     let r = await lookup.lookup(q)
     print("\n== \(q): \(r.products.count) result\(r.products.count == 1 ? "" : "s")")
+    if let readText {
+        let ranked = BatchMatch.rank(r.products, ocrText: readText, queries: [q])
+        let sure = BatchMatch.isSure(ranked, ocrText: readText, queries: [q])
+        if let best = ranked.first {
+            let partner = BatchMatch.partner(of: best, in: ranked)
+            print("  Batch: \(sure ? "SURE" : "ask") → \(best.mpn) · \(best.manufacturer) · \(best.supplierName) \(best.spn)"
+                  + (partner.map { " + \($0.supplierName) \($0.spn)" } ?? ""))
+        } else {
+            print("  Batch: nothing found")
+        }
+    }
     for (id, e) in r.errors.sorted(by: { $0.key < $1.key }) { print("  ! \(Supplier.named(id)?.name ?? id): \(e)"); failed = true }
     for s in ["digikey", "mouser"] {
         let rows = r.products.filter { $0.supplier == s }

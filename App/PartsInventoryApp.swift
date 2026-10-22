@@ -53,7 +53,9 @@ struct PartsInventoryApp: App {
                     guard let p = providers.first else { return false }
                     _ = p.loadDataRepresentation(for: .image) { data, _ in
                         guard let data else { return }
-                        Task { @MainActor in app.photoForIdentify = data; app.tab = .identify }
+                        Task { @MainActor in
+                            if app.tab == .batch { app.photosForBatch.append(data) } else { app.photoForIdentify = data; app.tab = .identify }
+                        }
                     }
                     return true
                 }
@@ -81,6 +83,7 @@ struct RootView: View {
             Tab("Parts", systemImage: "shippingbox", value: AppModel.Tab.parts) { PartsView() }
             Tab("Scan", systemImage: "barcode.viewfinder", value: AppModel.Tab.scan) { ScanView() }
             Tab("Identify", systemImage: "camera.viewfinder", value: AppModel.Tab.identify) { IdentifyView() }
+            Tab("Batch", systemImage: "square.stack.3d.down.right", value: AppModel.Tab.batch) { BatchView() }
             Tab("Locations", systemImage: "archivebox", value: AppModel.Tab.locations) { LocationsView() }
             Tab("Projects", systemImage: "list.bullet.clipboard", value: AppModel.Tab.projects) { ProjectsView() }
             Tab("Ask", systemImage: "apple.intelligence", value: AppModel.Tab.ask) { AskView() }
