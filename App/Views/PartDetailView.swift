@@ -23,6 +23,9 @@ struct PartDetailView: View {
                 HStack {
                     Text("In stock").font(.headline)
                     Spacer()
+                    Button { printingLabel = true } label: { Label("Print label", systemImage: "printer") }
+                        .help("Print a label for this part on the NIIMBOT (⌘P)")
+                    Spacer().frame(width: 16)
                     Button { change(-1) } label: { Image(systemName: "minus.circle.fill").font(.title2) }.buttonStyle(.borderless)
                         .accessibilityLabel("Use one")
                     Text("\(part.qty)").font(.title2.monospacedDigit()).frame(minWidth: 56)
@@ -137,7 +140,10 @@ struct PartDetailView: View {
         .formStyle(.grouped)
         .navigationTitle(part.title)
         .toolbar {
-            ToolbarItem { Button { printingLabel = true } label: { Label("Print label", systemImage: "printer") }.keyboardShortcut("p") }
+            ToolbarItem {
+                Button { printingLabel = true } label: { Label("Print label", systemImage: "printer") }
+                    .labelStyle(.titleAndIcon).keyboardShortcut("p").help("Print a label for this part (⌘P)")
+            }
         }
         .sheet(isPresented: $printingLabel) { LabelPrintSheet(parts: [part]) }
         .sheet(isPresented: $lookingUp) {

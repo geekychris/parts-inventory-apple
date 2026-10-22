@@ -54,7 +54,9 @@ struct PartsView: View {
                     } label: { Label("Category", systemImage: category.isEmpty ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill") }
                 }
                 ToolbarItem {
-                    Button { printingShown = true } label: { Label("Print labels for these parts", systemImage: "printer") }
+                    Button { printingShown = true } label: { Label("Print all shown", systemImage: "printer.dotmatrix") }
+                        .labelStyle(.titleAndIcon)
+                        .help("Print a label for every part in the list as it’s filtered now (\(filtered.count))")
                         .disabled(filtered.isEmpty)
                 }
                 ToolbarItem {
