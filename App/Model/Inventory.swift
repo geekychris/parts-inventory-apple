@@ -80,6 +80,7 @@ enum Inventory {
         let p = Part()
         p.mpn = d.mpn; p.manufacturer = d.manufacturer; p.partDescription = d.description; p.category = d.category; p.package = d.package
         p.datasheet = d.datasheet; p.params = d.params; p.tags = d.tags; p.notes = d.notes; p.location = location
+        p.suppliers = d.suppliers
         ctx.insert(p)
         if let photo {
             let ph = PartPhoto(data: photo)
@@ -88,6 +89,24 @@ enum Inventory {
         }
         adjust(p, by: d.qty, reason: "Identified from a photo", in: ctx)
         return p
+    }
+
+    /// Fill a part's empty fields from a supplier's listing, and add or refresh that supplier's number and
+    /// prices. Nothing already filled in is changed.
+    static func fill(_ part: Part, from p: SupplierProduct) {
+        if part.mpn.isEmpty { part.mpn = p.mpn }
+        if part.manufacturer.isEmpty { part.manufacturer = p.manufacturer }
+        if part.partDescription.isEmpty { part.partDescription = p.description.isEmpty ? p.detail : p.description }
+        if part.category.isEmpty { part.category = p.category }
+        if part.package.isEmpty { part.package = p.normalisedPackage }
+        if part.datasheet.isEmpty { part.datasheet = p.datasheet }
+        if part.imageURL.isEmpty { part.imageURL = p.image }
+        if part.paramsSummary.isEmpty { part.params = p.params(kind: part.params.kind) }
+        let e = p.supplierEntry()
+        var list = part.suppliers
+        if let i = list.firstIndex(where: { $0.supplier == e.supplier && $0.pn.caseInsensitiveCompare(e.pn) == .orderedSame }) { list[i] = e } else { list.append(e) }
+        part.suppliers = list
+        part.updated = .now
     }
 
     /// Find or make "Cabinet A › Drawer 3" (also "Cabinet A/Drawer 3"); returns the leaf.

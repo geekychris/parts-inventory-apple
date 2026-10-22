@@ -13,6 +13,10 @@ struct IdentifyView: View {
     @State private var importing = false
     @State private var showCamera = false
     @State private var adding: Candidate?
+    @State private var lookingUp: Candidate?
+    /// A listing chosen in the lookup, to fill in the part being added.
+    @State private var listing: SupplierProduct?
+    @State private var addAfterLookup: Candidate?
     @State private var receiving: BagLabel?
     @AppStorage("lookWhen") private var lookWhen = IdentifyModel.LookWhen.auto
     @AppStorage("useAppleIntelligence") private var useAI = true
@@ -83,7 +87,12 @@ struct IdentifyView: View {
                 start(d)
             }
             .onChange(of: model.mode) { model.rerank(inventory: inventory) }
-            .sheet(item: $adding) { c in AddPartSheet(candidate: c, ocrText: model.markings, photo: model.photo) { uid in app.partToShow = uid; app.tab = .parts } }
+            .sheet(item: $adding, onDismiss: { listing = nil }) { c in
+                AddPartSheet(candidate: c, ocrText: model.markings, photo: model.photo, listing: listing) { uid in app.partToShow = uid; app.tab = .parts }
+            }
+            .sheet(item: $lookingUp, onDismiss: { if let c = addAfterLookup { addAfterLookup = nil; adding = c } }) { c in
+                SupplierLookupView(query: CandidateCard.searchable(c) ?? "", applyTitle: "Add to inventory…") { p in listing = p; addAfterLookup = c }
+            }
             .sheet(item: Binding(get: { receiving.map(LabelBox.init) }, set: { receiving = $0?.label })) { b in ReceiveSheet(label: b.label) }
             .sheet(isPresented: $showCamera) { CameraSheet { d in start(d) } }
         }
@@ -137,7 +146,7 @@ struct IdentifyView: View {
                 Text("Recognising parts by look isn't in this build (the model file is missing).").font(.caption).foregroundStyle(.secondary)
             }
         }
-        ForEach(model.candidates) { c in CandidateCard(candidate: c, add: { adding = c }, show: { uid in app.partToShow = uid; app.tab = .parts }) }
+        ForEach(model.candidates) { c in CandidateCard(candidate: c, add: { adding = c }, show: { uid in app.partToShow = uid; app.tab = .parts }, lookUp: { lookingUp = c }) }
         DisclosureGroup("Markings read") {
             TextEditor(text: $model.markings).font(.body.monospaced()).frame(minHeight: 80)
                 .scrollContentBackground(.hidden).background(.quaternary.opacity(0.4), in: .rect(cornerRadius: 8))
@@ -175,6 +184,7 @@ struct CandidateCard: View {
     let candidate: Candidate
     var add: () -> Void
     var show: (String) -> Void
+    var lookUp: () -> Void = {}
 
     var body: some View {
         GroupBox {
@@ -197,6 +207,7 @@ struct CandidateCard: View {
                     }
                     if case .catalog(let e) = candidate.source, let ds = e.ds, let u = URL(string: ds) { Link("Datasheet", destination: u) }
                     if let pn = searchable {
+                        if !isInventory { Button("Look up", action: lookUp) }
                         Menu("Search") { ForEach(Identify.searchLinks(pn)) { l in Link(l.name, destination: l.url) } }.fixedSize()
                     }
                 }
@@ -222,7 +233,10 @@ struct CandidateCard: View {
         case .reading(let r): [r.manufacturer, r.mpn.isEmpty ? "" : r.description].filter { !$0.isEmpty }.joined(separator: " — ")
         }
     }
-    var searchable: String? {
+    var isInventory: Bool { if case .inventory = candidate.source { true } else { false } }
+    var searchable: String? { Self.searchable(candidate) }
+    /// The part number to search the web or the suppliers for.
+    static func searchable(_ candidate: Candidate) -> String? {
         switch candidate.source {
         case .catalog(let e): e.mpn
         case .unknown(let t): t
@@ -239,6 +253,8 @@ struct AddPartSheet: View {
     let candidate: Candidate
     let ocrText: String
     let photo: Data?
+    /// A supplier listing chosen in a lookup, filling in what the candidate doesn't say.
+    var listing: SupplierProduct? = nil
     var done: (String) -> Void
     @Environment(\.modelContext) private var ctx
     @Environment(\.dismiss) private var dismiss
@@ -246,6 +262,7 @@ struct AddPartSheet: View {
     @State private var draft = PartDraft()
     @State private var location: StorageLocation?
     @State private var keepPhoto = true
+    @State private var lookingUp = false
 
     var body: some View {
         NavigationStack {
@@ -262,6 +279,13 @@ struct AddPartSheet: View {
                     ForEach(locations.sorted { $0.path < $1.path }) { l in Text(l.path).tag(Optional(l)) }
                 }
                 if photo != nil { Toggle("Keep the photo with the part", isOn: $keepPhoto) }
+                Section {
+                    Button { lookingUp = true } label: { Label("Fill in from Digi-Key or Mouser…", systemImage: "magnifyingglass") }
+                        .disabled(draft.mpn.isEmpty)
+                    ForEach(draft.suppliers, id: \.self) { s in
+                        LabeledContent(Supplier.named(s.supplier)?.name ?? s.supplier, value: s.pn)
+                    }
+                }
             }
             .formStyle(.grouped)
             .navigationTitle("Add to inventory")
@@ -276,6 +300,10 @@ struct AddPartSheet: View {
             }
         }
         .frame(minWidth: 420, minHeight: 480)
-        .onAppear { draft = Identify.draft(candidate, ocrText: ocrText) }
+        .onAppear {
+            draft = Identify.draft(candidate, ocrText: ocrText)
+            if let listing { draft.fill(from: listing) }
+        }
+        .sheet(isPresented: $lookingUp) { SupplierLookupView(query: draft.mpn) { draft.fill(from: $0) } }
     }
 }

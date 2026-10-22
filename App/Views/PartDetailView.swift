@@ -14,6 +14,7 @@ struct PartDetailView: View {
     @State private var newSupplier = "digikey"
     @State private var newPN = ""
     @State private var paramText = ""
+    @State private var lookingUp = false
 
     var body: some View {
         Form {
@@ -65,6 +66,8 @@ struct PartDetailView: View {
             }
 
             Section("Datasheet and suppliers") {
+                Button { lookingUp = true } label: { Label("Look up online", systemImage: "magnifyingglass") }
+                    .disabled(part.mpn.isEmpty && part.suppliers.isEmpty)
                 TextField("Datasheet link", text: $part.datasheet)
                 if let u = URL(string: part.datasheet), u.scheme?.hasPrefix("http") == true {
                     Link(destination: u) { Label("Open the datasheet", systemImage: "doc.richtext") }
@@ -73,7 +76,12 @@ struct PartDetailView: View {
                     HStack {
                         Text(Supplier.named(s.supplier)?.name ?? s.supplier).foregroundStyle(.secondary)
                         Spacer()
-                        if let u = Supplier.named(s.supplier)?.search(s.pn) { Link(s.pn, destination: u) } else { Text(s.pn) }
+                        if let price = s.breaks.first {
+                            Text("\(price.unit.formatted(.currency(code: s.currency ?? "USD").precision(.significantDigits(1...4)))) · \((s.stock ?? 0).formatted()) in stock")
+                                .font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+                        }
+                        if let u = URL(string: s.url), !s.url.isEmpty { Link(s.pn, destination: u) }
+                        else if let u = Supplier.named(s.supplier)?.search(s.pn) { Link(s.pn, destination: u) } else { Text(s.pn) }
                     }
                     .swipeActions { Button("Remove", role: .destructive) { var l = part.suppliers; l.remove(at: i); part.suppliers = l } }
                 }
@@ -127,6 +135,9 @@ struct PartDetailView: View {
         }
         .formStyle(.grouped)
         .navigationTitle(part.title)
+        .sheet(isPresented: $lookingUp) {
+            SupplierLookupView(query: part.mpn.isEmpty ? part.suppliers.first?.pn ?? "" : part.mpn) { Inventory.fill(part, from: $0) }
+        }
         .onChange(of: part.mpn) { part.updated = .now }
         .onChange(of: part.partDescription) { part.updated = .now }
         .onChange(of: photoItem) { _, item in

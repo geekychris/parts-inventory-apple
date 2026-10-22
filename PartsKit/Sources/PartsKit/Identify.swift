@@ -77,8 +77,23 @@ public struct PartDraft: Sendable, Equatable {
     public var params = PartParams()
     public var tags: [String] = []
     public var notes = ""
+    public var suppliers: [SupplierEntry] = []
     public var qty = 1
     public init() {}
+
+    /// Fill the empty fields from a supplier's listing, and keep its part number and prices.
+    public mutating func fill(from p: SupplierProduct) {
+        if mpn.isEmpty { mpn = p.mpn }
+        if manufacturer.isEmpty { manufacturer = p.manufacturer }
+        if description.isEmpty { description = p.description.isEmpty ? p.detail : p.description }
+        if category.isEmpty { category = p.category }
+        if package.isEmpty { package = p.normalisedPackage }
+        if datasheet.isEmpty { datasheet = p.datasheet }
+        if Values.summary(params).isEmpty { params = p.params(kind: params.kind) }
+        let e = p.supplierEntry()
+        suppliers.removeAll { $0.supplier == e.supplier && $0.pn == e.pn }
+        suppliers.append(e)
+    }
 }
 
 public enum Identify {

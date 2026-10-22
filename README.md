@@ -33,6 +33,10 @@ with SwiftData and synced through your private iCloud database.
      maker, description, category and package. Its reading is only trusted when its part number is
      actually in the text.
   Unknown numbers get search links (Octopart, Digi-Key, Mouser, LCSC, eBay, AllDatasheet).
+- **Part number lookup** — *Look up online* on a part, on an Identify result, or while adding a part
+  asks Digi-Key's and Mouser's APIs at once: manufacturer, description, stock, price breaks, datasheet,
+  package and parameters. *Fill in from this* fills only the empty fields and adds the supplier's part
+  number with its prices. Needs free keys (below), kept in the Keychain.
 - **Ask** — questions about your inventory in plain words ("do I have a 3.3 V regulator?"),
   answered by Apple Intelligence using the app's own search as a tool. Nothing leaves the device.
 - **Projects** — BOMs imported in the web tool, shown against stock (how many boards you can build).
@@ -57,6 +61,22 @@ Build once from Xcode with your team selected so it registers the container and 
 capability. An unsigned build (no iCloud entitlement) keeps its data on the device instead — the app
 checks its own entitlements, because CloudKit stops the app rather than reporting an error.
 
+**Supplier keys.** Both are free; add them in Settings › Supplier lookups.
+
+- *Digi-Key* — sign in at [developer.digikey.com](https://developer.digikey.com), create an organisation,
+  then a **production** app subscribed to **Product Information V4** (any callback URL, e.g.
+  `https://localhost`). Copy its client ID and secret. The app uses the 2-legged (client credentials)
+  sign-in, so no browser login is needed. About 1,000 lookups a day.
+- *Mouser* — sign in to mouser.com, open [API Hub](https://www.mouser.com/api-hub/) › **Search API**
+  and register; the key arrives at once (My Account › APIs). 30 lookups a minute, 1,000 a day.
+
+Try the keys from a terminal without the app:
+
+```sh
+cd PartsKit
+DIGIKEY_CLIENT_ID=… DIGIKEY_CLIENT_SECRET=… MOUSER_API_KEY=… swift run partlookup LM358DR
+```
+
 ## Tests
 
 ```sh
@@ -75,7 +95,8 @@ Debug builds accept `-demo` (sample parts), `-tab identify` and `-identify <path
 
 - `PartsKit/` — a Swift package with no UI: engineering values and packages, the search, bag-label
   parsing, the built-in catalog (`Resources/catalog.json`, shared with the web tool via
-  `tools/export-catalog.sh`), marking matching and ranking, look scoring, and the backup format.
+  `tools/export-catalog.sh`), marking matching and ranking, look scoring, the backup format, and the
+  Digi-Key and Mouser clients (`SupplierAPI.swift`, with the `partlookup` command).
 - `App/` — the SwiftUI app: SwiftData models (`Model/`), Vision and Core ML (`Vision/`), Foundation
   Models (`Intelligence/`) and the screens (`Views/`).
 - `tools/` — `make-clip-embeddings.py` (text embeddings for the look labels, and the image encoder)

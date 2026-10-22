@@ -17,6 +17,11 @@ struct SettingsView: View {
     @State private var result = ""
     @AppStorage(Camera.chosenKey) private var cameraID = ""
     @State private var cameras: [CameraDevice] = []
+    @State private var dkID = ""
+    @State private var dkSecret = ""
+    @State private var mouserKey = ""
+    @State private var keyTest: [String: String?] = [:]
+    @State private var testing = false
 
     var body: some View {
         Form {
@@ -47,6 +52,22 @@ struct SettingsView: View {
             } header: { Text("Camera") } footer: {
                 Text("Used by Scan and Identify; you can also switch there. Automatic prefers a plugged-in or Continuity camera.")
             }
+            Section {
+                TextField("Digi-Key client ID", text: $dkID).autocorrectionDisabled()
+                SecureField("Digi-Key client secret", text: $dkSecret)
+                SecureField("Mouser Search API key", text: $mouserKey)
+                HStack {
+                    Button(testing ? "Testing…" : "Save and test") { Task { await saveAndTest() } }
+                        .disabled(testing || !keysChanged && dkID.isEmpty && mouserKey.isEmpty)
+                    if testing { ProgressView().controlSize(.small) }
+                }
+                ForEach(keyTest.sorted { $0.key < $1.key }, id: \.key) { id, err in
+                    Label(err ?? "\(Supplier.named(id)?.name ?? id) works", systemImage: err == nil ? "checkmark.circle" : "exclamationmark.triangle")
+                        .foregroundStyle(err == nil ? .green : .orange).font(.callout)
+                }
+            } header: { Text("Supplier lookups") } footer: {
+                Text("Free keys look part numbers up at Digi-Key and Mouser: stock, prices, datasheets and parameters. Digi-Key: sign in at [developer.digikey.com](https://developer.digikey.com), make an organisation, then a production app subscribed to Product Information V4. Mouser: sign in, then [mouser.com/api-hub](https://www.mouser.com/api-hub/) › Search API. Keys are kept in the Keychain.")
+            }
             Section("Recognition") {
                 LabeledContent("Apple Intelligence", value: AppleIntelligence.status)
                 LabeledContent("Recognising by look", value: LookModel.isAvailable ? "MobileCLIP, on this device" : "Not in this build")
@@ -57,6 +78,10 @@ struct SettingsView: View {
         .navigationTitle("Settings")
         .task { await checkAccount() }
         .task { cameras = Camera.available() }
+        .task {
+            let k = SupplierKeys.shared
+            dkID = k.digikeyID; dkSecret = k.digikeySecret; mouserKey = k.mouserKey
+        }
         .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { r in
             guard case .success(let url) = r else { return }
             let ok = url.startAccessingSecurityScopedResource()
@@ -70,6 +95,18 @@ struct SettingsView: View {
         .fileExporter(isPresented: $exporting, document: exportDoc, contentType: .json, defaultFilename: "parts-inventory-\(Date.now.formatted(.iso8601.year().month().day())).json") { r in
             if case .success = r { result = "Exported \(parts.count) parts." }
         }
+    }
+
+    var keysChanged: Bool {
+        let k = SupplierKeys.shared
+        return dkID != k.digikeyID || dkSecret != k.digikeySecret || mouserKey != k.mouserKey
+    }
+
+    func saveAndTest() async {
+        SupplierKeys.shared.save(digikeyID: dkID, digikeySecret: dkSecret, mouserKey: mouserKey)
+        testing = true
+        keyTest = await SupplierKeys.shared.lookup.test()
+        testing = false
     }
 
     func checkAccount() async {
