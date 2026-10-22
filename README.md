@@ -5,6 +5,13 @@ web tool: keep track of electronic components, scan supplier bag labels, and ide
 photo — by the markings printed on it or, when there are none, by how it looks. The data is stored
 with SwiftData and synced through your private iCloud database.
 
+| | |
+|---|---|
+| ![The parts list beside a part's page, with Print label](docs/screenshots/parts.png) | ![Identify: a photo of a stepper driver board read as ULN2003A](docs/screenshots/identify.png) |
+| **Parts** — search, stock, locations, suppliers and a label for each part | **Identify** — the markings on a photo matched to a part |
+| ![Batch add: a queue of photos, each identified and ready to add](docs/screenshots/batch.png) | ![Print label: a preview of a 30 × 12 mm NIIMBOT label with layout and size](docs/screenshots/print-label.png) |
+| **Batch** — photo after photo, Return to add each and go on | **Labels** — NIIMBOT labels sized from what the printer reports |
+
 ## What it does
 
 - **Parts** — a searchable inventory with the web tool's parametric search (`10k 0603 1%`,
@@ -172,7 +179,7 @@ TEST_RUNNER_TEST_PHOTOS_DIR=/path/to/photos \
 The second runs the real pipeline (Vision, MobileCLIP, Apple Intelligence) on `chip.jpg`, `pot.jpg`,
 `stepper.jpg` and `tact.jpg` in that folder.
 
-Debug builds accept `-demo` (sample parts), `-tab identify` and `-identify <path>` at launch, and
+Debug builds accept `-demo` (sample parts), `-memoryStore` (an in-memory store, leaving the real inventory alone), `-tab identify` and `-identify <path>` at launch, and
 `-apiServer` (start the API and MCP server for this run), `-apiToken <t>` and `-apiPort <n>`. The app's
 tests run against an in-memory store, never the real inventory; `APITests` drive the REST API and MCP
 over HTTP.
@@ -193,6 +200,15 @@ over HTTP.
   and `export-catalog.sh`.
 
 ## Licences
+
+The app's code is under the [MIT licence](LICENSE).
+
+The photos in the screenshots are from Wikimedia Commons:
+[28BYJ-48 stepper motor with ULN2003 driver](https://commons.wikimedia.org/wiki/File:28BYJ-48_unipolar_stepper_motor_with_ULN2003_driver.jpg)
+by Kushagra Keshari (CC BY-SA 4.0),
+[Potentiometer](https://commons.wikimedia.org/wiki/File:Potentiometer.jpg) by Iainf (CC BY 2.5) and
+[Tactile switches](https://commons.wikimedia.org/wiki/File:Tactile_switches.jpg) by Scwerllguy (CC BY-SA 3.0).
+The chip photo is a rendering made for the tests.
 
 The look model is Apple's **MobileCLIP-S2** image encoder, from the Core ML conversions at
 [apple/coreml-mobileclip](https://huggingface.co/apple/coreml-mobileclip) (revision 3e0a7bf,
