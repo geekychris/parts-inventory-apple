@@ -40,13 +40,33 @@ final class DeviceImportView: NSButton, NSServicesMenuRequestor {
     override var acceptsFirstResponder: Bool { true }
 
     @objc private func showMenu() {
-        // The menu lists devices only for the responder that will take the image, so become it first.
+        // The system fills in the nearby devices only for a responder that can take the image. Inside SwiftUI the
+        // window's own one is used, so show the File menu's Import From Device items (they reach the app's
+        // `importsItemProviders`, which sends the photo to Identify); this button is the fallback taker.
         window?.makeFirstResponder(self)
         let menu = NSMenu()
-        let item = NSMenuItem(title: "Import from iPhone or iPad", action: nil, keyEquivalent: "")
-        item.identifier = NSMenuItem.importFromDeviceIdentifier
-        menu.addItem(item)
+        if let devices = Self.mainMenuImportItems(), !devices.isEmpty {
+            devices.forEach(menu.addItem)
+        } else {
+            let item = NSMenuItem(title: "Import from iPhone or iPad", action: nil, keyEquivalent: "")
+            item.identifier = NSMenuItem.importFromDeviceIdentifier
+            menu.addItem(item)
+        }
         menu.popUp(positioning: nil, at: NSPoint(x: 0, y: bounds.height + 4), in: self)
+    }
+
+    /// Copies of the devices under File › Import From Device (each with Take Photo, Scan Documents, Add Sketch).
+    static func mainMenuImportItems() -> [NSMenuItem]? {
+        for top in NSApp.mainMenu?.items ?? [] {
+            guard let m = top.submenu else { continue }
+            m.update()
+            for item in m.items where item.identifier == NSMenuItem.importFromDeviceIdentifier || item.submenu?.items.contains(where: { $0.title == "Take Photo" || $0.submenu?.items.contains { $0.title == "Take Photo" } == true }) == true {
+                guard let sub = item.submenu else { continue }
+                sub.update()
+                return sub.items.compactMap { $0.copy() as? NSMenuItem }
+            }
+        }
+        return nil
     }
 
     override func validRequestor(forSendType sendType: NSPasteboard.PasteboardType?, returnType: NSPasteboard.PasteboardType?) -> Any? {
