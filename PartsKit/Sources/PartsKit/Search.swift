@@ -71,3 +71,43 @@ public struct PartQuery: Equatable, Sendable {
         return true
     }
 }
+
+extension PartQuery {
+    /// The whole query against one item: parameters (the package field filling in for a missing pkg), every
+    /// word in `text` (lowercased), and the filters. Shared by the app's parts and `InventoryRow`.
+    public func matches(params: PartParams, package: String, text hay: String, category: String, location: String,
+                        tags: [String], manufacturer: String, isLow: Bool) -> Bool {
+        if hasParams && !matches(params.withPackage(package)) { return false }
+        if !text.allSatisfy(hay.contains) { return false }
+        if let c = self.category, !category.lowercased().contains(c) { return false }
+        if let l = self.location, !location.lowercased().contains(l) { return false }
+        if let t = tag, !tags.contains(where: { $0.lowercased() == t }) { return false }
+        if let m = self.manufacturer, !manufacturer.lowercased().contains(m) { return false }
+        if lowOnly && !isLow { return false }
+        return true
+    }
+
+    /// Does a row (this inventory's or a friend's) match?
+    public func matches(_ row: InventoryRow) -> Bool { matches(row, text: row.searchText) }
+
+    func matches(_ r: InventoryRow, text: String) -> Bool {
+        matches(params: r.params, package: r.package, text: text, category: r.category, location: r.location,
+                tags: r.tags, manufacturer: r.manufacturer, isLow: r.isLow)
+    }
+}
+
+extension PartParams {
+    /// The package field fills in for a missing pkg parameter, for searching.
+    public func withPackage(_ package: String) -> PartParams {
+        var p = self
+        if p.pkg == nil || p.pkg!.isEmpty, !package.isEmpty { p.pkg = Values.normPackage(package).isEmpty ? package : Values.normPackage(package) }
+        return p
+    }
+}
+
+extension InventoryRow {
+    /// Every word searched by a text query, lowercased (the same fields as a part in the app).
+    public var searchText: String {
+        ([mpn, manufacturer, description, category, package, notes, location] + tags + suppliers.map(\.pn)).joined(separator: " ").lowercased()
+    }
+}

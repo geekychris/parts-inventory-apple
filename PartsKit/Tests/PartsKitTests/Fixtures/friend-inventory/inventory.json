@@ -1,0 +1,27 @@
+{
+  "schema": "gw-parts-inventory",
+  "version": 1,
+  "exportedAt": "2026-10-20T18:30:00.000Z",
+  "app": "parts-inventory",
+  "parts": [
+    {"id": "p-sam-1", "mpn": "LM358DR", "manufacturer": "Texas Instruments", "description": "IC OPAMP GP 2 CIRCUIT 8SOIC",
+     "category": "ICs/Analog", "package": "SOIC-8", "params": {"kind": "U"}, "qty": 25, "locationId": "l-bench",
+     "suppliers": [{"supplier": "digikey", "pn": "296-1395-1-ND", "url": "https://www.digikey.com/en/products/detail/texas-instruments/LM358DR/555797"}],
+     "datasheet": "https://www.ti.com/lit/ds/symlink/lm358.pdf", "tags": ["opamp"], "updated": 1760900000000},
+    {"id": "p-sam-2", "mpn": "RC0805FR-0710KL", "manufacturer": "Yageo", "description": "RES 10K OHM 1% 1/8W 0805",
+     "category": "Passives/Resistors", "package": "0805", "params": {"kind": "R", "value": 10000, "tol": 0.01, "power": 0.125, "pkg": "0805"},
+     "qty": 300, "locationId": "l-drawer", "tags": [], "updated": 1760800000000},
+    {"id": "p-sam-3", "mpn": "GRM188R71H104KA93D", "manufacturer": "Murata", "description": "CAP CER 0.1UF 50V X7R 0603",
+     "category": "Passives/Capacitors/Ceramic", "package": "0603", "params": {"kind": "C", "value": 1e-7, "voltage": 50, "dielectric": "X7R", "pkg": "0603"},
+     "qty": 2, "lowStock": 10, "locationId": "l-drawer", "updated": 1760700000000},
+    {"id": "p-sam-4", "mpn": "Raspberry Pi Pico", "manufacturer": "Raspberry Pi", "description": "RP2040 microcontroller board",
+     "category": "Boards", "qty": 0, "locationId": "l-shelf", "tags": ["rp2040", "lend-ok"], "updated": 1760600000000},
+    {"id": "p-sam-5", "mpn": "1N4148W", "manufacturer": "Diodes Inc", "description": "DIODE GEN PURP 100V 150MA SOD123",
+     "category": "Discretes/Diodes", "package": "SOD-123", "params": {"kind": "D"}, "qty": 100, "updated": 1760500000000}
+  ],
+  "locations": [
+    {"id": "l-bench", "name": "Workbench"},
+    {"id": "l-drawer", "parentId": "l-bench", "name": "Drawer 1"},
+    {"id": "l-shelf", "name": "Shelf"}
+  ]
+}
