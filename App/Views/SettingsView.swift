@@ -68,6 +68,7 @@ struct SettingsView: View {
             } header: { Text("Supplier lookups") } footer: {
                 Text("Free keys look part numbers up at Digi-Key and Mouser: stock, prices, datasheets and parameters. Digi-Key: sign in at [developer.digikey.com](https://developer.digikey.com), make an organisation, then a production app subscribed to Product Information V4. Mouser: sign in, then [mouser.com/api-hub](https://www.mouser.com/api-hub/) › Search API. Keys are kept in the Keychain.")
             }
+            FriendsSection()
             APISettingsSection()
             LabelPrinterSection()
             Section("Recognition") {

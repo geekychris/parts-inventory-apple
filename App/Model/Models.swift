@@ -68,27 +68,11 @@ final class Part {
     }
 
     func matches(_ q: PartQuery, defaultLow: Int = 0) -> Bool {
-        if q.hasParams && !q.matches(params.withPackage(package)) { return false }
-        let hay = searchText
-        if !q.text.allSatisfy(hay.contains) { return false }
-        if let c = q.category, !category.lowercased().contains(c) { return false }
-        if let l = q.location, !(location?.path.lowercased().contains(l) ?? false) { return false }
-        if let t = q.tag, !tags.contains(where: { $0.lowercased() == t }) { return false }
-        if let m = q.manufacturer, !manufacturer.lowercased().contains(m) { return false }
-        if q.lowOnly && !isLow(defaultLimit: defaultLow) { return false }
-        return true
+        q.matches(params: params, package: package, text: searchText, category: category, location: location?.path ?? "",
+                  tags: tags, manufacturer: manufacturer, isLow: isLow(defaultLimit: defaultLow))
     }
 
     var inventoryRef: InventoryRef { InventoryRef(id: uid, mpn: mpn, supplierPNs: suppliers.map(\.pn)) }
-}
-
-nonisolated extension PartParams {
-    /// The package field fills in for a missing pkg parameter, for searching.
-    func withPackage(_ package: String) -> PartParams {
-        var p = self
-        if p.pkg == nil || p.pkg!.isEmpty, !package.isEmpty { p.pkg = Values.normPackage(package).isEmpty ? package : Values.normPackage(package) }
-        return p
-    }
 }
 
 @Model

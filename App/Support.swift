@@ -14,7 +14,7 @@ typealias PlatformImage = NSImage
 /// App-wide state: the selected tab, and a photo handed from one screen to another.
 @Observable
 final class AppModel {
-    enum Tab: String, Hashable { case parts, scan, identify, batch, locations, projects, ask, settings }
+    enum Tab: String, Hashable { case parts, table, scan, identify, batch, locations, projects, ask, settings }
     var tab: Tab = .parts
     /// A photo for Identify to read (from Scan's "Identify what's in view").
     var photoForIdentify: Data?
