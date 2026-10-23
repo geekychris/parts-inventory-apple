@@ -9,6 +9,8 @@ import SwiftData
 ///   -identify <path>  identify the photo at a path
 ///   -batch <dir>      open Batch and queue every photo in a folder
 ///   -apiServer, -apiToken <t>, -apiPort <n>  start the API and MCP server for this run (read by APIService)
+///   -importFrom <dir>  merge a repository folder's inventory.json (as Import from folder… does)
+///   -exportTo <dir>   write the repository (with the options in Settings) to <dir>/repo, and parts.csv and parts.xlsx to <dir>
 ///   -supplierKeysFromEnv  save DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET and MOUSER_API_KEY from the environment
 ///                     as the supplier keys (so they needn't be typed into Settings)
 @MainActor
@@ -30,6 +32,24 @@ enum DebugLaunch {
                 .sorted { $0.lastPathComponent < $1.lastPathComponent }.compactMap { try? Data(contentsOf: $0) }
         }
         if let p = value("-identify"), let d = try? Data(contentsOf: URL(fileURLWithPath: p)) { app.tab = .identify; app.photoForIdentify = d }
+    }
+
+    /// -importFrom and -exportTo, run at launch whether or not a window opens.
+    static func exports(_ ctx: ModelContext) async {
+        let args = ProcessInfo.processInfo.arguments
+        func value(_ flag: String) -> String? { args.firstIndex(of: flag).flatMap { $0 + 1 < args.count ? args[$0 + 1] : nil } }
+        guard value("-importFrom") != nil || value("-exportTo") != nil else { return }
+        if args.contains("-demo"), (try? ctx.fetchCount(FetchDescriptor<Part>())) == 0 { demo(ctx) }
+        let c = ExportController()
+        c.ctx = ctx
+        if let dir = value("-importFrom") { print(c.importRepository(from: URL(fileURLWithPath: dir))) }
+        if let dir = value("-exportTo").map({ URL(fileURLWithPath: $0) }) {
+            let table = InventoryRow.table(InventoryRow.catalogueOrder(Inventory.backup(in: ctx, photos: false).rows(defaultLowStock: ExportController.defaultLowStock)))
+            try? CSV.data(table).write(to: dir.appending(path: "parts.csv"))
+            try? XLSX.data(table).write(to: dir.appending(path: "parts.xlsx"))
+            print(await c.writeRepository(to: dir.appending(path: "repo")))
+        }
+        fflush(stdout)
     }
 
     static func demo(_ ctx: ModelContext) {

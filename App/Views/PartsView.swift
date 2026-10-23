@@ -58,6 +58,7 @@ struct PartsView: View {
                         .help("Print a label for every part in the list as it’s filtered now (\(filtered.count))")
                         .disabled(filtered.isEmpty)
                 }
+                ToolbarItem { ExportMenu() }
                 ToolbarItem {
                     Button { addPart() } label: { Label("Add part", systemImage: "plus") }
                         .keyboardShortcut("n")

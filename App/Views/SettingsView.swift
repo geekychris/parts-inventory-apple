@@ -43,6 +43,7 @@ struct SettingsView: View {
             } header: { Text("Backup") } footer: {
                 Text("The same file as the web version (geekychris.github.io/tools/parts-inventory). Importing merges by id: new items are added, items in both keep the newer one, nothing is deleted.")
             }
+            ExportSettingsSection()
             Section {
                 Picker("Camera", selection: $cameraID) {
                     Text("Automatic").tag("")

@@ -16,6 +16,8 @@
 		164605E6A2104EA2FCE1F0FF /* IdentifyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A42D14D7FB47A436A90DC /* IdentifyModel.swift */; };
 		2359400FA062CADD005C720D /* ScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96C25B63332D9CD165B99A3 /* ScanView.swift */; };
 		28D4A78D16E28E974B33A958 /* PartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0859D5DD4D45CED4958375DC /* PartsView.swift */; };
+		29BF39C82F6BF0260DCDDC92 /* ExportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE97EF8EEA75EF456BE19E2B /* ExportTests.swift */; };
+		3A646406151CFE01B0D21BEA /* ExportMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05AD78CC6E90AD4112032B0 /* ExportMenu.swift */; };
 		4450230906EE86E0F9BB8F41 /* LabelPrinter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C93A8CD59E65D1EEE9B8FCA /* LabelPrinter.swift */; };
 		4EAA4E4417E2AFF0714FD7AC /* MasterDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6D9D50CA9725515978425 /* MasterDetail.swift */; };
 		5912792BDFE6DD9953347FE0 /* APITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A86E23E04B8E41783691F2B /* APITests.swift */; };
@@ -86,6 +88,7 @@
 		A25C92F78707912366A1B80E /* PartsInventoryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartsInventoryApp.swift; sourceTree = "<group>"; };
 		A92F8C5BD14E656AD31951CB /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		B70A42D14D7FB47A436A90DC /* IdentifyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifyModel.swift; sourceTree = "<group>"; };
+		C05AD78CC6E90AD4112032B0 /* ExportMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportMenu.swift; sourceTree = "<group>"; };
 		CC21E55EF9E184D2EA488E2D /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
 		D0D7F485C833A808C914C82C /* BatchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchModel.swift; sourceTree = "<group>"; };
 		D3C53ACBAA54819CBA63E53F /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
@@ -96,6 +99,7 @@
 		E0BEAA328937AA545FB1E40B /* DebugLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLaunch.swift; sourceTree = "<group>"; };
 		F01F96EF9819CB993F7C524B /* OpenAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAPI.swift; sourceTree = "<group>"; };
 		F96C25B63332D9CD165B99A3 /* ScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanView.swift; sourceTree = "<group>"; };
+		FE97EF8EEA75EF456BE19E2B /* ExportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				6A86E23E04B8E41783691F2B /* APITests.swift */,
+				FE97EF8EEA75EF456BE19E2B /* ExportTests.swift */,
 				DAE04B5A0AC431834D1C84F0 /* PipelineTests.swift */,
 			);
 			path = AppTests;
@@ -226,6 +231,7 @@
 				3A4E0F744D761C1CD4DFFE0D /* AskView.swift */,
 				D0D7F485C833A808C914C82C /* BatchModel.swift */,
 				4C19ABD01A7DCD2B8F9E856A /* BatchView.swift */,
+				C05AD78CC6E90AD4112032B0 /* ExportMenu.swift */,
 				B70A42D14D7FB47A436A90DC /* IdentifyModel.swift */,
 				4A8D8C8384100AA0451FE916 /* IdentifyView.swift */,
 				CC21E55EF9E184D2EA488E2D /* LocationsView.swift */,
@@ -358,6 +364,7 @@
 				74D116C4E458AE40ABF6120F /* Camera.swift in Sources */,
 				78CDFEEB85BFE2F79E589570 /* DebugLaunch.swift in Sources */,
 				12EF687019907F20AC783AF3 /* DeviceImport.swift in Sources */,
+				3A646406151CFE01B0D21BEA /* ExportMenu.swift in Sources */,
 				164605E6A2104EA2FCE1F0FF /* IdentifyModel.swift in Sources */,
 				014A8D2CB09EC6E09293AB8B /* IdentifyView.swift in Sources */,
 				5FA0E2A87818B3E804361FA3 /* Inventory.swift in Sources */,
@@ -389,6 +396,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5912792BDFE6DD9953347FE0 /* APITests.swift in Sources */,
+				29BF39C82F6BF0260DCDDC92 /* ExportTests.swift in Sources */,
 				F66D4FFBCC97B21754114C76 /* PipelineTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
