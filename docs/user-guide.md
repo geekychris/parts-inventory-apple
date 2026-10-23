@@ -94,7 +94,7 @@ There are five ways in, depending on what you have in your hand.
 
 ### A whole order: Import Order
 
-![Import Order: a Digi-Key order of six lines. Two add to parts already in stock (LM358DR, you have 4, in Cabinet A › Drawer 2 › Bin 3) and four are new parts. Each line has its quantity, unit price and Digi-Key number, above a location choice and Add 6 to Stock.](guide/order-import.png)
+![The items of a Digi-Key order: six lines, each with its maker, package, full description and links to its datasheet and Digi-Key page. Two add to parts already in stock (LM358DR, you have 4, in Cabinet A › Drawer 2 › Bin 3) and four are new. Each line has its quantity, unit price and Digi-Key number, above a location choice and Add 6 to Stock.](guide/order-import.png)
 
 When a Digi-Key, Mouser or LCSC order arrives, you can add everything in it at once instead of scanning
 each bag.
@@ -112,6 +112,9 @@ in Settings › **Supplier lookups**:
 
 **Save and test** checks that both work. Import Order then opens on **Your Orders**:
 - Choose Digi-Key or Mouser, and for Digi-Key how far back to look.
+
+![Your Orders: three Digi-Key orders, newest first, each with its date, sales order number, status, number of lines and parts, the first part numbers and the total, with a choice of how far back to look and Refresh and From a File.](guide/order-history.png)
+
 - Orders you've imported before are marked **Imported**.
 - Tick one or more orders, then click **Show Items**.
 
@@ -123,8 +126,10 @@ in Settings › **Supplier lookups**:
 CSV and Excel files both work. You can also select the table of parts on the order's web page, copy it,
 and paste it in.
 
-**2. Open Import Order:** **Import order** on the Parts toolbar, or File › **Import Supplier Order…**
-(⇧⌘O). Choose the file, drop it on the window, or click **Paste**.
+**2. Open Import Order:** the **Import order** button on the Parts toolbar (a box with an arrow, beside
+**Print all shown**), or File › **Import Supplier Order…**
+(⇧⌘O). If Digi-Key or Mouser is set up, it opens on **Your Orders**. Otherwise, or after clicking
+**From a File…**, choose the file, drop it on the window, or click **Paste**.
 
 **3. Check the lines.** While you look, the app looks up each item at Digi-Key and Mouser to show its full
 description, package and a datasheet link. Each line shows what will happen:
@@ -172,7 +177,7 @@ There are several ways to get the photo in:
 
 ### Many at once: Batch
 
-![Batch: four photos in the queue. The first is identified, with the quantity and Add & next.](screenshots/batch.png)
+![Batch: four photos in the queue. The first, an ATmega328P-PU, is a sure match, with its Digi-Key and Mouser listings, stock, prices and datasheet, and Add 1 to stock & next.](screenshots/batch.png)
 
 Batch is for clearing a pile of parts:
 1. Keep taking photos (**iPhone: Take Photo**, ⌘T on the Mac) or drop in a folder of pictures.

@@ -375,10 +375,16 @@ struct OrderImportView: View {
         }
     }
 
+    /// "1 line, 10 parts" / "4 lines, 37 parts".
+    static func count(_ o: SupplierOrder) -> String {
+        let n = o.lines.count, q = o.lines.reduce(0) { $0 + $1.qty }
+        return "\(n) line\(n == 1 ? "" : "s"), \(q) part\(q == 1 ? "" : "s")"
+    }
+
     func header(_ o: SupplierOrder) -> String {
         let who = Supplier.named(o.supplier ?? "")?.name ?? "Order"
         var s = o.number.isEmpty ? who : "\(who) order \(o.number)"
-        s += " — \(o.lines.count) lines, \(o.lines.reduce(0) { $0 + $1.qty }) parts"
+        s += " — " + Self.count(o)
         if imported.contains(o.number) { s += " — already imported once" }
         if !fileName.isEmpty { s += " — \(fileName)" }
         return s
@@ -450,7 +456,7 @@ struct OrderSummaryRow: View {
                 HStack(spacing: 6) {
                     if !order.status.isEmpty { Text(order.status) }
                     if let o = order.order {
-                        Text("· \(o.lines.count) lines, \(o.lines.reduce(0) { $0 + $1.qty }) parts")
+                        Text("· " + OrderImportView.count(o))
                         Text("· " + o.lines.prefix(3).map(\.partNumber).joined(separator: ", ") + (o.lines.count > 3 ? "…" : "")).lineLimit(1)
                     }
                 }

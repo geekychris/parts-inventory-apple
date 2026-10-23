@@ -150,6 +150,9 @@ struct PartDetailView: View {
         .sheet(isPresented: $lookingUp) {
             SupplierLookupView(query: part.mpn.isEmpty ? part.suppliers.first?.pn ?? "" : part.mpn) { Inventory.fill(part, from: $0) }
         }
+        #if DEBUG
+        .onAppear { if ProcessInfo.processInfo.arguments.contains("-printLabel") { printingLabel = true } }
+        #endif
         .onChange(of: part.mpn) { part.updated = .now }
         .onChange(of: part.partDescription) { part.updated = .now }
         .onChange(of: photoItem) { _, item in

@@ -17,6 +17,8 @@ with SwiftData and synced through your private iCloud database.
 | **Batch** — photo after photo, Return to add each and go on | **Labels** — NIIMBOT labels sized from what the printer reports |
 | ![Locations: a cabinet and its drawers in a tree, the selected drawer's photo and contents](docs/guide/locations.png) | ![The Table: facets beside a sortable table, with a part's page open](docs/guide/table.png) |
 | **Locations** — cabinets, shelves and drawers with photos; drag parts between them | **Table** — facets to drill down, friends' inventories beside yours |
+| ![Your Orders: Digi-Key orders listed by date with status, lines and totals](docs/guide/order-history.png) | ![An order's items, each looked up at Digi-Key with its description, package and datasheet](docs/guide/order-import.png) |
+| **Your Orders** — pick Digi-Key and Mouser orders straight from your order history | **Import Order** — each item looked up, matched to your stock, added in one go |
 
 ## What it does
 
@@ -294,7 +296,16 @@ Debug builds accept `-demo` (sample parts), `-memoryStore` (an in-memory store, 
 the friends list), `-tab identify` and `-identify <path>` at launch, `-friend "Sam=<address or /folder>"` (a friend
 for that run), `-tableFilter "category=Passives;source=Sam"`, `-tableSearch <q>`, `-tableSelect <part number>`,
 `-tableFriends`, `-importFrom <folder>` and `-exportTo <folder>` (Import from folder…, then the repository, CSV and
-Excel exports, without a window), and
+Excel exports, without a window). For screenshots, these set up a screen:
+- `-windowFrame "x,y,w,h"` sets the window's size and position. Add `-floatWindow` to keep it above other
+  windows. SwiftUI doesn't draw a window, or open a sheet in it, while the window is fully covered.
+- `-showPart <number>`, with `-printLabel` to open Print label too.
+- `-showLocation "Cabinet A / Drawer 2"`, with `-addLocation <kind>` to open the new-location sheet too.
+- `-locationPhoto "Cabinet A=<path>"` gives a location a photo.
+- `-importOrder <file>` opens Import Order on a file. `-orderHistory <file>` opens it on Your Orders, using
+  a saved Digi-Key order list.
+
+The full list is at the top of `App/DebugLaunch.swift`. The remaining options are
 `-apiServer` (start the API and MCP server for this run), `-apiToken <t>` and `-apiPort <n>`. The app's
 tests run against an in-memory store, never the real inventory; `APITests` drive the REST API and MCP
 over HTTP.

@@ -19,6 +19,8 @@ import AppKit
 ///   -importOrder <path>  open Import Supplier Order with that file
 ///   -orderHistory <path>  open Import Supplier Order on "Your Orders", listing the orders in a saved Digi-Key
 ///                     Order Status reply (GET /orderstatus/v4/orders) instead of asking Digi-Key
+///   -floatWindow      with -windowFrame: keep the window above others (for screenshots taken behind other apps)
+///   -printLabel       with -showPart: open Print label
 ///   -showPart <part number>  open a part in Parts
 ///   -windowFrame "x,y,w,h"  place the Mac window (from the top left of the main screen), for screenshots
 ///   -supplierKeysFromEnv  save DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET and MOUSER_API_KEY from the environment
@@ -43,6 +45,9 @@ enum DebugLaunch {
                     try? await Task.sleep(for: .milliseconds(600))
                     guard let w = NSApp.windows.first(where: { $0.isVisible && $0.canBecomeMain }), let screen = w.screen ?? NSScreen.main else { return }
                     w.setFrame(NSRect(x: n[0], y: screen.frame.maxY - n[1] - n[3], width: n[2], height: n[3]), display: true)
+                    // -floatWindow: keep it above other windows. SwiftUI holds back drawing (and sheets) in a window that is
+                    // fully covered, which a screenshot run behind other apps' windows always is.
+                    if args.contains("-floatWindow") { w.level = .floating; w.orderFrontRegardless() }
                 }
             }
         }
@@ -52,7 +57,7 @@ enum DebugLaunch {
             Task { try? await Task.sleep(for: .seconds(4)); app.importingOrder = true }  // once the window is up
         }
         if let p = value("-orderHistory"), let d = try? Data(contentsOf: URL(fileURLWithPath: p)), let r = try? DigiKeyAPI.parseOrders(d) {
-            OrderImportView.debugHistory = r.orders
+            OrderImportView.debugHistory = r.orders.sorted { ($0.date ?? .distantPast) > ($1.date ?? .distantPast) }
             Task { try? await Task.sleep(for: .seconds(4)); app.importingOrder = true }
         }
         if let mpn = value("-showPart") {
