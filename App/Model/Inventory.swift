@@ -119,6 +119,7 @@ enum Inventory {
         for name in segs {
             if let l = all.first(where: { $0.parent?.uid == parent?.uid && $0.name.lowercased() == name.lowercased() }) { parent = l; continue }
             let l = StorageLocation(name: name, parent: parent)
+            l.kind = LocationKind.guess(name: name)?.rawValue ?? ""
             ctx.insert(l)
             parent = l
         }
@@ -137,10 +138,10 @@ enum Inventory {
             let incoming = Date(jsTime: x.updated)
             if let l = locByUID[x.id] {
                 guard incoming > l.updated else { r.kept += 1; continue }
-                l.name = x.name; l.notes = x.notes; l.order = x.order; l.updated = incoming; r.updated += 1
+                l.name = x.name; l.notes = x.notes; l.order = x.order; l.kind = x.kind; l.updated = incoming; r.updated += 1
             } else {
                 let l = StorageLocation(uid: x.id, name: x.name)
-                l.notes = x.notes; l.order = x.order; l.created = Date(jsTime: x.created); l.updated = incoming
+                l.notes = x.notes; l.order = x.order; l.kind = x.kind; l.created = Date(jsTime: x.created); l.updated = incoming
                 ctx.insert(l); locByUID[x.id] = l; r.added += 1
             }
         }
@@ -210,7 +211,7 @@ enum Inventory {
         b.parts = parts.map(backupPart)
         b.locations = ((try? ctx.fetch(FetchDescriptor<StorageLocation>())) ?? []).map { l in
             var x = Backup.Location(id: l.uid, parentId: l.parent?.uid, name: l.name)
-            x.notes = l.notes; x.order = l.order; x.created = l.created.jsTime; x.updated = l.updated.jsTime
+            x.notes = l.notes; x.order = l.order; x.kind = l.kind; x.created = l.created.jsTime; x.updated = l.updated.jsTime
             return x
         }
         b.projects = ((try? ctx.fetch(FetchDescriptor<Project>())) ?? []).compactMap { pr in

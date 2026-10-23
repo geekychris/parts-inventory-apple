@@ -118,9 +118,11 @@ public struct Backup: Codable, Sendable {
         public var name: String
         public var notes: String = ""
         public var order: Double = 0
+        /// A `LocationKind` raw value ("cabinet", "shelf", …); empty when not set.
+        public var kind: String = ""
         public var created: Double = 0, updated: Double = 0
         public init(id: String, parentId: String? = nil, name: String) { self.id = id; self.parentId = parentId; self.name = name }
-        enum CodingKeys: String, CodingKey { case id, parentId, name, notes, order, created, updated }
+        enum CodingKeys: String, CodingKey { case id, parentId, name, notes, order, kind, created, updated }
         public init(from d: Decoder) throws {
             let c = try d.container(keyedBy: CodingKeys.self)
             id = try c.decode(String.self, forKey: .id)
@@ -129,8 +131,16 @@ public struct Backup: Codable, Sendable {
             name = n.trimmed.isEmpty ? "(unnamed)" : n
             notes = (try? c.decodeIfPresent(String.self, forKey: .notes)) ?? ""
             order = (try? c.decodeIfPresent(Double.self, forKey: .order)) ?? 0
+            kind = (try? c.decodeIfPresent(String.self, forKey: .kind)) ?? ""
             created = (try? c.decodeIfPresent(Double.self, forKey: .created)) ?? 0
             updated = (try? c.decodeIfPresent(Double.self, forKey: .updated)) ?? 0
+        }
+        public func encode(to e: Encoder) throws {
+            var c = e.container(keyedBy: CodingKeys.self)
+            try c.encode(id, forKey: .id); try c.encodeIfPresent(parentId, forKey: .parentId); try c.encode(name, forKey: .name)
+            try c.encode(notes, forKey: .notes); try c.encode(order, forKey: .order)
+            if !kind.isEmpty { try c.encode(kind, forKey: .kind) }
+            try c.encode(created, forKey: .created); try c.encode(updated, forKey: .updated)
         }
     }
 

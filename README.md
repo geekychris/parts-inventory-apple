@@ -1,5 +1,7 @@
 # Parts Inventory for iPhone, iPad and Mac
 
+<img src="docs/icon/icon.png" alt="The app icon: a parts cabinet with one orange drawer pulled out, beside a chip" width="128" align="right">
+
 A native SwiftUI version of the [parts inventory](https://geekychris.github.io/tools/parts-inventory/)
 web tool: keep track of electronic components, scan supplier bag labels, and identify a part from a
 photo — by the markings printed on it or, when there are none, by how it looks. The data is stored
@@ -76,6 +78,22 @@ with SwiftData and synced through your private iCloud database.
 - **Export and share** — CSV and Excel files, and a folder for a GitHub repository (below).
 - **API and MCP** — other programs can use the inventory while the app runs: a REST API and an MCP
   server for Claude Code and other assistants (below).
+
+## Locations
+
+Cabinets, shelves, drawers, bins and boxes, nested as deep as you like. **+** in the toolbar adds one
+inside the selected location or at the top level, and can make a run at once (Drawer 1 to Drawer 12).
+Typing `Cabinet A / Shelf 2 / Drawer 3` makes every level that's missing, and works out each kind from its name.
+
+- **Drag a part** from a location's list onto another location in the tree to move it there. Select
+  several parts first to move them together. Dropping parts on **Not stored anywhere** clears their location.
+- **Drag a location** onto another one to move it with everything inside it. A location can't be moved
+  into itself or into anything inside it.
+- **Move To** in the right-click menu (or a long press on iPhone and iPad) does the same without dragging.
+- A location's page sets its kind and notes. It also lists what's inside, and can show the parts in the
+  locations below as well.
+
+The kind is saved in backups as `kind` on each location. The web tool ignores it.
 
 ## Table
 

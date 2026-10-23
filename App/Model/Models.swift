@@ -81,6 +81,8 @@ final class StorageLocation {
     var name: String = ""
     var notes: String = ""
     var order: Double = 0
+    /// A `LocationKind` raw value; empty means work it out from the name.
+    var kind: String = ""
     var created: Date = Date.now
     var updated: Date = Date.now
     @Relationship(inverse: \StorageLocation.children) var parent: StorageLocation?
@@ -99,9 +101,23 @@ final class StorageLocation {
         return names.joined(separator: " › ")
     }
     var sortedChildren: [StorageLocation]? {
-        let c = (children ?? []).sorted { ($0.order, $0.name) < ($1.order, $1.name) }
+        let c = (children ?? []).sorted(by: StorageLocation.siblingOrder)
         return c.isEmpty ? nil : c
     }
+    var resolvedKind: LocationKind {
+        LocationKind.resolve(stored: kind, name: name, hasChildren: children?.isEmpty == false)
+    }
+
+    /// True when `other` is this location or sits somewhere inside it (so this can't be moved into it).
+    func contains(_ other: StorageLocation) -> Bool {
+        var seen = Set<String>(), l: StorageLocation? = other
+        while let x = l, seen.insert(x.uid).inserted { if x.uid == uid { return true }; l = x.parent }
+        return false
+    }
+
+    /// Every part here and in the locations inside.
+    var allParts: [Part] { (parts ?? []) + (children ?? []).flatMap(\.allParts) }
+
     /// Units stored here and below.
     var partCount: Int { (parts ?? []).count + (children ?? []).reduce(0) { $0 + $1.partCount } }
 }

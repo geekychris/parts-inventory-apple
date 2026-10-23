@@ -14,6 +14,7 @@
 		12EF687019907F20AC783AF3 /* DeviceImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD72FFC14CBF5789D290FDF /* DeviceImport.swift */; };
 		146C7AA107CF5FB7E9FEBA5B /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816C4BD5A80D2E5AD1A4B281 /* ProjectsView.swift */; };
 		164605E6A2104EA2FCE1F0FF /* IdentifyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A42D14D7FB47A436A90DC /* IdentifyModel.swift */; };
+		20AED1F9A0D614906AEC8CDF /* LocationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E200AAD00B6E61945EE86D /* LocationTests.swift */; };
 		2359400FA062CADD005C720D /* ScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96C25B63332D9CD165B99A3 /* ScanView.swift */; };
 		28D4A78D16E28E974B33A958 /* PartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0859D5DD4D45CED4958375DC /* PartsView.swift */; };
 		29BF39C82F6BF0260DCDDC92 /* ExportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE97EF8EEA75EF456BE19E2B /* ExportTests.swift */; };
@@ -48,6 +49,7 @@
 		D604BA215E4E15FCF1B3652F /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC21E55EF9E184D2EA488E2D /* LocationsView.swift */; };
 		E39F8534A15058993698375F /* FriendsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008EA8BF58B2C27872882AA2 /* FriendsStore.swift */; };
 		E929FC9484E7BB6385D2B8D5 /* LookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF03CF3008D07287FF07871 /* LookModel.swift */; };
+		ECE674D35BD6A113234717DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAF0F4162ABB546401B07090 /* Assets.xcassets */; };
 		EF19E95D0C24C787472E298A /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC2F913C26423D500071531 /* KeychainStore.swift */; };
 		F007EB84942CE15C77E6B048 /* APIRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB50B62AFA0B9ED59E3883B /* APIRoutes.swift */; };
 		F316434720FA2D619EFCD096 /* BatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C19ABD01A7DCD2B8F9E856A /* BatchView.swift */; };
@@ -94,11 +96,13 @@
 		8B6DA19CC8541C64206B33DE /* AppleIntelligence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleIntelligence.swift; sourceTree = "<group>"; };
 		8BB28DC90FF6E4166F212F0C /* FriendsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsSection.swift; sourceTree = "<group>"; };
 		8CF03CF3008D07287FF07871 /* LookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookModel.swift; sourceTree = "<group>"; };
+		95E200AAD00B6E61945EE86D /* LocationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTests.swift; sourceTree = "<group>"; };
 		9D353841A3CE5A517615AF25 /* Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support.swift; sourceTree = "<group>"; };
 		9E9536D91CEA62C7E5374BCA /* LabelRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelRenderer.swift; sourceTree = "<group>"; };
 		A1F80813E29D045B711A5F0B /* SupplierLookupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplierLookupView.swift; sourceTree = "<group>"; };
 		A25C92F78707912366A1B80E /* PartsInventoryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartsInventoryApp.swift; sourceTree = "<group>"; };
 		A92F8C5BD14E656AD31951CB /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
+		AAF0F4162ABB546401B07090 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B70A42D14D7FB47A436A90DC /* IdentifyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifyModel.swift; sourceTree = "<group>"; };
 		B88B4B0E65B6DF2317963330 /* TableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableTests.swift; sourceTree = "<group>"; };
 		C05AD78CC6E90AD4112032B0 /* ExportMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportMenu.swift; sourceTree = "<group>"; };
@@ -244,6 +248,7 @@
 			children = (
 				6A86E23E04B8E41783691F2B /* APITests.swift */,
 				FE97EF8EEA75EF456BE19E2B /* ExportTests.swift */,
+				95E200AAD00B6E61945EE86D /* LocationTests.swift */,
 				DAE04B5A0AC431834D1C84F0 /* PipelineTests.swift */,
 				B88B4B0E65B6DF2317963330 /* TableTests.swift */,
 			);
@@ -277,6 +282,7 @@
 		FDF838FBEE91E9BC7A004A80 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				AAF0F4162ABB546401B07090 /* Assets.xcassets */,
 				E0BEAA328937AA545FB1E40B /* DebugLaunch.swift */,
 				20F1E5ADBB4E178B045F9F02 /* PartsInventory.entitlements */,
 				A25C92F78707912366A1B80E /* PartsInventoryApp.swift */,
@@ -302,6 +308,7 @@
 			buildConfigurationList = C9CECA381BD4152807C10B76 /* Build configuration list for PBXNativeTarget "PartsInventory" */;
 			buildPhases = (
 				0EEF850795B5B87AF9A78D90 /* Sources */,
+				41C0C17515939ABC50EB9366 /* Resources */,
 				390C8FE16F3BD2E16ECBC1CD /* Frameworks */,
 			);
 			buildRules = (
@@ -378,6 +385,17 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		41C0C17515939ABC50EB9366 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ECE674D35BD6A113234717DB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0EEF850795B5B87AF9A78D90 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -432,6 +450,7 @@
 			files = (
 				5912792BDFE6DD9953347FE0 /* APITests.swift in Sources */,
 				29BF39C82F6BF0260DCDDC92 /* ExportTests.swift in Sources */,
+				20AED1F9A0D614906AEC8CDF /* LocationTests.swift in Sources */,
 				F66D4FFBCC97B21754114C76 /* PipelineTests.swift in Sources */,
 				BEDF32615DC0CF16E3D2CC22 /* TableTests.swift in Sources */,
 			);
