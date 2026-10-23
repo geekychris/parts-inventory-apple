@@ -73,6 +73,7 @@ with SwiftData and synced through your private iCloud database.
 - **Projects** — BOMs imported in the web tool, shown against stock (how many boards you can build).
 - **Backups** — import and export the web tool's JSON backup (`gw-parts-inventory` v1), so you can
   move between the two. Import merges by id; the newer copy of each item wins.
+- **Export and share** — CSV and Excel files, and a folder for a GitHub repository (below).
 - **API and MCP** — other programs can use the inventory while the app runs: a REST API and an MCP
   server for Claude Code and other assistants (below).
 
@@ -114,6 +115,33 @@ The last copy fetched is kept (Application Support/Friends), so the Table works 
 when the Table opens and the copy is more than an hour old, or with *Refresh*. Settings shows when each was
 last updated, or what went wrong (not found — check the address and that the repository is public; not an
 inventory file; no connection).
+
+## Export and share
+
+The **Export** menu (on the Parts toolbar; on the Mac also in the File menu):
+
+- **Export as CSV…** / **Export as Excel…** — every part (or, from a table, the parts it shows): MPN,
+  manufacturer, description, category, value, package, quantity, low-stock level, location, datasheet,
+  supplier part numbers, tags, notes and the date updated. The CSV is UTF-8 with a byte-order mark and
+  CRLF line ends, so Excel reads "Ω" and "±" correctly; the Excel file has a bold, frozen header row with
+  a filter, and numbers as numbers.
+- **Export to folder…** — the whole inventory as a folder for a git repository: a `README.md` with the
+  totals, the category tree and what's running low, a page per category, `parts.csv`, and
+  `inventory.json` for the app to read. On GitHub it reads as a browsable catalogue. The app remembers
+  the folder: **Export to "…" again** brings it up to date, changing only the files that differ and
+  removing pages that no longer apply; everything else in the folder (`.git`, a licence) is left alone.
+
+To share it on GitHub, export into a clone of a repository and push (the app doesn't run git itself):
+
+```sh
+git clone https://github.com/you/parts.git ~/parts      # once; then Export to folder… → ~/parts
+cd ~/parts && git add -A && git commit -m "Inventory" && git push
+```
+
+Settings › Export and share sets the inventory's name and whether to include projects and stock history
+(off by default — sharing is parts and locations only) and photos. **Import from folder…** reads such a
+folder's `inventory.json` and merges it the way importing a backup does. The format is in
+[docs/repository-format.md](docs/repository-format.md).
 
 ## API and MCP
 
@@ -226,8 +254,9 @@ The second runs the real pipeline (Vision, MobileCLIP, Apple Intelligence) on `c
 
 Debug builds accept `-demo` (sample parts), `-memoryStore` (an in-memory store, leaving the real inventory alone — and
 the friends list), `-tab identify` and `-identify <path>` at launch, `-friend "Sam=<address or /folder>"` (a friend
-for that run), `-tableFilter "category=Passives;source=Sam"`, `-tableSearch <q>`, `-tableSelect <part number>` and
-`-tableFriends`, and
+for that run), `-tableFilter "category=Passives;source=Sam"`, `-tableSearch <q>`, `-tableSelect <part number>`,
+`-tableFriends`, `-importFrom <folder>` and `-exportTo <folder>` (Import from folder…, then the repository, CSV and
+Excel exports, without a window), and
 `-apiServer` (start the API and MCP server for this run), `-apiToken <t>` and `-apiPort <n>`. The app's
 tests run against an in-memory store, never the real inventory; `APITests` drive the REST API and MCP
 over HTTP.
@@ -241,8 +270,8 @@ over HTTP.
   printing: the protocol, models and print jobs (`Niimbot.swift`), Bluetooth (`NiimbotBluetooth.swift`,
   with the `niimbot` command) and label layout and QR targets (`LabelLayout.swift`), the table's rows,
   facets and counts (`InventoryRow.swift`, `Facets.swift`), friends' inventory addresses and fetching
-  (`RemoteInventory.swift`), and the HTTP server,
-  request checks and MCP endpoint behind the API (`Server/`).
+  (`RemoteInventory.swift`), the exports: CSV, Excel (a small ZIP writer) and the repository folder with its
+  Markdown pages (`Export/`), and the HTTP server, request checks and MCP endpoint behind the API (`Server/`).
 - `App/` — the SwiftUI app: SwiftData models (`Model/`), Vision and Core ML (`Vision/`), Foundation
   Models (`Intelligence/`), label rendering and the printer screens (`Labels/`), the REST routes and MCP
   tools (`API/`), friends' inventories — the list, fetching and cache, and their screens (`Friends/`) — and

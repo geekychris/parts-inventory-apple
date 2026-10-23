@@ -15,6 +15,9 @@ struct PartsInventoryApp: App {
     init() {
         let schema = Schema(Schema1.models)
         defer { APIService.shared.attach(container) }
+        #if DEBUG
+        defer { let c = container; Task { await DebugLaunch.exports(c.mainContext) } }
+        #endif
         // Under XCTest the app is only the tests' host: keep its data in memory, away from the real inventory.
         // `-memoryStore` does the same for a run (with `-demo`, for screenshots).
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
@@ -55,6 +58,7 @@ struct PartsInventoryApp: App {
         WindowGroup {
             RootView()
                 .environment(app)
+                .exportPresenter()
                 #if os(macOS)
                 // File › Import from iPhone or iPad: a photo taken on the phone goes to Identify.
                 .importsItemProviders([.image]) { providers in
@@ -71,11 +75,11 @@ struct PartsInventoryApp: App {
         }
         .modelContainer(container)
         #if os(macOS)
-        .commands { ImportFromDevicesCommands() }
+        .commands { ImportFromDevicesCommands(); ExportCommands() }
         #endif
         #if os(macOS)
         Settings {
-            SettingsView().environment(app).modelContainer(container).frame(width: 520, height: 560)
+            SettingsView().exportPresenter().environment(app).modelContainer(container).frame(width: 520, height: 560)
         }
         #endif
     }

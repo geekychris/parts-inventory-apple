@@ -16,6 +16,8 @@
 		164605E6A2104EA2FCE1F0FF /* IdentifyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A42D14D7FB47A436A90DC /* IdentifyModel.swift */; };
 		2359400FA062CADD005C720D /* ScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96C25B63332D9CD165B99A3 /* ScanView.swift */; };
 		28D4A78D16E28E974B33A958 /* PartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0859D5DD4D45CED4958375DC /* PartsView.swift */; };
+		29BF39C82F6BF0260DCDDC92 /* ExportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE97EF8EEA75EF456BE19E2B /* ExportTests.swift */; };
+		3A646406151CFE01B0D21BEA /* ExportMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05AD78CC6E90AD4112032B0 /* ExportMenu.swift */; };
 		3E8759DEBAE25B248AD44682 /* InventoryTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32256B2D8E89BA597763B62A /* InventoryTableView.swift */; };
 		4450230906EE86E0F9BB8F41 /* LabelPrinter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C93A8CD59E65D1EEE9B8FCA /* LabelPrinter.swift */; };
 		4EAA4E4417E2AFF0714FD7AC /* MasterDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6D9D50CA9725515978425 /* MasterDetail.swift */; };
@@ -35,6 +37,7 @@
 		9DF761CC2C3E2A821BB1B277 /* PartsKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3BB728114BF9EADBA2B8B8B7 /* PartsKit */; };
 		9FEF4906DD1E096A0A3EF30A /* LabelRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9536D91CEA62C7E5374BCA /* LabelRenderer.swift */; };
 		AEDA4DBD8CA8A75A6D2CBAE8 /* BatchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D7F485C833A808C914C82C /* BatchModel.swift */; };
+		BADC8AB20BBF8C699EB8063C /* MobileCLIPImage.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = 17DE4E2872E8B89074DC7357 /* MobileCLIPImage.mlpackage */; };
 		BCB44D094379A79141A9580A /* OpenAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01F96EF9819CB993F7C524B /* OpenAPI.swift */; };
 		BEDF32615DC0CF16E3D2CC22 /* TableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88B4B0E65B6DF2317963330 /* TableTests.swift */; };
 		C19ED92AFD965FF6294A3975 /* InventoryTableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3227EEBE7BA5EF2750615F14 /* InventoryTableModel.swift */; };
@@ -67,6 +70,7 @@
 		07B293170D85B31D1D7A88BE /* PartDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartDetailView.swift; sourceTree = "<group>"; };
 		0859D5DD4D45CED4958375DC /* PartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartsView.swift; sourceTree = "<group>"; };
 		086E0862FA3075096E143368 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		17DE4E2872E8B89074DC7357 /* MobileCLIPImage.mlpackage */ = {isa = PBXFileReference; path = MobileCLIPImage.mlpackage; sourceTree = "<group>"; };
 		1CDE33F3C568DD95FE344797 /* PartsKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PartsKit; path = PartsKit; sourceTree = SOURCE_ROOT; };
 		1F02424F6D63B8E95BE197BF /* FacetColumn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetColumn.swift; sourceTree = "<group>"; };
 		20F1E5ADBB4E178B045F9F02 /* PartsInventory.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PartsInventory.entitlements; sourceTree = "<group>"; };
@@ -97,6 +101,7 @@
 		A92F8C5BD14E656AD31951CB /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		B70A42D14D7FB47A436A90DC /* IdentifyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifyModel.swift; sourceTree = "<group>"; };
 		B88B4B0E65B6DF2317963330 /* TableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableTests.swift; sourceTree = "<group>"; };
+		C05AD78CC6E90AD4112032B0 /* ExportMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportMenu.swift; sourceTree = "<group>"; };
 		CC21E55EF9E184D2EA488E2D /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
 		D0D7F485C833A808C914C82C /* BatchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchModel.swift; sourceTree = "<group>"; };
 		D3C53ACBAA54819CBA63E53F /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
@@ -108,6 +113,7 @@
 		E7493023D6B61E5C872A70A2 /* FriendPartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendPartView.swift; sourceTree = "<group>"; };
 		F01F96EF9819CB993F7C524B /* OpenAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAPI.swift; sourceTree = "<group>"; };
 		F96C25B63332D9CD165B99A3 /* ScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanView.swift; sourceTree = "<group>"; };
+		FE97EF8EEA75EF456BE19E2B /* ExportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +168,14 @@
 				1CDE33F3C568DD95FE344797 /* PartsKit */,
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		3E9A6FA7F31D199041EBC4F2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				17DE4E2872E8B89074DC7357 /* MobileCLIPImage.mlpackage */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		4455A3B0EC9FC731AEC6F3C6 /* Vision */ = {
@@ -229,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				6A86E23E04B8E41783691F2B /* APITests.swift */,
+				FE97EF8EEA75EF456BE19E2B /* ExportTests.swift */,
 				DAE04B5A0AC431834D1C84F0 /* PipelineTests.swift */,
 				B88B4B0E65B6DF2317963330 /* TableTests.swift */,
 			);
@@ -241,6 +256,7 @@
 				3A4E0F744D761C1CD4DFFE0D /* AskView.swift */,
 				D0D7F485C833A808C914C82C /* BatchModel.swift */,
 				4C19ABD01A7DCD2B8F9E856A /* BatchView.swift */,
+				C05AD78CC6E90AD4112032B0 /* ExportMenu.swift */,
 				1F02424F6D63B8E95BE197BF /* FacetColumn.swift */,
 				B70A42D14D7FB47A436A90DC /* IdentifyModel.swift */,
 				4A8D8C8384100AA0451FE916 /* IdentifyView.swift */,
@@ -270,6 +286,7 @@
 				02AD6006B05623FC265D5563 /* Intelligence */,
 				73DF8FD3E729ABC2706E4E54 /* Labels */,
 				6A33542D0BA3CB2A83CEBC63 /* Model */,
+				3E9A6FA7F31D199041EBC4F2 /* Resources */,
 				1C65366E645EF451AE33D79A /* Support */,
 				F3D2DDC15C1971732A5E9518 /* Views */,
 				4455A3B0EC9FC731AEC6F3C6 /* Vision */,
@@ -376,6 +393,7 @@
 				74D116C4E458AE40ABF6120F /* Camera.swift in Sources */,
 				78CDFEEB85BFE2F79E589570 /* DebugLaunch.swift in Sources */,
 				12EF687019907F20AC783AF3 /* DeviceImport.swift in Sources */,
+				3A646406151CFE01B0D21BEA /* ExportMenu.swift in Sources */,
 				D3CF36F7B418020487C3BA29 /* FacetColumn.swift in Sources */,
 				95EFB8BAB591BAE0D22C96E6 /* FriendPartView.swift in Sources */,
 				95A163843C3ED712ACBE730F /* FriendsSection.swift in Sources */,
@@ -393,6 +411,7 @@
 				D604BA215E4E15FCF1B3652F /* LocationsView.swift in Sources */,
 				E929FC9484E7BB6385D2B8D5 /* LookModel.swift in Sources */,
 				4EAA4E4417E2AFF0714FD7AC /* MasterDetail.swift in Sources */,
+				BADC8AB20BBF8C699EB8063C /* MobileCLIPImage.mlpackage in Sources */,
 				0D30EA867BFBDA109B77FA15 /* Models.swift in Sources */,
 				BCB44D094379A79141A9580A /* OpenAPI.swift in Sources */,
 				C3B3A1974A6FDD897564D9A2 /* PartDetailView.swift in Sources */,
@@ -412,6 +431,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5912792BDFE6DD9953347FE0 /* APITests.swift in Sources */,
+				29BF39C82F6BF0260DCDDC92 /* ExportTests.swift in Sources */,
 				F66D4FFBCC97B21754114C76 /* PipelineTests.swift in Sources */,
 				BEDF32615DC0CF16E3D2CC22 /* TableTests.swift in Sources */,
 			);
