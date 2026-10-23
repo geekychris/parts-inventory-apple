@@ -17,6 +17,12 @@ with SwiftData and synced through your private iCloud database.
 - **Parts** — a searchable inventory with the web tool's parametric search (`10k 0603 1%`,
   `100n 16V`, `cat:caps`, `loc:drawer`, `low`), stock changes with history, locations, suppliers,
   datasheets and photos.
+- **Table** — every part in a sortable table (Mac and iPad; a list on iPhone) with facets beside it:
+  category and location as trees, manufacturer, package, kind, stock (in stock, low, out) and tags, each
+  with counts, plus the same parametric search. Values in a facet OR together, facets AND; choices show
+  as removable chips. Your friends' inventories can sit beside yours (below).
+- **Friends' inventories** — a friend's published inventory (a GitHub repository with `inventory.json`)
+  shows in the Table beside yours, read-only, with a *Copy request* to ask to borrow some.
 - **Scan** — Digi-Key, Mouser (ECIA format 06 Data Matrix) and LCSC (QR) bag labels, live with the
   camera, from a photo, or typed in by a USB scanner. A bag adds stock to the matching part or makes
   a new one.
@@ -69,6 +75,45 @@ with SwiftData and synced through your private iCloud database.
   move between the two. Import merges by id; the newer copy of each item wins.
 - **API and MCP** — other programs can use the inventory while the app runs: a REST API and an MCP
   server for Claude Code and other assistants (below).
+
+## Table
+
+The **Table** section lists every part with columns for part number, manufacturer, description, category,
+value, package, quantity, location, last change and — with friends' inventories shown — whose it is. Click
+a heading to sort; drag to reorder or resize, and right-click a heading to hide columns (remembered).
+
+The facets on the left narrow it down. Each value shows how many parts it would show given everything
+else chosen; ticking several values in one facet shows any of them, and facets combine. Category and
+location are trees: ticking *Passives* includes *Passives › Resistors* and everything else below it. The
+chosen values sit above the table as chips — click one to remove it, or *Clear all*. The search field takes
+the same queries as Parts (`10k 0603 1%`, `cat:caps`, `loc:drawer`, `low`) and works together with the facets.
+
+Selecting one of your parts opens its page beside the table, editable as in Parts. On iPhone the table is
+a list, with the facets under the filter button.
+
+## Friends' inventories
+
+Settings › **Friends' inventories** (or *Friends…* in the Table's Source facet) › *Add a friend…*: a name
+and either
+
+- a web address — `https://github.com/sam/parts` (the repository's default branch), a folder in a repository
+  (`https://github.com/sam/stuff/tree/main/parts`), a link to the file itself (`…/blob/main/inventory.json`
+  or a `raw.githubusercontent.com` link), or any other web address of a folder or `.json` file; or
+- a folder on this device holding `inventory.json` (say a clone of their repository).
+
+The repository needs `inventory.json` at its root (or in the folder named): the same backup file as
+*Export a backup*, which the inventory repository export writes. It must be public — the app doesn't sign
+in to GitHub.
+
+Their parts then appear in the Table with a Source facet (*Mine*, *Sam*, …) to show one or several
+inventories. A friend's part opens read-only: what it is, how many they have and where, datasheet and
+supplier links, and *Copy request*, which copies "Could I borrow 2 × LM358DR (…)? Your inventory has it
+in …" to paste into a message. Nothing of theirs is ever changed or copied into your inventory.
+
+The last copy fetched is kept (Application Support/Friends), so the Table works offline. It's fetched again
+when the Table opens and the copy is more than an hour old, or with *Refresh*. Settings shows when each was
+last updated, or what went wrong (not found — check the address and that the repository is public; not an
+inventory file; no connection).
 
 ## API and MCP
 
@@ -179,7 +224,10 @@ TEST_RUNNER_TEST_PHOTOS_DIR=/path/to/photos \
 The second runs the real pipeline (Vision, MobileCLIP, Apple Intelligence) on `chip.jpg`, `pot.jpg`,
 `stepper.jpg` and `tact.jpg` in that folder.
 
-Debug builds accept `-demo` (sample parts), `-memoryStore` (an in-memory store, leaving the real inventory alone), `-tab identify` and `-identify <path>` at launch, and
+Debug builds accept `-demo` (sample parts), `-memoryStore` (an in-memory store, leaving the real inventory alone — and
+the friends list), `-tab identify` and `-identify <path>` at launch, `-friend "Sam=<address or /folder>"` (a friend
+for that run), `-tableFilter "category=Passives;source=Sam"`, `-tableSearch <q>`, `-tableSelect <part number>` and
+`-tableFriends`, and
 `-apiServer` (start the API and MCP server for this run), `-apiToken <t>` and `-apiPort <n>`. The app's
 tests run against an in-memory store, never the real inventory; `APITests` drive the REST API and MCP
 over HTTP.
@@ -191,11 +239,15 @@ over HTTP.
   `tools/export-catalog.sh`), marking matching and ranking, look scoring, the backup format, and the
   Digi-Key and Mouser clients (`SupplierAPI.swift`, with the `partlookup` command), NIIMBOT
   printing: the protocol, models and print jobs (`Niimbot.swift`), Bluetooth (`NiimbotBluetooth.swift`,
-  with the `niimbot` command) and label layout and QR targets (`LabelLayout.swift`), and the HTTP server,
+  with the `niimbot` command) and label layout and QR targets (`LabelLayout.swift`), the table's rows,
+  facets and counts (`InventoryRow.swift`, `Facets.swift`), friends' inventory addresses and fetching
+  (`RemoteInventory.swift`), and the HTTP server,
   request checks and MCP endpoint behind the API (`Server/`).
 - `App/` — the SwiftUI app: SwiftData models (`Model/`), Vision and Core ML (`Vision/`), Foundation
   Models (`Intelligence/`), label rendering and the printer screens (`Labels/`), the REST routes and MCP
-  tools (`API/`) and the other screens (`Views/`).
+  tools (`API/`), friends' inventories — the list, fetching and cache, and their screens (`Friends/`) — and
+  the other screens (`Views/`, the table in `InventoryTableView.swift`, `InventoryTableModel.swift` and
+  `FacetColumn.swift`).
 - `tools/` — `make-clip-embeddings.py` (text embeddings for the look labels, and the image encoder)
   and `export-catalog.sh`.
 

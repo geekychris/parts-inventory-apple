@@ -20,6 +20,6 @@ let package = Package(
         // Find and read NIIMBOT printers from a terminal (it never prints): `swift run niimbot --info`.
         .executableTarget(name: "niimbot", dependencies: ["PartsKit"],
                           linkerSettings: [.unsafeFlags(["-Xlinker", "-sectcreate", "-Xlinker", "__TEXT", "-Xlinker", "__info_plist", "-Xlinker", infoPlist])]),
-        .testTarget(name: "PartsKitTests", dependencies: ["PartsKit"]),
+        .testTarget(name: "PartsKitTests", dependencies: ["PartsKit"], resources: [.copy("Fixtures")]),
     ]
 )

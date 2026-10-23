@@ -87,7 +87,7 @@ struct RootView: View {
 
     /// The sections, in sidebar order.
     static let sections: [(tab: AppModel.Tab, title: String, icon: String)] = [
-        (.parts, "Parts", "shippingbox"), (.scan, "Scan", "barcode.viewfinder"), (.identify, "Identify", "camera.viewfinder"),
+        (.parts, "Parts", "shippingbox"), (.table, "Table", "tablecells"), (.scan, "Scan", "barcode.viewfinder"), (.identify, "Identify", "camera.viewfinder"),
         (.batch, "Batch", "square.stack.3d.down.right"), (.locations, "Locations", "archivebox"),
         (.projects, "Projects", "list.bullet.clipboard"), (.ask, "Ask", "apple.intelligence"),
     ]
@@ -95,6 +95,7 @@ struct RootView: View {
     @ViewBuilder func section(_ tab: AppModel.Tab) -> some View {
         switch tab {
         case .parts: PartsView()
+        case .table: InventoryTableView()
         case .scan: ScanView()
         case .identify: IdentifyView()
         case .batch: BatchView()
