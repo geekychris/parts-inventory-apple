@@ -29,8 +29,11 @@ with SwiftData and synced through your private iCloud database.
   as removable chips. Your friends' inventories can sit beside yours (below).
 - **Friends' inventories** — a friend's published inventory (a GitHub repository with `inventory.json`)
   shows in the Table beside yours, read-only, with a *Copy request* to ask to borrow some.
-- **Import Order** — a whole Digi-Key, Mouser or LCSC order at once, from the CSV or Excel file their
-  order history downloads (or the order's table copied from their website). Each line shows whether it
+- **Import Order** — whole Digi-Key and Mouser orders at once, picked from your order history through
+  their APIs. For Digi-Key that's Order Status v4, using the app's client credentials plus your account
+  number (`X-DIGIKEY-Account-ID`). For Mouser it's the Order History API, with its own key. It also takes
+  the CSV or Excel file an order history downloads, LCSC's included, or the order's table copied from the
+  website. Each line shows whether it
   adds to a part you have or makes a new one. The ticked lines go into stock with the order number in the
   history, the price paid and the supplier's part number. New parts can be filled in from the supplier APIs.
 - **Scan** — Digi-Key, Mouser (ECIA format 06 Data Matrix) and LCSC (QR) bag labels, live with the
@@ -229,6 +232,10 @@ history ("API — <note>"), and everything syncs through iCloud like any other e
 
 Requires Xcode 26 (iOS, iPadOS and macOS 26), [XcodeGen](https://github.com/yonaskolb/XcodeGen) and
 [uv](https://docs.astral.sh/uv/).
+
+`tools/build-mac.sh [--run]` builds a Mac app to run on this Mac without a provisioning profile. It's
+signed with your Apple Development certificate, so the signature stays the same between builds and
+the Keychain's "Always Allow" sticks. It has no iCloud, so run it with `-localStore`.
 
 ```sh
 uv run tools/make-clip-embeddings.py --download-dir /tmp/mobileclip   # fetches the look model (~68 MB, not in git)

@@ -20,6 +20,8 @@ struct SettingsView: View {
     @State private var dkID = ""
     @State private var dkSecret = ""
     @State private var mouserKey = ""
+    @State private var dkAccount = ""
+    @State private var mouserOrderKey = ""
     @State private var keyTest: [String: String?] = [:]
     @State private var testing = false
 
@@ -57,17 +59,19 @@ struct SettingsView: View {
                 TextField("Digi-Key client ID", text: $dkID).autocorrectionDisabled()
                 SecureField("Digi-Key client secret", text: $dkSecret)
                 SecureField("Mouser Search API key", text: $mouserKey)
+                TextField("Digi-Key account number (for your orders)", text: $dkAccount).autocorrectionDisabled()
+                SecureField("Mouser Order History API key (for your orders)", text: $mouserOrderKey)
                 HStack {
                     Button(testing ? "Testing…" : "Save and test") { Task { await saveAndTest() } }
-                        .disabled(testing || !keysChanged && dkID.isEmpty && mouserKey.isEmpty)
+                        .disabled(testing || !keysChanged && dkID.isEmpty && mouserKey.isEmpty && mouserOrderKey.isEmpty)
                     if testing { ProgressView().controlSize(.small) }
                 }
                 ForEach(keyTest.sorted { $0.key < $1.key }, id: \.key) { id, err in
-                    Label(err ?? "\(Supplier.named(id)?.name ?? id) works", systemImage: err == nil ? "checkmark.circle" : "exclamationmark.triangle")
+                    Label(err ?? "\(id.hasSuffix(" orders") ? "\(Supplier.named(String(id.dropLast(7)))?.name ?? id) order history" : Supplier.named(id)?.name ?? id) works", systemImage: err == nil ? "checkmark.circle" : "exclamationmark.triangle")
                         .foregroundStyle(err == nil ? .green : .orange).font(.callout)
                 }
             } header: { Text("Supplier lookups") } footer: {
-                Text("Free keys look part numbers up at Digi-Key and Mouser: stock, prices, datasheets and parameters. Digi-Key: sign in at [developer.digikey.com](https://developer.digikey.com), make an organisation, then a production app subscribed to Product Information V4. Mouser: sign in, then [mouser.com/api-hub](https://www.mouser.com/api-hub/) › Search API. Keys are kept in the Keychain.")
+                Text("Free keys look part numbers up at Digi-Key and Mouser: stock, prices, datasheets and parameters. Digi-Key: sign in at [developer.digikey.com](https://developer.digikey.com), make an organisation, then a production app subscribed to Product Information V4. Mouser: sign in, then [mouser.com/api-hub](https://www.mouser.com/api-hub/) › Search API. To pick from your past orders in Import Order: subscribe the Digi-Key app to Order Status too and give your account number (My Account on digikey.com); for Mouser, request the Order History API key on the same page. Keys are kept in the Keychain.")
             }
             FriendsSection()
             APISettingsSection()
@@ -85,6 +89,7 @@ struct SettingsView: View {
         .task {
             let k = SupplierKeys.shared
             dkID = k.digikeyID; dkSecret = k.digikeySecret; mouserKey = k.mouserKey
+            dkAccount = k.digikeyAccount; mouserOrderKey = k.mouserOrderKey
         }
         .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { r in
             guard case .success(let url) = r else { return }
@@ -104,12 +109,22 @@ struct SettingsView: View {
     var keysChanged: Bool {
         let k = SupplierKeys.shared
         return dkID != k.digikeyID || dkSecret != k.digikeySecret || mouserKey != k.mouserKey
+            || dkAccount != k.digikeyAccount || mouserOrderKey != k.mouserOrderKey
     }
 
     func saveAndTest() async {
-        SupplierKeys.shared.save(digikeyID: dkID, digikeySecret: dkSecret, mouserKey: mouserKey)
+        let keys = SupplierKeys.shared
+        keys.save(digikeyID: dkID, digikeySecret: dkSecret, mouserKey: mouserKey, digikeyAccount: dkAccount, mouserOrderKey: mouserOrderKey)
         testing = true
-        keyTest = await SupplierKeys.shared.lookup.test()
+        keyTest = await keys.lookup.test()
+        if keys.canListDigiKeyOrders {
+            do { _ = try await keys.digikeyOrders(since: .now.addingTimeInterval(-30 * 86_400)); keyTest["digikey orders"] = .some(nil) }
+            catch { keyTest["digikey orders"] = error.localizedDescription }
+        }
+        if keys.canListMouserOrders {
+            do { _ = try await keys.mouserOrders.orders(); keyTest["mouser orders"] = .some(nil) }
+            catch { keyTest["mouser orders"] = error.localizedDescription }
+        }
         testing = false
     }
 

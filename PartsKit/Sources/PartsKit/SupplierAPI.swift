@@ -81,15 +81,15 @@ public struct SupplierError: LocalizedError, Sendable, Equatable {
 
 typealias JSON = [String: Any]
 
-private func object(_ data: Data) -> Any? { try? JSONSerialization.jsonObject(with: data) }
-private func str(_ v: Any?) -> String {
+func object(_ data: Data) -> Any? { try? JSONSerialization.jsonObject(with: data) }
+func str(_ v: Any?) -> String {
     switch v {
     case let s as String: return s.trimmingCharacters(in: .whitespacesAndNewlines)
     case let n as NSNumber: return n.stringValue
     default: return ""
     }
 }
-private func num(_ v: Any?) -> Double? {
+func num(_ v: Any?) -> Double? {
     switch v {
     case let n as NSNumber: return n.doubleValue
     case let s as String: return money(s)
@@ -238,7 +238,7 @@ public actor DigiKeyClient {
         return try DigiKeyAPI.parseKeyword(try await call("POST", "/products/v4/search/keyword", body: body))
     }
 
-    private func call(_ method: String, _ path: String, body: Data? = nil, retry: Bool = true) async throws -> Data {
+    func call(_ method: String, _ path: String, body: Data? = nil, headers: [String: String] = [:], retry: Bool = true) async throws -> Data {
         var req = URLRequest(url: URL(string: DigiKeyAPI.host.absoluteString + path)!)
         req.httpMethod = method
         req.httpBody = body
@@ -249,9 +249,10 @@ public actor DigiKeyClient {
         req.setValue("USD", forHTTPHeaderField: "X-DIGIKEY-Locale-Currency")
         req.setValue("application/json", forHTTPHeaderField: "Accept")
         if body != nil { req.setValue("application/json", forHTTPHeaderField: "Content-Type") }
+        for (k, v) in headers { req.setValue(v, forHTTPHeaderField: k) }
         let (data, resp) = try await session.data(for: req)
         let status = (resp as? HTTPURLResponse)?.statusCode ?? 0
-        if status == 401, retry { token = nil; return try await call(method, path, body: body, retry: false) }
+        if status == 401, retry { token = nil; return try await call(method, path, body: body, headers: headers, retry: false) }
         guard (200..<300).contains(status) else { throw failure(data, status: status) }
         return data
     }

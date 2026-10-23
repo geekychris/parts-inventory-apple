@@ -99,7 +99,23 @@ There are five ways in, depending on what you have in your hand.
 When a Digi-Key, Mouser or LCSC order arrives, you can add everything in it at once instead of scanning
 each bag.
 
-**1. Get the order:**
+**1. Get the order.** There are two ways.
+
+**Straight from Digi-Key or Mouser.** Import Order can list your orders itself once you've added two things
+in Settings › **Supplier lookups**:
+- **Digi-Key account number.** It's on any invoice, or under My Account on digikey.com. On
+  [developer.digikey.com](https://developer.digikey.com), your app must also be subscribed to
+  **Order Status** as well as Product Information. The client ID and secret you already use for lookups
+  then read your orders. There's nothing else to sign in to.
+- **Mouser Order History API key.** Request it at [mouser.com/api-hub](https://www.mouser.com/api-hub/).
+  It's a different key from the Search API one.
+
+**Save and test** checks that both work. Import Order then opens on **Your Orders**:
+- Choose Digi-Key or Mouser, and for Digi-Key how far back to look.
+- Orders you've imported before are marked **Imported**.
+- Tick one or more orders, then click **Show Items**.
+
+**Or from a downloaded file:**
 - **Digi-Key:** sign in › Order History › open the order › **Download**.
 - **Mouser:** sign in › Order History › open the order › **Export**.
 - **LCSC:** Orders › the order › **Export**.
@@ -110,7 +126,8 @@ and paste it in.
 **2. Open Import Order:** **Import order** on the Parts toolbar, or File › **Import Supplier Order…**
 (⇧⌘O). Choose the file, drop it on the window, or click **Paste**.
 
-**3. Check the lines.** Each line shows what will happen:
+**3. Check the lines.** While you look, the app looks up each item at Digi-Key and Mouser to show its full
+description, package and a datasheet link. Each line shows what will happen:
 - **Adds to …** — a part you already have, matched by the supplier's part number or the maker's
   number. The app shows how many you have now and where they are.
 - **New part** — a new part will be made.
@@ -123,8 +140,7 @@ from Digi-Key and Mouser (datasheet, package, parameters).
 - gets the price you paid;
 - gets the supplier's part number. **Look up online** and the bag labels then find it by that number.
 
-The app can't fetch your orders from Digi-Key or Mouser itself. Their order APIs need a separate sign-in
-or key that the app doesn't have. So you download the file and the app reads it.
+Without the account number or the Order History key, download the order file instead.
 
 ### From a supplier's bag: Scan
 
@@ -385,7 +401,7 @@ On the Mac, Settings is under **e-Parts Inventory Manager › Settings…** (⌘
 | **Backup** | Import or export a backup file, with or without photos |
 | **Export and share** | The shared inventory's name, and what a shared export includes |
 | **Camera** | Which camera Scan, Identify and Batch use (the Mac's, a USB webcam or microscope, or an iPhone) |
-| **Supplier lookups** | Free Digi-Key and Mouser API keys for **Look up online**. They're kept in the Keychain |
+| **Supplier lookups** | Free Digi-Key and Mouser API keys for **Look up online**. Also your Digi-Key account number and a Mouser Order History key, for listing your orders in Import Order. They're kept in the Keychain |
 | **Friends' inventories** | Your friends' inventories |
 | **API & MCP** | Lets other programs (Claude Code and other AI assistants) use your inventory while the app runs. Off until you turn it on. See the [README](../README.md#api-and-mcp) |
 | **Label printer** | The NIIMBOT printer, the label layout, and whether to print a label for each new part |

@@ -84,11 +84,11 @@ enum Inventory {
 
     /// Bring an order's lines into stock, as scanning each bag would: matching parts get the quantity added,
     /// the rest become new parts (in `location`), with the description and the price paid. Returns the parts
-    /// made, so they can be looked up.
+    /// made, so they can be looked up, and the part each line went to.
     @discardableResult
     static func receive(_ order: SupplierOrder, lines: [SupplierOrder.Line], location: StorageLocation?, in ctx: ModelContext)
-        -> (added: Int, updated: Int, newParts: [Part]) {
-        var updated = 0, made: [Part] = []
+        -> (added: Int, updated: Int, newParts: [Part], parts: [Int: Part]) {
+        var updated = 0, made: [Part] = [], byLine: [Int: Part] = [:]
         for line in lines where line.qty > 0 {
             var label = BagLabel.blank()
             label.supplier = line.supplier ?? order.supplier
@@ -104,9 +104,22 @@ enum Inventory {
                 p.prices = prices
             }
             if r.isNew { made.append(p) } else { updated += 1 }
+            byLine[line.id] = p
         }
         try? ctx.save()
-        return (made.count, updated, made)
+        return (made.count, updated, made, byLine)
+    }
+
+    /// The order numbers already brought in (their stock changes say "order <number>").
+    static func importedOrders(in ctx: ModelContext) -> Set<String> {
+        let d = FetchDescriptor<StockChange>(predicate: #Predicate { $0.reason.contains("order ") })
+        var out = Set<String>()
+        for c in (try? ctx.fetch(d)) ?? [] {
+            guard let r = c.reason.range(of: "order ", options: .backwards) else { continue }
+            let n = c.reason[r.upperBound...].prefix { !$0.isWhitespace }
+            if !n.isEmpty { out.insert(String(n)) }
+        }
+        return out
     }
 
     /// A new part from an identified candidate, with the photo it came from.

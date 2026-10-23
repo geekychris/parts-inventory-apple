@@ -38,4 +38,20 @@ import PartsKit
     #expect(reg.tags == ["ordered"])
     #expect(reg.prices.first?.currency == "USD")
     #expect(reg.history?.first?.reason.hasPrefix("Order") == true)
+    #expect(r.parts[order.lines[1].id]?.uid == reg.uid)
+}
+
+/// Orders already brought in are recognised by the number in their stock changes.
+@MainActor
+@Test func importedOrdersAreKnown() throws {
+    let schema = Schema(Schema1.models)
+    let ctx = ModelContext(try ModelContainer(for: schema, configurations: ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)))
+    var order = SupplierOrder(supplier: "digikey")
+    order.number = "87654321"
+    var line = SupplierOrder.Line(id: 0, supplier: "digikey")
+    line.spn = "296-1395-1-ND"; line.mpn = "LM358DR"; line.qty = 5
+    order.lines = [line]
+    #expect(Inventory.importedOrders(in: ctx).isEmpty)
+    Inventory.receive(order, lines: order.lines, location: nil, in: ctx)
+    #expect(Inventory.importedOrders(in: ctx) == ["87654321"])
 }
