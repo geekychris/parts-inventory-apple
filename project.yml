@@ -44,11 +44,12 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.hitorro.PartsInventory
-        PRODUCT_NAME: Parts Inventory
+        PRODUCT_NAME: e-Parts Inventory Manager
+        PRODUCT_MODULE_NAME: Parts_Inventory
         TARGETED_DEVICE_FAMILY: "1,2"
         SUPPORTS_MACCATALYST: NO
         ENABLE_HARDENED_RUNTIME: YES
-        INFOPLIST_KEY_CFBundleDisplayName: Parts Inventory
+        INFOPLIST_KEY_CFBundleDisplayName: e-Parts Inventory Manager
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.productivity
         INFOPLIST_KEY_NSCameraUsageDescription: "The camera scans bag labels and photographs parts to identify them."
         INFOPLIST_KEY_NSLocalNetworkUsageDescription: "The app's API and MCP server can answer other devices on your network when you allow it in Settings."
@@ -71,7 +72,7 @@ targets:
       base:
         GENERATE_INFOPLIST_FILE: YES
         SWIFT_DEFAULT_ACTOR_ISOLATION: nonisolated
-        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Parts Inventory.app/Contents/MacOS/Parts Inventory"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/e-Parts Inventory Manager.app/Contents/MacOS/e-Parts Inventory Manager"
         BUNDLE_LOADER: "$(TEST_HOST)"
 schemes:
   PartsInventory:

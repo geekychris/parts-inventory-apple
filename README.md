@@ -1,6 +1,8 @@
-# Parts Inventory for iPhone, iPad and Mac
+# e-Parts Inventory Manager for iPhone, iPad and Mac
 
 <img src="docs/icon/icon.png" alt="The app icon: a parts cabinet with one orange drawer pulled out, beside a chip" width="128" align="right">
+
+**[User guide](docs/user-guide.md)** — how to use the app, with screenshots.
 
 A native SwiftUI version of the [parts inventory](https://geekychris.github.io/tools/parts-inventory/)
 web tool: keep track of electronic components, scan supplier bag labels, and identify a part from a
@@ -13,6 +15,8 @@ with SwiftData and synced through your private iCloud database.
 | **Parts** — search, stock, locations, suppliers and a label for each part | **Identify** — the markings on a photo matched to a part |
 | ![Batch add: a queue of photos, each identified and ready to add](docs/screenshots/batch.png) | ![Print label: a preview of a 30 × 12 mm NIIMBOT label with layout and size](docs/screenshots/print-label.png) |
 | **Batch** — photo after photo, Return to add each and go on | **Labels** — NIIMBOT labels sized from what the printer reports |
+| ![Locations: a cabinet and its drawers in a tree, the selected drawer's photo and contents](docs/guide/locations.png) | ![The Table: facets beside a sortable table, with a part's page open](docs/guide/table.png) |
+| **Locations** — cabinets, shelves and drawers with photos; drag parts between them | **Table** — facets to drill down, friends' inventories beside yours |
 
 ## What it does
 

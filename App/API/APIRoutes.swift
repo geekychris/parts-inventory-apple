@@ -8,7 +8,7 @@ extension InventoryAPI {
 
     private static let routes: [Route] = [
         ("GET", RoutePattern("/api/health"), { _, _, _ in
-            .json(.object(["ok": .bool(true), "app": .string("Parts Inventory"), "version": .string(APIService.appVersion)]))
+            .json(.object(["ok": .bool(true), "app": .string("e-Parts Inventory Manager"), "version": .string(APIService.appVersion)]))
         }),
         ("GET", RoutePattern("/api/openapi.json"), { _, _, _ in
             HTTPResponse(status: 200, headers: [("Content-Type", "application/json; charset=utf-8")], body: Data(OpenAPI.document.utf8))

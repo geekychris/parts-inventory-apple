@@ -2,6 +2,9 @@
 import Foundation
 import PartsKit
 import SwiftData
+#if os(macOS)
+import AppKit
+#endif
 
 /// Launch options for development and screenshots:
 ///   -demo             add a few sample parts and locations when the inventory is empty
@@ -13,6 +16,8 @@ import SwiftData
 ///   -importFrom <dir>  merge a repository folder's inventory.json (as Import from folder… does)
 ///   -exportTo <dir>   write the repository (with the options in Settings) to <dir>/repo, and parts.csv and parts.xlsx to <dir>
 ///   -locationPhoto "Cabinet A=<path>"  set a location's photo (the location is made if it's missing)
+///   -showPart <part number>  open a part in Parts
+///   -windowFrame "x,y,w,h"  place the Mac window (from the top left of the main screen), for screenshots
 ///   -supplierKeysFromEnv  save DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET and MOUSER_API_KEY from the environment
 ///                     as the supplier keys (so they needn't be typed into Settings)
 @MainActor
@@ -26,6 +31,23 @@ enum DebugLaunch {
             let parts = args[i + 1].split(separator: "=", maxSplits: 1).map(String.init)
             if parts.count == 2, let d = try? Data(contentsOf: URL(fileURLWithPath: parts[1])), let jpeg = Images.jpeg(d),
                let l = Inventory.ensureLocation(parts[0], in: ctx) { l.setPhoto(jpeg) }
+        }
+        #if os(macOS)
+        if let f = value("-windowFrame") {
+            let n = f.split(separator: ",").compactMap { Double($0.trimmingCharacters(in: .whitespaces)) }
+            if n.count == 4 {
+                Task { @MainActor in
+                    try? await Task.sleep(for: .milliseconds(600))
+                    guard let w = NSApp.windows.first(where: { $0.isVisible && $0.canBecomeMain }), let screen = w.screen ?? NSScreen.main else { return }
+                    w.setFrame(NSRect(x: n[0], y: screen.frame.maxY - n[1] - n[3], width: n[2], height: n[3]), display: true)
+                }
+            }
+        }
+        #endif
+        if let mpn = value("-showPart") {
+            try? ctx.save()  // so the list's ids are the saved ones
+            let uid = ((try? ctx.fetch(FetchDescriptor<Part>())) ?? []).first { $0.mpn == mpn }?.uid
+            Task { try? await Task.sleep(for: .milliseconds(800)); app.partToShow = uid }
         }
         if let t = value("-tab"), let tab = AppModel.Tab(rawValue: t) { app.tab = tab }
         if args.contains("-supplierKeysFromEnv") {

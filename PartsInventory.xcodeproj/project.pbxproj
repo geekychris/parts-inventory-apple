@@ -485,7 +485,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.hitorro.PartsInventoryTests;
 				SDKROOT = macosx;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Parts Inventory.app/Contents/MacOS/Parts Inventory";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/e-Parts Inventory Manager.app/Contents/MacOS/e-Parts Inventory Manager";
 			};
 			name = Debug;
 		};
@@ -566,7 +566,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.hitorro.PartsInventoryTests;
 				SDKROOT = macosx;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Parts Inventory.app/Contents/MacOS/Parts Inventory";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/e-Parts Inventory Manager.app/Contents/MacOS/e-Parts Inventory Manager";
 			};
 			name = Release;
 		};
@@ -647,7 +647,7 @@
 				CODE_SIGN_ENTITLEMENTS = App/PartsInventory.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Parts Inventory";
+				INFOPLIST_KEY_CFBundleDisplayName = "e-Parts Inventory Manager";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Bluetooth connects to your NIIMBOT label printer.";
 				INFOPLIST_KEY_NSCameraUsageDescription = "The camera scans bag labels and photographs parts to identify them.";
@@ -663,7 +663,8 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hitorro.PartsInventory;
-				PRODUCT_NAME = "Parts Inventory";
+				PRODUCT_MODULE_NAME = Parts_Inventory;
+				PRODUCT_NAME = "e-Parts Inventory Manager";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
@@ -680,7 +681,7 @@
 				CODE_SIGN_ENTITLEMENTS = App/PartsInventory.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Parts Inventory";
+				INFOPLIST_KEY_CFBundleDisplayName = "e-Parts Inventory Manager";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Bluetooth connects to your NIIMBOT label printer.";
 				INFOPLIST_KEY_NSCameraUsageDescription = "The camera scans bag labels and photographs parts to identify them.";
@@ -696,7 +697,8 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hitorro.PartsInventory;
-				PRODUCT_NAME = "Parts Inventory";
+				PRODUCT_MODULE_NAME = Parts_Inventory;
+				PRODUCT_NAME = "e-Parts Inventory Manager";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;

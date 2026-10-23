@@ -23,8 +23,8 @@ public struct APIGate: Sendable {
             return .error(404, "Nothing here. The REST API is under /api (see /api/openapi.json) and the MCP endpoint is /mcp.")
         }
         guard RequestGuard.authorised(req, token: token()) else {
-            var r = HTTPResponse.error(401, "Send the API token from Parts Inventory › Settings › API & MCP as “Authorization: Bearer <token>”.")
-            r.headers.append(("WWW-Authenticate", "Bearer realm=\"Parts Inventory\""))
+            var r = HTTPResponse.error(401, "Send the API token from e-Parts Inventory Manager › Settings › API & MCP as “Authorization: Bearer <token>”.")
+            r.headers.append(("WWW-Authenticate", "Bearer realm=\"e-Parts Inventory Manager\""))
             return r
         }
         if path == "/mcp" { return await mcp.handle(req) }

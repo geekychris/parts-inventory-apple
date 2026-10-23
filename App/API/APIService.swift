@@ -113,7 +113,7 @@ final class APIService {
     }
 
     static let instructions = """
-        The user's electronic parts inventory (the Parts Inventory app). Use search_parts before adding a part, to avoid duplicates; \
+        The user's electronic parts inventory (the e-Parts Inventory Manager app). Use search_parts before adding a part, to avoid duplicates; \
         add stock to an existing part with adjust_stock. add_part with lookup fills in details from Digi-Key and Mouser. \
         Locations are paths like "Cabinet A / Drawer 3". Ask before delete_part.
         """

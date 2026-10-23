@@ -70,7 +70,7 @@ final class LabelPrinter {
             case .poweredOn:
                 if status == .idle || { if case .failed = status { true } else { false } }() { status = .scanning }
                 t.startScan()
-            case .unauthorized: status = .failed("Parts Inventory isn’t allowed to use Bluetooth. Allow it in Settings › Privacy › Bluetooth.")
+            case .unauthorized: status = .failed("e-Parts Inventory Manager isn’t allowed to use Bluetooth. Allow it in Settings › Privacy › Bluetooth.")
             case .poweredOff: status = .failed("Bluetooth is off.")
             default: status = .failed("Bluetooth isn’t available.")
             }

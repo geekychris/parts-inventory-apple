@@ -75,6 +75,9 @@ struct LocationsView: View {
             Button("Rename") { renaming?.name = newName; renaming?.updated = .now; renaming = nil }
             Button("Cancel", role: .cancel) { renaming = nil }
         }
+        #if DEBUG
+        .onAppear(perform: debugLaunch)
+        #endif
         .sheet(item: $adding) { req in
             NewLocationSheet(request: req, locations: all) { made in
                 if let first = made.first { reveal(first) }
@@ -120,6 +123,17 @@ struct LocationsView: View {
         Divider()
         Button("Delete", role: .destructive) { delete(l) }
     }
+
+    #if DEBUG
+    /// `-showLocation "Cabinet A / Drawer 2"` (select it), `-addLocation <kind>` (the new-location sheet, inside the
+    /// shown one): for screenshots.
+    func debugLaunch() {
+        let args = ProcessInfo.processInfo.arguments
+        func value(_ flag: String) -> String? { args.firstIndex(of: flag).flatMap { $0 + 1 < args.count ? args[$0 + 1] : nil } }
+        if let path = value("-showLocation"), let l = Inventory.ensureLocation(path, in: ctx) { try? ctx.save(); reveal(l) }
+        if let k = value("-addLocation").flatMap(LocationKind.init(rawValue:)) { adding = .init(kind: k, parent: selected) }
+    }
+    #endif
 
     func kindsFirst(_ k: LocationKind) -> [LocationKind] { [k] + LocationKind.allCases.filter { $0 != k } }
 

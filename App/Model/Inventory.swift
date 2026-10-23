@@ -210,7 +210,7 @@ enum Inventory {
     static func backup(in ctx: ModelContext, photos includePhotos: Bool) -> Backup {
         var b = Backup()
         b.exportedAt = ISO8601DateFormatter().string(from: .now)
-        b.app = "Parts Inventory for iOS and macOS"
+        b.app = "e-Parts Inventory Manager for iOS and macOS"
         b.settings = ["currency": .string(UserDefaults.standard.string(forKey: "currency") ?? "USD"),
                       "defaultLowStock": .number(Double(UserDefaults.standard.integer(forKey: "defaultLowStock")))]
         let parts = allParts(ctx)

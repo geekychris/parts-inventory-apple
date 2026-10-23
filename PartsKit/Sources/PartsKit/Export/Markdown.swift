@@ -62,7 +62,7 @@ public enum Markdown {
         let units = rows.reduce(0) { $0 + $1.qty }
         var md = "# \(escape(title))\n\n"
         md += "**\(partsUnits(rows.count, units))** in \(pages.count) categor\(pages.count == 1 ? "y" : "ies"). "
-        md += "Exported \(Export.isoDate(exported)) from [Parts Inventory](https://github.com/geekychris/parts-inventory-apple).\n\n"
+        md += "Exported \(Export.isoDate(exported)) from [e-Parts Inventory Manager](https://github.com/geekychris/parts-inventory-apple).\n\n"
         md += "- [All parts](parts.csv) — one table, searchable on GitHub\n"
         md += "- [inventory.json](inventory.json) — the inventory for the app to read: parts and locations"
         md += full ? ", projects and stock history\n" : "\n"

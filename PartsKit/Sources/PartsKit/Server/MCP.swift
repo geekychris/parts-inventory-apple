@@ -131,7 +131,7 @@ public final class MCPEndpoint: @unchecked Sendable {
             let result: JSONValue = .object([
                 "protocolVersion": .string(v),
                 "capabilities": .object(["tools": .object(["listChanged": .bool(false)])]),
-                "serverInfo": .object(["name": .string(name), "title": .string("Parts Inventory"), "version": .string(version)]),
+                "serverInfo": .object(["name": .string(name), "title": .string("e-Parts Inventory Manager"), "version": .string(version)]),
                 "instructions": .string(instructions),
             ])
             return (Self.result(id, result), sid)

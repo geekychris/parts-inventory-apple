@@ -6,9 +6,9 @@ nonisolated enum OpenAPI {
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Parts Inventory",
+    "title": "e-Parts Inventory Manager",
     "version": "1",
-    "description": "The parts inventory in the Parts Inventory app, served by the app itself while it runs (Settings › API & MCP). Parts have the same shape as the web version's backup file, plus locationPath, photoCount, isLow and summary. Every endpoint except /api/health needs Authorization: Bearer <token>. The same data is available as MCP tools at /mcp."
+    "description": "The parts inventory in the e-Parts Inventory Manager app, served by the app itself while it runs (Settings › API & MCP). Parts have the same shape as the web version's backup file, plus locationPath, photoCount, isLow and summary. Every endpoint except /api/health needs Authorization: Bearer <token>. The same data is available as MCP tools at /mcp."
   },
   "servers": [{ "url": "http://127.0.0.1:8765" }],
   "security": [{ "bearer": [] }],

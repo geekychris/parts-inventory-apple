@@ -320,7 +320,7 @@ struct CameraView: View {
                 Color.black
                 switch camera.state {
                 case .denied:
-                    message("Camera access is off", "Allow Parts Inventory to use the camera in System Settings › Privacy & Security › Camera.", "video.slash")
+                    message("Camera access is off", "Allow e-Parts Inventory Manager to use the camera in System Settings › Privacy & Security › Camera.", "video.slash")
                 case .noCamera:
                     message("No camera", "Connect a camera — it’s picked up as soon as it’s plugged in.", "video.slash")
                 case .failed(let e):
