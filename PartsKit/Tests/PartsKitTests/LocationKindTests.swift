@@ -16,6 +16,7 @@ import Testing
 @Test func newLocationNamesSkipTakenOnes() {
     #expect(LocationKind.shelf.nextName(among: []) == "Shelf 1")
     #expect(LocationKind.shelf.nextName(among: ["Shelf 1", "shelf 2", "Drawer 3"]) == "Shelf 3")
+    #expect(LocationKind.cabinet.nextName(among: ["Cabinet A", "Cabinet B", "Shelf"]) == "Cabinet C")
 }
 
 @Test func locationKindRoundTripsInBackups() throws {

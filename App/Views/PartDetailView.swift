@@ -45,6 +45,7 @@ struct PartDetailView: View {
                     Text("None").tag(StorageLocation?.none)
                     ForEach(locations.sorted { $0.path < $1.path }) { l in Text(l.path).tag(Optional(l)) }
                 }
+                if let l = part.location { WhereItIs(location: l) }
                 TextField("Low-stock warning at", value: $part.lowStock, format: .number)
             }
 

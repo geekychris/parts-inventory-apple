@@ -90,6 +90,11 @@ Typing `Cabinet A / Shelf 2 / Drawer 3` makes every level that's missing, and wo
 - **Drag a location** onto another one to move it with everything inside it. A location can't be moved
   into itself or into anything inside it.
 - **Move To** in the right-click menu (or a long press on iPhone and iPad) does the same without dragging.
+- **Photos:** give a cabinet, shelf or drawer a photo so it's easy to see where to go. Choose one from
+  Photos or a file, take one with your iPhone (from the Mac) or the camera (on iPhone and iPad), paste one,
+  or drop one on the location's page. A part's page shows the photo under its location. A bin without a
+  photo shows its drawer's or cabinet's. Location photos go in backups that include photos
+  (as photos with a `locationId`). They aren't put in a shared repository.
 - A location's page sets its kind and notes. It also lists what's inside, and can show the parts in the
   locations below as well.
 

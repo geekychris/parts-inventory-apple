@@ -14,6 +14,8 @@ struct LocationsView: View {
     @State private var renaming: StorageLocation?
     @State private var newName = ""
     @State private var adding: NewLocationRequest?
+    /// Open rows in the tree, by uid. Kept here so a new or selected location can be shown.
+    @State private var expanded = Set<String>()
 
     var roots: [StorageLocation] { all.filter { $0.parent == nil }.sorted(by: StorageLocation.siblingOrder) }
     var unstored: [Part] { parts.filter { $0.location == nil } }
@@ -24,13 +26,16 @@ struct LocationsView: View {
 
     var body: some View {
         MasterDetail {
+            VStack(spacing: 0) {
+            // Outside the list: in a list row Return goes to the list, not the field.
+            HStack {
+                TextField("New: Cabinet A / Shelf 2 / Drawer 3", text: $newPath)
+                    .textFieldStyle(.roundedBorder)
+                    .onSubmit(add)
+                Button("Add", action: add).disabled(newPath.trimmingCharacters(in: .whitespaces).isEmpty)
+            }
+            .padding(.horizontal, 12).padding(.vertical, 8)
             List(selection: $selection) {
-                Section {
-                    HStack {
-                        TextField("New: Cabinet A / Shelf 2 / Drawer 3", text: $newPath).onSubmit(add)
-                        Button("Add", action: add).disabled(newPath.trimmingCharacters(in: .whitespaces).isEmpty)
-                    }
-                }
                 Section {
                     DropRow(target: nil, mover: mover) {
                         HStack {
@@ -42,19 +47,9 @@ struct LocationsView: View {
                     .tag(LocationSelection.unstored)
                 }
                 Section("Locations") {
-                    OutlineGroup(roots, children: \.sortedChildren) { l in
-                        DropRow(target: l, mover: mover) {
-                            HStack {
-                                Label(l.name, systemImage: l.resolvedKind.symbol)
-                                Spacer()
-                                Text("\(l.partCount)").foregroundStyle(.secondary).monospacedDigit()
-                            }
-                        }
-                        .draggable(LocationDrag.locations([l.uid]))
-                        .tag(LocationSelection.location(l.id))
-                        .contextMenu { menu(for: l) }
-                    }
+                    LocationTreeRows(locations: roots, expanded: $expanded, mover: mover, menu: menu(for:))
                 }
+            }
             }
             .navigationTitle("Locations")
             .toolbar { ToolbarItem { addMenu } }
@@ -65,7 +60,8 @@ struct LocationsView: View {
                 PartsHere(title: "Not stored anywhere", parts: unstored, here: nil, mover: mover, locations: all)
             case .location:
                 if let l = selected {
-                    LocationDetail(location: l, mover: mover, locations: all, onAdd: { adding = .init(kind: $0, parent: l) })
+                    LocationDetail(location: l, mover: mover, locations: all, onAdd: { adding = .init(kind: $0, parent: l) },
+                                   onOpen: reveal)
                 } else {
                     ContentUnavailableView("Choose a location", systemImage: "cabinet")
                 }
@@ -81,7 +77,7 @@ struct LocationsView: View {
         }
         .sheet(item: $adding) { req in
             NewLocationSheet(request: req, locations: all) { made in
-                if let first = made.first { selection = .location(first.id) }
+                if let first = made.first { reveal(first) }
             }
         }
     }
@@ -128,8 +124,18 @@ struct LocationsView: View {
     func kindsFirst(_ k: LocationKind) -> [LocationKind] { [k] + LocationKind.allCases.filter { $0 != k } }
 
     func add() {
-        if let l = Inventory.ensureLocation(newPath, in: ctx) { selection = .location(l.id) }
+        if let l = Inventory.ensureLocation(newPath, in: ctx) {
+            try? ctx.save()
+            reveal(l)
+        }
         newPath = ""
+    }
+
+    /// Select a location and open everything above it.
+    func reveal(_ l: StorageLocation) {
+        var p = l.parent
+        while let x = p, expanded.insert(x.uid).inserted { p = x.parent }
+        selection = .location(l.id)
     }
 
     /// Children move up to the parent; parts stored here lose their location.
@@ -236,6 +242,54 @@ struct DropRow<Content: View>: View {
     }
 }
 
+/// The location tree, with rows opened and closed through `expanded` (OutlineGroup can't be opened from code).
+struct LocationTreeRows<Menu: View>: View {
+    let locations: [StorageLocation]
+    @Binding var expanded: Set<String>
+    let mover: LocationMover
+    let menu: (StorageLocation) -> Menu
+
+    var body: some View {
+        ForEach(locations) { l in
+            if let kids = l.sortedChildren {
+                DisclosureGroup(isExpanded: Binding(get: { expanded.contains(l.uid) },
+                                                    set: { if $0 { expanded.insert(l.uid) } else { expanded.remove(l.uid) } })) {
+                    LocationTreeRows(locations: kids, expanded: $expanded, mover: mover, menu: menu)
+                } label: {
+                    row(l)
+                }
+            } else {
+                row(l)
+            }
+        }
+    }
+
+    func row(_ l: StorageLocation) -> some View {
+        DropRow(target: l, mover: mover) { LocationLabel(location: l) }
+            .draggable(LocationDrag.locations([l.uid]))
+            .tag(LocationSelection.location(l.id))
+            .contextMenu { menu(l) }
+    }
+}
+
+/// A location's name with its photo (or its kind's symbol) and how many parts it holds.
+struct LocationLabel: View {
+    let location: StorageLocation
+
+    var body: some View {
+        HStack {
+            if let d = location.photo, let img = Image(data: d) {
+                img.resizable().scaledToFill().frame(width: 22, height: 22).clipShape(.rect(cornerRadius: 4))
+            } else {
+                Image(systemName: location.resolvedKind.symbol).foregroundStyle(.tint).frame(width: 22)
+            }
+            Text(location.name)
+            Spacer()
+            Text("\(location.partCount)").foregroundStyle(.secondary).monospacedDigit()
+        }
+    }
+}
+
 /// A Move To menu listing every location (except `excluding` and what's inside it).
 struct MoveToMenu: View {
     let locations: [StorageLocation]
@@ -265,12 +319,22 @@ struct LocationDetail: View {
     let mover: LocationMover
     let locations: [StorageLocation]
     let onAdd: (LocationKind) -> Void
+    let onOpen: (StorageLocation) -> Void
     @AppStorage("locationsIncludeInside") private var includeInside = false
 
     var body: some View {
         let inside = location.sortedChildren ?? []
         let shown = includeInside ? location.allParts : (location.parts ?? [])
         PartsHere(title: location.path, parts: shown, here: location, mover: mover, locations: locations) {
+            Section {
+                VStack(alignment: .leading, spacing: 4) {
+                    Label(location.name, systemImage: location.resolvedKind.symbol).font(.title2.bold())
+                    if let up = location.parent {
+                        Button("in " + up.path) { onOpen(up) }.buttonStyle(.borderless).font(.callout)
+                    }
+                }
+                LocationPhotoView(location: location)
+            }
             Section {
                 Picker("Kind", selection: Binding(get: { location.resolvedKind }, set: { location.kind = $0.rawValue; location.updated = .now })) {
                     ForEach(LocationKind.allCases) { k in Label(k.label, systemImage: k.symbol).tag(k) }
@@ -280,11 +344,7 @@ struct LocationDetail: View {
             Section {
                 ForEach(inside) { c in
                     DropRow(target: c, mover: mover) {
-                        HStack {
-                            Label(c.name, systemImage: c.resolvedKind.symbol)
-                            Spacer()
-                            Text("\(c.partCount)").foregroundStyle(.secondary).monospacedDigit()
-                        }
+                        Button { onOpen(c) } label: { LocationLabel(location: c) }.buttonStyle(.plain)
                     }
                     .draggable(LocationDrag.locations([c.uid]))
                 }

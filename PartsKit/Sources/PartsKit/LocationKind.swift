@@ -50,9 +50,16 @@ public enum LocationKind: String, CaseIterable, Codable, Sendable, Identifiable 
         LocationKind(rawValue: stored) ?? guess(name: name) ?? (hasChildren ? .drawer : .bin)
     }
 
-    /// A name for a new one that isn't taken by its siblings: "Shelf 1", "Shelf 2", …
+    /// A name for a new one that isn't taken by its siblings: "Shelf 1", "Shelf 2", … — or "Cabinet C" when
+    /// the others are lettered (Cabinet A, Cabinet B).
     public func nextName(among siblings: [String]) -> String {
         let taken = Set(siblings.map { $0.lowercased() })
+        let prefix = label.lowercased() + " "
+        let letters = taken.compactMap { $0.hasPrefix(prefix) ? $0.dropFirst(prefix.count) : nil }
+            .filter { $0.count == 1 && $0.first!.isLetter }.compactMap { $0.first?.asciiValue }
+        if let last = letters.max(), last < UInt8(ascii: "z") {
+            return "\(label) \(Character(UnicodeScalar(last + 1)).uppercased())"
+        }
         var n = 1
         while taken.contains("\(label.lowercased()) \(n)") { n += 1 }
         return "\(label) \(n)"

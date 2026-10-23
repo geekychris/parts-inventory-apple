@@ -27,6 +27,7 @@
 		66C5E214308C7CE3DD5AB26A /* APISettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7159B39CC1E760795A1D5F1E /* APISettingsSection.swift */; };
 		6A612C0CA684636F31C15343 /* PartsInventoryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25C92F78707912366A1B80E /* PartsInventoryApp.swift */; };
 		74D116C4E458AE40ABF6120F /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92F8C5BD14E656AD31951CB /* Camera.swift */; };
+		76DFE4D58E99B468836FDFF9 /* LocationPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C74B8EB324A7B3B6B9CBB75 /* LocationPhotoView.swift */; };
 		78CDFEEB85BFE2F79E589570 /* DebugLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BEAA328937AA545FB1E40B /* DebugLaunch.swift */; };
 		83E6D33425889CEECC1F94EA /* LabelViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66199B96237885A1E58E67D7 /* LabelViews.swift */; };
 		86EE37E2B4DF6DDBA745BF88 /* SupplierLookupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F80813E29D045B711A5F0B /* SupplierLookupView.swift */; };
@@ -73,6 +74,7 @@
 		0859D5DD4D45CED4958375DC /* PartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartsView.swift; sourceTree = "<group>"; };
 		086E0862FA3075096E143368 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		17DE4E2872E8B89074DC7357 /* MobileCLIPImage.mlpackage */ = {isa = PBXFileReference; path = MobileCLIPImage.mlpackage; sourceTree = "<group>"; };
+		1C74B8EB324A7B3B6B9CBB75 /* LocationPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPhotoView.swift; sourceTree = "<group>"; };
 		1CDE33F3C568DD95FE344797 /* PartsKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PartsKit; path = PartsKit; sourceTree = SOURCE_ROOT; };
 		1F02424F6D63B8E95BE197BF /* FacetColumn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetColumn.swift; sourceTree = "<group>"; };
 		20F1E5ADBB4E178B045F9F02 /* PartsInventory.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PartsInventory.entitlements; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				4A8D8C8384100AA0451FE916 /* IdentifyView.swift */,
 				3227EEBE7BA5EF2750615F14 /* InventoryTableModel.swift */,
 				32256B2D8E89BA597763B62A /* InventoryTableView.swift */,
+				1C74B8EB324A7B3B6B9CBB75 /* LocationPhotoView.swift */,
 				CC21E55EF9E184D2EA488E2D /* LocationsView.swift */,
 				32F6D9D50CA9725515978425 /* MasterDetail.swift */,
 				07B293170D85B31D1D7A88BE /* PartDetailView.swift */,
@@ -426,6 +429,7 @@
 				4450230906EE86E0F9BB8F41 /* LabelPrinter.swift in Sources */,
 				9FEF4906DD1E096A0A3EF30A /* LabelRenderer.swift in Sources */,
 				83E6D33425889CEECC1F94EA /* LabelViews.swift in Sources */,
+				76DFE4D58E99B468836FDFF9 /* LocationPhotoView.swift in Sources */,
 				D604BA215E4E15FCF1B3652F /* LocationsView.swift in Sources */,
 				E929FC9484E7BB6385D2B8D5 /* LookModel.swift in Sources */,
 				4EAA4E4417E2AFF0714FD7AC /* MasterDetail.swift in Sources */,

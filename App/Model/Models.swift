@@ -83,6 +83,9 @@ final class StorageLocation {
     var order: Double = 0
     /// A `LocationKind` raw value; empty means work it out from the name.
     var kind: String = ""
+    /// A photo of where it is, so it's easy to find. `photoUID` names it in backups.
+    @Attribute(.externalStorage) var photo: Data?
+    var photoUID: String = ""
     var created: Date = Date.now
     var updated: Date = Date.now
     @Relationship(inverse: \StorageLocation.children) var parent: StorageLocation?
@@ -113,6 +116,20 @@ final class StorageLocation {
         var seen = Set<String>(), l: StorageLocation? = other
         while let x = l, seen.insert(x.uid).inserted { if x.uid == uid { return true }; l = x.parent }
         return false
+    }
+
+    /// The closest photo going up the tree: this location's own, else its drawer's, cabinet's…
+    var nearestPhoto: (location: StorageLocation, data: Data)? {
+        var seen = Set<String>(), l: StorageLocation? = self
+        while let x = l, seen.insert(x.uid).inserted {
+            if let d = x.photo { return (x, d) }
+            l = x.parent
+        }
+        return nil
+    }
+
+    func setPhoto(_ data: Data?) {
+        photo = data; photoUID = data == nil ? "" : IDs.make("ph"); updated = .now
     }
 
     /// Every part here and in the locations inside.

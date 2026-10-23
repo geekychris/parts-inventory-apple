@@ -71,4 +71,21 @@ struct LocationTests {
         let back = try! JSONDecoder().decode(Backup.self, from: data)
         #expect(back.locations.first { $0.id == cabinet.uid }?.kind == "cabinet")
     }
+
+    @Test func locationPhotosGoInFullBackups() throws {
+        let cabinet = loc("Cabinet A"), bin = loc("Cabinet A › Drawer 2 › Bin 3")
+        let jpeg = Data([0xFF, 0xD8, 0xFF, 0xE0, 1, 2, 3])
+        cabinet.setPhoto(jpeg)
+        // A bin without its own photo shows its cabinet's.
+        #expect(bin.nearestPhoto?.location.uid == cabinet.uid)
+
+        let b = Inventory.backup(in: ctx, photos: true)
+        let x = try #require(b.photos?.first { $0.locationId == cabinet.uid })
+        #expect(x.partId == nil)
+        #expect(Inventory.backup(in: ctx, photos: false).photos == nil)
+
+        cabinet.setPhoto(nil)
+        #expect(Inventory.merge(b, in: ctx).photos >= 1)
+        #expect(cabinet.photo == jpeg)
+    }
 }

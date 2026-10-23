@@ -12,6 +12,7 @@ import SwiftData
 ///   -friend "Sam=<address or /folder>"  a friend's inventory for this run only (with -memoryStore)
 ///   -importFrom <dir>  merge a repository folder's inventory.json (as Import from folder… does)
 ///   -exportTo <dir>   write the repository (with the options in Settings) to <dir>/repo, and parts.csv and parts.xlsx to <dir>
+///   -locationPhoto "Cabinet A=<path>"  set a location's photo (the location is made if it's missing)
 ///   -supplierKeysFromEnv  save DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET and MOUSER_API_KEY from the environment
 ///                     as the supplier keys (so they needn't be typed into Settings)
 @MainActor
@@ -21,6 +22,11 @@ enum DebugLaunch {
         func value(_ flag: String) -> String? { args.firstIndex(of: flag).flatMap { $0 + 1 < args.count ? args[$0 + 1] : nil } }
         if args.contains("-demo"), (try? ctx.fetchCount(FetchDescriptor<Part>())) == 0 { demo(ctx) }
         for (i, a) in args.enumerated() where a == "-friend" && i + 1 < args.count { FriendsStore.shared.addForDebug(args[i + 1]) }
+        for (i, a) in args.enumerated() where a == "-locationPhoto" && i + 1 < args.count {
+            let parts = args[i + 1].split(separator: "=", maxSplits: 1).map(String.init)
+            if parts.count == 2, let d = try? Data(contentsOf: URL(fileURLWithPath: parts[1])), let jpeg = Images.jpeg(d),
+               let l = Inventory.ensureLocation(parts[0], in: ctx) { l.setPhoto(jpeg) }
+        }
         if let t = value("-tab"), let tab = AppModel.Tab(rawValue: t) { app.tab = tab }
         if args.contains("-supplierKeysFromEnv") {
             let env = ProcessInfo.processInfo.environment, keys = SupplierKeys.shared

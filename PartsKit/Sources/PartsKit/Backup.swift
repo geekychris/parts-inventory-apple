@@ -231,6 +231,8 @@ public struct Backup: Codable, Sendable {
     public struct Photo: Codable, Sendable, Identifiable {
         public var id: String
         public var partId: String?
+        /// Set instead of `partId` for a photo of a storage location.
+        public var locationId: String?
         public var type: String?
         public var name: String?
         public var data: String

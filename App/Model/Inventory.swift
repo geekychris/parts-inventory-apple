@@ -179,7 +179,13 @@ enum Inventory {
             pr.lines = x.lines; pr.reserved = x.reserved; pr.buildsJSON = JSONField.encode(x.builds); pr.updated = incoming
         }
         let havePhotos = Set(((try? ctx.fetch(FetchDescriptor<PartPhoto>())) ?? []).map(\.uid))
-        for x in b.photos ?? [] where !havePhotos.contains(x.id) {
+        for x in b.photos ?? [] {
+            if let lid = x.locationId {
+                guard let l = locByUID[lid], l.photoUID != x.id, let data = Data(base64Encoded: x.data.replacingOccurrences(of: "^data:[^,]*,", with: "", options: .regularExpression)) else { continue }
+                l.photo = data; l.photoUID = x.id; r.photos += 1
+                continue
+            }
+            guard !havePhotos.contains(x.id) else { continue }
             guard let data = Data(base64Encoded: x.data.replacingOccurrences(of: "^data:[^,]*,", with: "", options: .regularExpression)) else { continue }
             let ph = PartPhoto(uid: x.id, data: data, type: x.type ?? "image/jpeg", name: x.name ?? "")
             ctx.insert(ph)
@@ -233,6 +239,13 @@ enum Inventory {
             b.photos = parts.flatMap { p in p.sortedPhotos.compactMap { ph in
                 ph.data.map { Backup.Photo(id: ph.uid, partId: p.uid, type: ph.type, name: ph.name, data: $0.base64EncodedString(), created: ph.created.jsTime, updated: ph.updated.jsTime) }
             } }
+            for l in (try? ctx.fetch(FetchDescriptor<StorageLocation>())) ?? [] {
+                guard let d = l.photo else { continue }
+                var x = Backup.Photo(id: l.photoUID.isEmpty ? IDs.make("ph") : l.photoUID, partId: nil, type: "image/jpeg", name: l.name,
+                                     data: d.base64EncodedString(), created: l.updated.jsTime, updated: l.updated.jsTime)
+                x.locationId = l.uid
+                b.photos?.append(x)
+            }
         }
         return b
     }
