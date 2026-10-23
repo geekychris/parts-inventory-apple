@@ -129,7 +129,7 @@ public enum Markdown {
                     return url(Export.supplierURL(s)).map { link(text, $0) } ?? escape(text)
                 }.joined(separator: "<br>")
                 var cells = [
-                    escape(r.mpn), escape(r.manufacturer), escape(r.description), escape(r.value), escape(r.package),
+                    escape(r.mpn), escape(r.manufacturer), escape(r.description), escape(r.valueText), escape(r.package),
                     r.isLow ? "**\(r.qty)** (low)" : String(r.qty), escape(r.location),
                     url(r.datasheet).map { "[Open](\($0))" } ?? "", suppliers,
                 ]

@@ -253,7 +253,7 @@ struct ExportSettingsSection: View {
             }
             Button { controller?.chooseFolder(.import) } label: { Label("Import from folder…", systemImage: "folder") }
         } header: { Text("Export and share") } footer: {
-            Text("Export to folder writes the inventory as a folder for a git repository: a README, a page per category, parts.csv and inventory.json. Commit and push it to GitHub to share it. Only parts and locations are included unless you add projects and stock history. Import from folder reads such a folder’s inventory.json and merges it, as importing a backup does.")
+            Text("Export to folder writes the inventory as a folder for a git repository: a README, a page per category, parts.csv and inventory.json. Commit and push it to GitHub to share it. Only parts and locations are included — not the prices you paid — unless you add projects and stock history. Import from folder reads such a folder’s inventory.json and merges it, as importing a backup does.")
         }
         .disabled(controller == nil || controller?.busy == true)
     }

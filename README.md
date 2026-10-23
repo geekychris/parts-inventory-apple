@@ -139,7 +139,7 @@ cd ~/parts && git add -A && git commit -m "Inventory" && git push
 ```
 
 Settings › Export and share sets the inventory's name and whether to include projects and stock history
-(off by default — sharing is parts and locations only) and photos. **Import from folder…** reads such a
+(off by default — sharing is parts and locations only, without the prices you paid) and photos. **Import from folder…** reads such a
 folder's `inventory.json` and merges it the way importing a backup does. The format is in
 [docs/repository-format.md](docs/repository-format.md).
 

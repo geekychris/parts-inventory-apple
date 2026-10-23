@@ -22,7 +22,7 @@ Backup › Export a backup — with these differences, so that git diffs stay sm
   path ("Cabinet A › Drawer 1"), then id; history by time.
 - No photos inside it (`photos` is left out, and parts' `photoIds` are emptied unless photos are exported).
 - Only parts and locations unless *Include projects and stock history* is on; `projects` and `history`
-  are then empty arrays. `settings` carries the currency and default low-stock level.
+  are then empty arrays and parts' `prices` (what was paid) are emptied. `settings` carries the currency and default low-stock level.
 
 Readers need only this file: `Backup.read` then `rows()` in PartsKit, or any JSON reader.
 

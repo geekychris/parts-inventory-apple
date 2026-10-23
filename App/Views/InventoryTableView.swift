@@ -190,7 +190,7 @@ struct InventoryTableView: View {
             } label: { Label("Friends", systemImage: showFriends && friends.hasFriends ? "person.2.fill" : "person.2") }
                 .help("Friends’ inventories")
         }
-        // ExportMenu(rows: model.shown.map(\.row)) goes here once feat/exports is merged
+        ToolbarItem { ExportMenu(rows: model.shown.map(\.row)) }
     }
 }
 

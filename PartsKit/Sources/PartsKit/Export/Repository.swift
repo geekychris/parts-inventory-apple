@@ -40,7 +40,8 @@ public enum Repository {
             return a != c ? Export.less(a, c) : x.id < y.id
         }
         b.exportedAt = ISO8601DateFormatter().string(from: exported)
-        if !options.full { b.projects = []; b.history = [] }
+        // Sharing leaves out what's private: projects, stock history and what was paid.
+        if !options.full { b.projects = []; b.history = []; for i in b.parts.indices { b.parts[i].prices = [] } }
         b.projects.sort { $0.id < $1.id }
         b.history.sort { $0.at != $1.at ? $0.at < $1.at : $0.id < $1.id }
 

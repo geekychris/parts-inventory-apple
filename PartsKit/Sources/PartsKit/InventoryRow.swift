@@ -27,6 +27,8 @@ public struct InventoryRow: Identifiable, Hashable, Sendable {
     public var updated: Date
 
     public var title: String { !mpn.isEmpty ? mpn : !description.isEmpty ? description : "Unnamed part" }
+    /// The value without the package, for where the package has its own column: "10 kΩ ±1% 0.1 W".
+    public var valueText: String { var p = params; p.pkg = nil; return Values.summary(p) }
     public var isLow: Bool { lowStock.map { qty <= $0 } ?? false }
 }
 

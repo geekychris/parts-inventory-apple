@@ -12,8 +12,6 @@ nonisolated struct TableItem: Identifiable, Hashable, Sendable {
 nonisolated extension InventoryRow {
     /// For sorting the Value column: by kind, then the number.
     var valueSort: Double { params.value ?? -1 }
-    /// The value and ratings without the package (which has its own column): "10 kΩ ±1% 0.1 W".
-    var valueText: String { var p = params; p.pkg = nil; return Values.summary(p) }
 }
 
 extension Part {

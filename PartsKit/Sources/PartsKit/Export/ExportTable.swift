@@ -34,7 +34,7 @@ extension InventoryRow {
         let cells: [[ExportTable.Cell]] = rows.map { r in
             var c: [ExportTable.Cell] = [
                 .text(r.mpn), .text(r.manufacturer), .text(r.description), .text(r.categoryPath.joined(separator: " / ")),
-                .text(r.value), .text(r.package), .number(Double(r.qty)), r.lowStock.map { .number(Double($0)) } ?? .empty,
+                .text(r.valueText), .text(r.package), .number(Double(r.qty)), r.lowStock.map { .number(Double($0)) } ?? .empty,
                 .text(r.location), .text(r.datasheet), .text(r.supplierNumbers), .text(r.tags.joined(separator: ", ")),
                 .text(r.notes), .text(r.updated.timeIntervalSince1970 > 0 ? Export.isoDate(r.updated) : ""),
             ]
