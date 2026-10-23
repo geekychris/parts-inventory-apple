@@ -58,6 +58,10 @@ struct PartsView: View {
                         .help("Print a label for every part in the list as it’s filtered now (\(filtered.count))")
                         .disabled(filtered.isEmpty)
                 }
+                ToolbarItem {
+                    Button { app.importingOrder = true } label: { Label("Import order", systemImage: "shippingbox.and.arrow.backward") }
+                        .help("Add every part from a Digi-Key, Mouser or LCSC order (⇧⌘O)")
+                }
                 ToolbarItem { ExportMenu() }
                 ToolbarItem {
                     Button { addPart() } label: { Label("Add part", systemImage: "plus") }

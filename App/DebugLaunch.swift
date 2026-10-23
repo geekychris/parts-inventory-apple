@@ -16,6 +16,7 @@ import AppKit
 ///   -importFrom <dir>  merge a repository folder's inventory.json (as Import from folder… does)
 ///   -exportTo <dir>   write the repository (with the options in Settings) to <dir>/repo, and parts.csv and parts.xlsx to <dir>
 ///   -locationPhoto "Cabinet A=<path>"  set a location's photo (the location is made if it's missing)
+///   -importOrder <path>  open Import Supplier Order with that file
 ///   -showPart <part number>  open a part in Parts
 ///   -windowFrame "x,y,w,h"  place the Mac window (from the top left of the main screen), for screenshots
 ///   -supplierKeysFromEnv  save DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET and MOUSER_API_KEY from the environment
@@ -44,6 +45,10 @@ enum DebugLaunch {
             }
         }
         #endif
+        if let p = value("-importOrder"), let d = try? Data(contentsOf: URL(fileURLWithPath: p)) {
+            app.orderToImport = (d, URL(fileURLWithPath: p).lastPathComponent)
+            Task { try? await Task.sleep(for: .seconds(4)); app.importingOrder = true }  // once the window is up
+        }
         if let mpn = value("-showPart") {
             try? ctx.save()  // so the list's ids are the saved ones
             let uid = ((try? ctx.fetch(FetchDescriptor<Part>())) ?? []).first { $0.mpn == mpn }?.uid

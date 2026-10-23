@@ -45,7 +45,8 @@ enum Inventory {
 
     /// Bring a scanned bag into stock: a matching part gets the quantity added; otherwise a new part.
     @discardableResult
-    static func receive(_ label: BagLabel, qty: Int? = nil, location: StorageLocation? = nil, in ctx: ModelContext) -> (part: Part, isNew: Bool)? {
+    static func receive(_ label: BagLabel, qty: Int? = nil, location: StorageLocation? = nil, source: String = "Scanned bag",
+                        in ctx: ModelContext) -> (part: Part, isNew: Bool)? {
         guard label.hasPart else { return nil }
         let q = qty ?? label.qty ?? 0
         var part = find(spn: label.spn, supplier: label.supplier, mpn: label.mpn, manufacturer: label.manufacturer, in: ctx)
@@ -58,7 +59,7 @@ enum Inventory {
             p.params = params
             p.package = params.pkg ?? ""
             p.location = location
-            p.tags = ["scanned"]
+            p.tags = [source == "Scanned bag" ? "scanned" : "ordered"]
             ctx.insert(p)
             part = p
         }
@@ -70,10 +71,42 @@ enum Inventory {
             p.suppliers = list
         }
         let what = [Supplier.named(label.supplier ?? "")?.name, label.salesOrder.isEmpty ? nil : "order \(label.salesOrder)"].compactMap { $0 }.joined(separator: " ")
-        if q > 0 { adjust(p, by: q, reason: what.isEmpty ? "Scanned bag" : "Scanned bag — \(what)", in: ctx, supplier: label.supplier, lot: label.lot.isEmpty ? nil : label.lot) }
+        if q > 0 { adjust(p, by: q, reason: what.isEmpty ? source : "\(source) — \(what)", in: ctx, supplier: label.supplier, lot: label.lot.isEmpty ? nil : label.lot) }
         p.updated = .now
         if isNew { LabelPrinter.shared.partAdded(p) }
         return (p, isNew)
+    }
+
+    /// What an order line would do: add to a part you have, or make a new one.
+    static func match(_ line: SupplierOrder.Line, in ctx: ModelContext) -> Part? {
+        find(spn: line.spn, supplier: line.supplier, mpn: line.mpn, manufacturer: line.manufacturer, in: ctx)
+    }
+
+    /// Bring an order's lines into stock, as scanning each bag would: matching parts get the quantity added,
+    /// the rest become new parts (in `location`), with the description and the price paid. Returns the parts
+    /// made, so they can be looked up.
+    @discardableResult
+    static func receive(_ order: SupplierOrder, lines: [SupplierOrder.Line], location: StorageLocation?, in ctx: ModelContext)
+        -> (added: Int, updated: Int, newParts: [Part]) {
+        var updated = 0, made: [Part] = []
+        for line in lines where line.qty > 0 {
+            var label = BagLabel.blank()
+            label.supplier = line.supplier ?? order.supplier
+            label.spn = line.spn; label.mpn = line.mpn; label.manufacturer = line.manufacturer
+            label.qty = line.qty; label.salesOrder = order.number
+            guard let r = receive(label, location: location, source: "Order", in: ctx) else { continue }
+            let p = r.part
+            if p.partDescription.isEmpty { p.partDescription = line.description }
+            if p.manufacturer.isEmpty { p.manufacturer = line.manufacturer }
+            if let unit = line.unitPrice, unit > 0 {
+                var prices = p.prices
+                prices.append(PricePaid(at: Date.now.jsTime, unit: unit, currency: order.currency, qty: Double(line.qty), supplier: label.supplier))
+                p.prices = prices
+            }
+            if r.isNew { made.append(p) } else { updated += 1 }
+        }
+        try? ctx.save()
+        return (made.count, updated, made)
     }
 
     /// A new part from an identified candidate, with the photo it came from.

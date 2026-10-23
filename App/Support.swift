@@ -27,6 +27,9 @@ final class AppModel {
     func didAdd(_ part: Part) { partAddedHandlers.forEach { $0(part) } }
     /// A part to show in Parts.
     var partToShow: String?
+    /// Import Supplier Order is open, and a file for it to read first (from a launch option or a drop).
+    var importingOrder = false
+    var orderToImport: (Data, String)?
 }
 
 nonisolated enum Images {

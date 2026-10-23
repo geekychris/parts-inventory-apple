@@ -48,6 +48,7 @@ struct ScanView: View {
             Text("Connect a camera, or read Digi-Key, Mouser and LCSC bag labels from a photo in Identify, or type them in with a USB barcode scanner below.")
         } actions: {
             Button("Identify from a photo") { app.tab = .identify }
+            Button("Import a whole order…") { app.importingOrder = true }
         }
     }
 

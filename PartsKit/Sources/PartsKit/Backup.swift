@@ -65,6 +65,9 @@ public struct PricePaid: Codable, Equatable, Hashable, Sendable {
     public var currency: String?
     public var qty: Double?
     public var supplier: String?
+    public init(at: Double? = nil, unit: Double, currency: String? = nil, qty: Double? = nil, supplier: String? = nil) {
+        self.at = at; self.unit = unit; self.currency = currency; self.qty = qty; self.supplier = supplier
+    }
 }
 
 /// The web tool's backup file (schema "gw-parts-inventory", version 1). Times are milliseconds since

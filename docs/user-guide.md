@@ -90,7 +90,41 @@ Select a part to open its page:
 
 ## Adding parts
 
-There are four ways in, depending on what you have in your hand.
+There are five ways in, depending on what you have in your hand.
+
+### A whole order: Import Order
+
+![Import Order: a Digi-Key order of six lines. Two add to parts already in stock (LM358DR, you have 4, in Cabinet A › Drawer 2 › Bin 3) and four are new parts. Each line has its quantity, unit price and Digi-Key number, above a location choice and Add 6 to Stock.](guide/order-import.png)
+
+When a Digi-Key, Mouser or LCSC order arrives, you can add everything in it at once instead of scanning
+each bag.
+
+**1. Get the order:**
+- **Digi-Key:** sign in › Order History › open the order › **Download**.
+- **Mouser:** sign in › Order History › open the order › **Export**.
+- **LCSC:** Orders › the order › **Export**.
+
+CSV and Excel files both work. You can also select the table of parts on the order's web page, copy it,
+and paste it in.
+
+**2. Open Import Order:** **Import order** on the Parts toolbar, or File › **Import Supplier Order…**
+(⇧⌘O). Choose the file, drop it on the window, or click **Paste**.
+
+**3. Check the lines.** Each line shows what will happen:
+- **Adds to …** — a part you already have, matched by the supplier's part number or the maker's
+  number. The app shows how many you have now and where they are.
+- **New part** — a new part will be made.
+
+Untick any line you don't want. You can also choose where the new parts go, and whether to fill them in
+from Digi-Key and Mouser (datasheet, package, parameters).
+
+**4. Click Add to Stock.** Each part:
+- gets the quantity added, with "Order — Digi-Key order 87654321" in its stock history;
+- gets the price you paid;
+- gets the supplier's part number. **Look up online** and the bag labels then find it by that number.
+
+The app can't fetch your orders from Digi-Key or Mouser itself. Their order APIs need a separate sign-in
+or key that the app doesn't have. So you download the file and the app reads it.
 
 ### From a supplier's bag: Scan
 

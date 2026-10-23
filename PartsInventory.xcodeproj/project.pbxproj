@@ -20,8 +20,10 @@
 		29BF39C82F6BF0260DCDDC92 /* ExportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE97EF8EEA75EF456BE19E2B /* ExportTests.swift */; };
 		3A646406151CFE01B0D21BEA /* ExportMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05AD78CC6E90AD4112032B0 /* ExportMenu.swift */; };
 		3E8759DEBAE25B248AD44682 /* InventoryTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32256B2D8E89BA597763B62A /* InventoryTableView.swift */; };
+		415C4060B9CAED452A3F29DE /* OrderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537357DAF296824E5A98866 /* OrderTests.swift */; };
 		4450230906EE86E0F9BB8F41 /* LabelPrinter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C93A8CD59E65D1EEE9B8FCA /* LabelPrinter.swift */; };
 		4EAA4E4417E2AFF0714FD7AC /* MasterDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6D9D50CA9725515978425 /* MasterDetail.swift */; };
+		57C71FCE85359C10BA91424E /* OrderImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3973977B5FCAC8620D7600 /* OrderImportView.swift */; };
 		5912792BDFE6DD9953347FE0 /* APITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A86E23E04B8E41783691F2B /* APITests.swift */; };
 		5FA0E2A87818B3E804361FA3 /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C53ACBAA54819CBA63E53F /* Inventory.swift */; };
 		66C5E214308C7CE3DD5AB26A /* APISettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7159B39CC1E760795A1D5F1E /* APISettingsSection.swift */; };
@@ -82,6 +84,7 @@
 		3227EEBE7BA5EF2750615F14 /* InventoryTableModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryTableModel.swift; sourceTree = "<group>"; };
 		32F6D9D50CA9725515978425 /* MasterDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterDetail.swift; sourceTree = "<group>"; };
 		3A4E0F744D761C1CD4DFFE0D /* AskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskView.swift; sourceTree = "<group>"; };
+		4537357DAF296824E5A98866 /* OrderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderTests.swift; sourceTree = "<group>"; };
 		4A8D8C8384100AA0451FE916 /* IdentifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifyView.swift; sourceTree = "<group>"; };
 		4C19ABD01A7DCD2B8F9E856A /* BatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchView.swift; sourceTree = "<group>"; };
 		4EA3796C8AB62FF36BCC38B1 /* PartsInventory.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PartsInventory.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,6 +111,7 @@
 		B70A42D14D7FB47A436A90DC /* IdentifyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifyModel.swift; sourceTree = "<group>"; };
 		B88B4B0E65B6DF2317963330 /* TableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableTests.swift; sourceTree = "<group>"; };
 		C05AD78CC6E90AD4112032B0 /* ExportMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportMenu.swift; sourceTree = "<group>"; };
+		CA3973977B5FCAC8620D7600 /* OrderImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderImportView.swift; sourceTree = "<group>"; };
 		CC21E55EF9E184D2EA488E2D /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
 		D0D7F485C833A808C914C82C /* BatchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchModel.swift; sourceTree = "<group>"; };
 		D3C53ACBAA54819CBA63E53F /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
@@ -251,6 +255,7 @@
 				6A86E23E04B8E41783691F2B /* APITests.swift */,
 				FE97EF8EEA75EF456BE19E2B /* ExportTests.swift */,
 				95E200AAD00B6E61945EE86D /* LocationTests.swift */,
+				4537357DAF296824E5A98866 /* OrderTests.swift */,
 				DAE04B5A0AC431834D1C84F0 /* PipelineTests.swift */,
 				B88B4B0E65B6DF2317963330 /* TableTests.swift */,
 			);
@@ -272,6 +277,7 @@
 				1C74B8EB324A7B3B6B9CBB75 /* LocationPhotoView.swift */,
 				CC21E55EF9E184D2EA488E2D /* LocationsView.swift */,
 				32F6D9D50CA9725515978425 /* MasterDetail.swift */,
+				CA3973977B5FCAC8620D7600 /* OrderImportView.swift */,
 				07B293170D85B31D1D7A88BE /* PartDetailView.swift */,
 				0859D5DD4D45CED4958375DC /* PartsView.swift */,
 				816C4BD5A80D2E5AD1A4B281 /* ProjectsView.swift */,
@@ -436,6 +442,7 @@
 				BADC8AB20BBF8C699EB8063C /* MobileCLIPImage.mlpackage in Sources */,
 				0D30EA867BFBDA109B77FA15 /* Models.swift in Sources */,
 				BCB44D094379A79141A9580A /* OpenAPI.swift in Sources */,
+				57C71FCE85359C10BA91424E /* OrderImportView.swift in Sources */,
 				C3B3A1974A6FDD897564D9A2 /* PartDetailView.swift in Sources */,
 				6A612C0CA684636F31C15343 /* PartsInventoryApp.swift in Sources */,
 				28D4A78D16E28E974B33A958 /* PartsView.swift in Sources */,
@@ -455,6 +462,7 @@
 				5912792BDFE6DD9953347FE0 /* APITests.swift in Sources */,
 				29BF39C82F6BF0260DCDDC92 /* ExportTests.swift in Sources */,
 				20AED1F9A0D614906AEC8CDF /* LocationTests.swift in Sources */,
+				415C4060B9CAED452A3F29DE /* OrderTests.swift in Sources */,
 				F66D4FFBCC97B21754114C76 /* PipelineTests.swift in Sources */,
 				BEDF32615DC0CF16E3D2CC22 /* TableTests.swift in Sources */,
 			);

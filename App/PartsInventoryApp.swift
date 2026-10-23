@@ -75,7 +75,7 @@ struct PartsInventoryApp: App {
         }
         .modelContainer(container)
         #if os(macOS)
-        .commands { ImportFromDevicesCommands(); ExportCommands() }
+        .commands { ImportFromDevicesCommands(); ExportCommands(); OrderImportCommands(app: app) }
         #endif
         #if os(macOS)
         Settings {
@@ -134,6 +134,7 @@ struct RootView: View {
         .tabViewStyle(.sidebarAdaptable)
         #endif
         }
+        .sheet(isPresented: $app.importingOrder) { OrderImportView().environment(app) }
         #if DEBUG
         .task { DebugLaunch.apply(app, ctx) }
         #endif

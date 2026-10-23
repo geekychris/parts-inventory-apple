@@ -147,3 +147,9 @@ public struct Supplier: Sendable, Identifiable {
     public static func named(_ id: String) -> Supplier? { all.first { $0.id == id } }
     static func q(_ s: String) -> String { s.trimmed.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? "" }
 }
+
+
+extension BagLabel {
+    /// An empty label, to fill in (an order line received as if its bag were scanned).
+    public static func blank() -> BagLabel { BagLabel() }
+}

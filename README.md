@@ -29,6 +29,10 @@ with SwiftData and synced through your private iCloud database.
   as removable chips. Your friends' inventories can sit beside yours (below).
 - **Friends' inventories** — a friend's published inventory (a GitHub repository with `inventory.json`)
   shows in the Table beside yours, read-only, with a *Copy request* to ask to borrow some.
+- **Import Order** — a whole Digi-Key, Mouser or LCSC order at once, from the CSV or Excel file their
+  order history downloads (or the order's table copied from their website). Each line shows whether it
+  adds to a part you have or makes a new one. The ticked lines go into stock with the order number in the
+  history, the price paid and the supplier's part number. New parts can be filled in from the supplier APIs.
 - **Scan** — Digi-Key, Mouser (ECIA format 06 Data Matrix) and LCSC (QR) bag labels, live with the
   camera, from a photo, or typed in by a USB scanner. A bag adds stock to the matching part or makes
   a new one.
