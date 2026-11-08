@@ -1,0 +1,53 @@
+name: PartsKit portable core
+
+# PartsKit had never been built or tested outside Xcode before PI-1. This proves it actually
+# compiles and its tests actually pass on Linux and Windows, not just macOS — see PORTABILITY.md.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "PartsKit/**"
+      - ".github/workflows/portable-core.yml"
+  pull_request:
+    paths:
+      - "PartsKit/**"
+      - ".github/workflows/portable-core.yml"
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "6.2"
+      - run: swift --version
+      - name: swift test
+        working-directory: PartsKit
+        run: swift test
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: compnerd/gha-setup-swift@main
+        with:
+          tag: swift-6.2-RELEASE
+      - run: swift --version
+      - name: swift test
+        working-directory: PartsKit
+        run: swift test
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift --version
+      - name: swift test (PartsKit)
+        working-directory: PartsKit
+        run: swift test
+      - name: xcodebuild test (the app)
+        run: |
+          xcodebuild test -project PartsInventory.xcodeproj -scheme PartsInventory \
+            -destination 'platform=macOS,arch=arm64' CODE_SIGNING_ALLOWED=NO

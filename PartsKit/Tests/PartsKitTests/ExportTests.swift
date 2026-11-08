@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationXML)
+import FoundationXML
+#endif
 import Testing
 @testable import PartsKit
 
