@@ -93,6 +93,12 @@ key, a model name), which the on-device Apple Intelligence model doesn't need bu
   `.github/workflows/portable-core.yml` is this code's first real compiler. `sockaddr_in` is read and
   written as raw bytes at its fixed, ABI-stable offsets (family/port/address) specifically to avoid
   needing to guess how the Windows Swift overlay names that struct's fields.
+- **`allInterfacesListensOnEveryAddress`'s host-discovery helper is POSIX-only.** It uses
+  `getifaddrs`, which doesn't exist on Windows (`GetAdaptersAddresses` from iphlpapi.h is the
+  equivalent there, a different enough shape that porting it wasn't worth it just for a test helper).
+  `firstNonLoopbackIPv4()` returns `nil` on Windows, so that one test skips itself there the same way
+  it already does on sandboxes with only a loopback interface — the other three `HTTPServerTests`
+  still exercise the Windows socket path.
 - NIIMBOT printing has no Linux (BlueZ) or Windows (WinRT Bluetooth) backend. Out of scope here; no
   one has asked for it yet.
 - No portable storage layer exists, so there is no headless server to point a Linux/Windows UI or an

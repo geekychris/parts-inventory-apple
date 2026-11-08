@@ -90,6 +90,7 @@ import Testing
 
 /// A non-loopback IPv4 address this machine answers on, if it has one (most CI runners do; some
 /// sandboxes only have loopback).
+#if canImport(Darwin) || canImport(Glibc) || canImport(Android)
 private func firstNonLoopbackIPv4() -> String? {
     var head: UnsafeMutablePointer<ifaddrs>?
     guard getifaddrs(&head) == 0, let first = head else { return nil }
@@ -109,3 +110,13 @@ private func firstNonLoopbackIPv4() -> String? {
     }
     return found
 }
+#else
+// `getifaddrs`/`struct ifaddrs` is a BSD/POSIX API with no Windows equivalent (Windows uses
+// `GetAdaptersAddresses` from iphlpapi.h instead, a different enough shape that porting it isn't
+// worth it just for this test helper). Returning nil here makes `allInterfacesListensOnEveryAddress`
+// skip itself on Windows, the same way it already skips on sandboxes that only have loopback — see
+// the `guard let host = ... else { return }` at the top of that test. The other three HTTPServerTests
+// still exercise the Windows socket path; only this one allInterfaces-vs-loopback comparison is
+// untested there. See PORTABILITY.md's "Known gaps".
+private func firstNonLoopbackIPv4() -> String? { nil }
+#endif

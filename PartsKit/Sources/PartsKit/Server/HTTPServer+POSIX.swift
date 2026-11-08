@@ -199,10 +199,18 @@ extension HTTPServer {
 
     private func acceptLoop(_ l: POSIXListener) {
         Thread { [weak self] in
+            var consecutiveFailures = 0
             while l.isAccepting {
                 guard let client = acceptConnection(l.fd) else {
-                    if l.isAccepting { continue } else { break }
+                    guard l.isAccepting else { break }
+                    // A persistent accept() error (e.g. EMFILE from fd exhaustion) would otherwise
+                    // busy-spin this thread at 100% CPU until stop() is called; back off briefly
+                    // instead of retrying immediately, growing the wait with repeated failures.
+                    consecutiveFailures += 1
+                    Thread.sleep(forTimeInterval: min(0.1, 0.001 * Double(consecutiveFailures)))
+                    continue
                 }
+                consecutiveFailures = 0
                 guard let self else { closeSocketFD(client); continue }
                 self.handle(client)
             }
