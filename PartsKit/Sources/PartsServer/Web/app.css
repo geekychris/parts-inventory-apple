@@ -250,7 +250,7 @@ table.grid tr.short td { background: var(--red-soft); }
 .page-inner { max-width: 980px; margin: 0 auto; display: grid; gap: 16px; }
 .drop { border: 2px dashed var(--line); border-radius: 14px; padding: 34px 20px; text-align: center; display: grid; gap: 10px; justify-items: center; background: var(--bg-2); color: var(--text-2); }
 .drop.over { border-color: var(--accent); background: var(--accent-soft); }
-.drop svg.i { width: 42px; height: 42px; stroke-width: 1.3; color: var(--text-3); }
+.drop > svg.i { width: 42px; height: 42px; stroke-width: 1.3; color: var(--text-3); }
 .idgrid { display: grid; grid-template-columns: minmax(220px, 340px) 1fr; gap: 16px; align-items: start; }
 .idgrid > img { width: 100%; border-radius: 12px; box-shadow: var(--shadow); }
 .markings { white-space: pre-wrap; font-family: var(--mono); font-size: 13px; padding: 10px 12px; }
