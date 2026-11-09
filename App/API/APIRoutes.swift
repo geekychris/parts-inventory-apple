@@ -122,53 +122,7 @@ nonisolated struct InventoryTools: MCPToolProvider {
 
     func tools() async -> [MCPTool] { Self.list }
 
-    static let list: [MCPTool] = {
-        typealias S = JSONSchema
-        let fields: [String: JSONValue] = [
-            "mpn": S.string("Manufacturer part number"), "manufacturer": S.string("Maker"), "description": S.string("What it is"),
-            "category": S.string("Category path, e.g. \"Passives/Resistors\""), "package": S.string("Package, e.g. \"0603\" or \"SOIC-8\""),
-            "datasheet": S.string("Datasheet URL"), "notes": S.string("Free text"), "tags": S.strings("Tags"),
-            "location": S.string("Storage location path, e.g. \"Cabinet A / Drawer 3\" (made if it doesn't exist)"),
-            "lowStock": S.integer("Warn when stock falls to this", minimum: 0),
-            "paramsText": S.string("Parameters as text, e.g. \"10k 1% 0603\" or \"100nF 50V X7R\" — parsed into value, tolerance, voltage, package"),
-        ]
-        return [
-            MCPTool(name: "search_parts", title: "Search parts",
-                    description: "Search the parts inventory. The query matches part numbers, makers, descriptions, tags and locations, and understands values: \"10k 0603 1%\", \"100nF 50V\", \"cat:caps\", \"loc:drawer 2\", \"tag:smd\", \"mfr:ti\", \"low\". Returns brief parts with their id, stock and location.",
-                    inputSchema: S.object(["query": S.string("Search text; empty lists everything"), "category": S.string("Only this category (substring)"),
-                                           "location": S.string("Only this location path (substring)"), "low_only": S.boolean("Only parts at or below their low-stock level"),
-                                           "limit": S.integer("Most results to return (default 25)", minimum: 1)]), readOnly: true),
-            MCPTool(name: "get_part", title: "Get a part", description: "Everything about one part by id: fields, parameters, suppliers with prices, location, photos and recent stock history.",
-                    inputSchema: S.object(["id": S.string("Part id (from search_parts)")], required: ["id"]), readOnly: true),
-            MCPTool(name: "add_part", title: "Add a part",
-                    description: "Add a new part. Set lookup=true to fill empty fields (maker, description, package, datasheet, parameters, supplier numbers and prices) from Digi-Key and Mouser by its part number. Check search_parts first to avoid duplicates — to add stock to an existing part use adjust_stock.",
-                    inputSchema: S.object(fields.merging(["qty": S.integer("Starting stock", minimum: 0), "lookup": S.boolean("Fill in from Digi-Key/Mouser (default true when mpn is given)")]) { a, _ in a })),
-            MCPTool(name: "update_part", title: "Update a part", description: "Change a part's fields. Only the fields given change; stock changes go through adjust_stock or set_stock.",
-                    inputSchema: S.object(fields.merging(["id": S.string("Part id")]) { a, _ in a }, required: ["id"])),
-            MCPTool(name: "adjust_stock", title: "Adjust stock", description: "Add to or take from a part's stock (negative to use parts), with a note recorded in its history.",
-                    inputSchema: S.object(["id": S.string("Part id"), "delta": S.integer("How many to add (negative to remove)"), "note": S.string("Why, e.g. \"used in the amp build\"")], required: ["id", "delta"])),
-            MCPTool(name: "set_stock", title: "Set stock", description: "Set a part's stock to a counted quantity, recorded in its history.",
-                    inputSchema: S.object(["id": S.string("Part id"), "qty": S.integer("The counted quantity", minimum: 0), "note": S.string("Why")], required: ["id", "qty"])),
-            MCPTool(name: "delete_part", title: "Delete a part", description: "Delete a part and its photos. Irreversible: confirm must be true, and you should ask the user first.",
-                    inputSchema: S.object(["id": S.string("Part id"), "confirm": S.boolean("Must be true")], required: ["id", "confirm"]), destructive: true),
-            MCPTool(name: "list_locations", title: "List locations", description: "The storage locations (cabinets, drawers, bins) with their paths and how many parts each holds.",
-                    inputSchema: S.object([:]), readOnly: true),
-            MCPTool(name: "add_location", title: "Add a location", description: "Make a storage location from a path; missing levels are made too.",
-                    inputSchema: S.object(["path": S.string("e.g. \"Cabinet A / Drawer 3 / Bin 2\"")], required: ["path"])),
-            MCPTool(name: "list_projects", title: "List projects", description: "Projects (bills of materials) with how many boards the stock can build and how many lines are short.",
-                    inputSchema: S.object([:]), readOnly: true),
-            MCPTool(name: "get_project", title: "Get a project", description: "A project's BOM lines with what each needs, what's in stock, the matched part and where it is.",
-                    inputSchema: S.object(["id": S.string("Project id")], required: ["id"]), readOnly: true),
-            MCPTool(name: "supplier_lookup", title: "Look up at Digi-Key and Mouser",
-                    description: "Look a part number up at Digi-Key and Mouser: makers, descriptions, stock, price breaks, datasheets, packages and parameters. Needs the supplier keys set in the app.",
-                    inputSchema: S.object(["query": S.string("Part number (or keywords)"), "limit": S.integer("Most results (default 10)", minimum: 1)], required: ["query"]), readOnly: true),
-            MCPTool(name: "identify_photo", title: "Identify a part from a photo",
-                    description: "Identify a component from a photo: reads the markings and any bag-label barcode, and recognises boards and modules by how they look. Returns ranked candidates (catalog parts, parts already in the inventory, generic kinds).",
-                    inputSchema: S.object(["image_base64": S.string("The photo, JPEG or PNG, base64-encoded")], required: ["image_base64"]), readOnly: true),
-            MCPTool(name: "low_stock", title: "Low stock", description: "Parts at or below their low-stock level (or the default level in Settings).",
-                    inputSchema: S.object([:]), readOnly: true),
-        ]
-    }()
+    static let list: [MCPTool] = InventoryCatalog.tools
 
     func call(_ name: String, arguments a: [String: JSONValue]) async -> MCPToolResult {
         do { return try await api.runTool(name, a) }

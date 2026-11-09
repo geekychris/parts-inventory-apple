@@ -79,7 +79,7 @@ key, a model name), which the on-device Apple Intelligence model doesn't need bu
   `APIGate`/`HTTPServer`/MCP stack, over a new portable storage layer — SwiftData/CloudKit don't run
   outside Apple platforms) avoids building and maintaining two more native GUI codebases for a result
   no one asked for by name.
-- **Priority order: Linux, then Windows, then the Android companion, then the full desktop UI** — in
+- **Priority order: Linux, then Windows, then `partsd`, then the Android companion, then the full desktop UI** — in
   increasing cost/risk order, since no timeline was given. Linux needed only the platform shim and
   CI; Windows needs the same shim plus the Winsock variant below.
 
@@ -101,15 +101,33 @@ key, a model name), which the on-device Apple Intelligence model doesn't need bu
   still exercise the Windows socket path.
 - NIIMBOT printing has no Linux (BlueZ) or Windows (WinRT Bluetooth) backend. Out of scope here; no
   one has asked for it yet.
-- No portable storage layer exists, so there is no headless server to point a Linux/Windows UI or an
-  Android companion at yet — that's Phase 2 below.
+- `partsd` can't identify a part from a photo: that needs Vision (OCR) and the app's Core ML look model.
+  `POST /api/identify` answers 501 and the `identify_photo` MCP tool isn't offered.
+- `partsd` and the app don't sync. Each has its own inventory; move one to the other with the backup
+  file (`GET /api/export?photos=true` on one, `POST /api/import` on the other — a merge, newer wins).
+
+## `partsd`, the headless server
+
+`Sources/PartsServer` (a library) and `Sources/partsd` (the command) serve the same REST API and MCP
+tools as the app's Settings › API & MCP, on the same `APIGate`/`HTTPServer`/`MCPEndpoint` stack, so the
+same `curl` commands and `claude mcp add` line work against either.
+
+- **The store is the backup file itself** (`inventory.json`, written atomically after every change) with
+  photos as files beside it (`photos/`, indexed by `photos.json`) — not SQLite as first planned. It needs no
+  C library on any platform, it's the format the app already imports and exports, and a personal inventory
+  (thousands of parts) is small enough to keep in memory. `PartsServer` is an actor, so requests take turns.
+- **What the app and `partsd` share lives in PartsKit**, so they can't drift: the MCP tool list, the
+  instructions given to MCP clients, the OpenAPI document and the supplier-listing JSON
+  (`Server/InventoryCatalog.swift`). The operations themselves are written twice — `App/API/InventoryAPI.swift`
+  over SwiftData, `PartsServer.swift` over `Backup` — because pulling a storage protocol out of the app's
+  SwiftData code was a larger change than this one.
+- Run it with `swift run partsd` (or `partsd --data DIR --port N --all-interfaces`). The token is made on
+  first run and kept in `DIR/token`; supplier keys come from `DIGIKEY_CLIENT_ID`, `DIGIKEY_CLIENT_SECRET`
+  and `MOUSER_API_KEY`. `tools/partsd.service` is a systemd user unit for it.
 
 ## Roadmap (not implemented in this change)
 
-1. **`partsd`** — a headless SwiftPM executable hosting the existing `APIGate`/`HTTPServer`/MCP
-   stack, backed by a new portable store mirroring `App/Model/Models.swift`'s schema over SQLite (the
-   C `sqlite3` library — available on Linux, Windows and macOS; no new third-party dependency).
-2. **Windows/Linux UI** — point `geekychris.github.io/tools/parts-inventory` at `partsd`'s REST API;
+1. **Windows/Linux UI** — point `geekychris.github.io/tools/parts-inventory` at `partsd`'s REST API;
    confirm (or extend) `RequestGuard.originAllowed`'s `extraHosts` for the web tool's origin.
-3. **Android camera companion** — a Kotlin/Jetpack Compose app that takes a photo and calls
+2. **Android camera companion** — a Kotlin/Jetpack Compose app that takes a photo and calls
    `/api/identify` on a running instance, exactly like the iPhone-camera-handoff flow.

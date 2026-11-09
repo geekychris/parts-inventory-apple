@@ -230,6 +230,21 @@ curl -H "Authorization: Bearer $T" --data-binary @chip.jpg -H "Content-Type: ima
 Changes made through the API are the same as changes made in the app: stock changes go into the part's
 history ("API — <note>"), and everything syncs through iCloud like any other edit.
 
+### On Linux: `partsd`
+
+`partsd` serves the same API and MCP tools without the app, from an inventory of its own — for a Linux
+box (or anywhere Swift runs) that should always be up:
+
+```sh
+cd PartsKit && swift build -c release --static-swift-stdlib     # or in Docker: swift:6.2
+.build/release/partsd --all-interfaces                          # token in ~/.local/share/partsd/token
+```
+
+Supplier lookups use `DIGIKEY_CLIENT_ID`, `DIGIKEY_CLIENT_SECRET` and `MOUSER_API_KEY`;
+`tools/partsd.service` runs it as a systemd user service with them in `~/.config/partsd/env`. Bring the
+app's inventory across with a backup: `curl -H "Authorization: Bearer $T" --data-binary @backup.json
+http://host:8765/api/import`. Identifying photos needs the app. See `PartsKit/PORTABILITY.md`.
+
 ## Building
 
 Requires Xcode 26 (iOS, iPadOS and macOS 26), [XcodeGen](https://github.com/yonaskolb/XcodeGen) and
@@ -321,6 +336,7 @@ over HTTP.
   facets and counts (`InventoryRow.swift`, `Facets.swift`), friends' inventory addresses and fetching
   (`RemoteInventory.swift`), the exports: CSV, Excel (a small ZIP writer) and the repository folder with its
   Markdown pages (`Export/`), and the HTTP server, request checks and MCP endpoint behind the API (`Server/`).
+  `Sources/PartsServer` and `Sources/partsd` are the headless server.
 - `App/` — the SwiftUI app: SwiftData models (`Model/`), Vision and Core ML (`Vision/`), Foundation
   Models (`Intelligence/`), label rendering and the printer screens (`Labels/`), the REST routes and MCP
   tools (`API/`), friends' inventories — the list, fetching and cache, and their screens (`Friends/`) — and

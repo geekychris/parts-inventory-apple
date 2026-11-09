@@ -1,0 +1,17 @@
+# partsd as a systemd user service. Install:
+#   install -m 755 PartsKit/.build/release/partsd ~/.local/bin/
+#   install -Dm 600 /dev/null ~/.config/partsd/env    # then add DIGIKEY_CLIENT_ID=…, DIGIKEY_CLIENT_SECRET=…, MOUSER_API_KEY=…
+#   cp tools/partsd.service ~/.config/systemd/user/ && systemctl --user enable --now partsd
+# `loginctl enable-linger $USER` keeps it running when you're logged out.
+[Unit]
+Description=e-Parts Inventory Manager server (REST API and MCP)
+After=network-online.target
+
+[Service]
+EnvironmentFile=%h/.config/partsd/env
+ExecStart=%h/.local/bin/partsd --all-interfaces --port 8765
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
