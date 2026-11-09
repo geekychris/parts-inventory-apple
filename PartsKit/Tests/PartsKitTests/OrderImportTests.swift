@@ -84,7 +84,8 @@ import Testing
     #expect(o.lines.first?.mpn == "LM358DR")
     #expect(o.lines.first?.qty == 10)
 
-    // Re-zip with deflate, as Excel writes them.
+    // Re-zip with deflate, as Excel writes them (with the zip and unzip commands, which Windows doesn't have).
+    #if !os(Windows)
     let dir = FileManager.default.temporaryDirectory.appending(path: "xlsx-\(UUID().uuidString)")
     try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
     defer { try? FileManager.default.removeItem(at: dir) }
@@ -100,4 +101,20 @@ import Testing
     let deflated = try Data(contentsOf: dir.appending(path: "out.xlsx"))
     let o2 = try SupplierOrder.read(deflated)
     #expect(o2.lines == o.lines.map { var l = $0; l.supplier = "digikey"; return l })
+    #endif
+}
+
+/// The portable DEFLATE decoder (used for .xlsx where Compression isn't there) on each kind of block.
+@Test func inflateBlocks() throws {
+    let text = String(repeating: "Digi-Key Part Number,Manufacturer Part Number,Quantity\n296-1395-1-ND,LM358DR,10\n", count: 40)
+    let cases = [  // raw deflate from zlib: dynamic Huffman (level 9), fixed Huffman, stored (level 0)
+        (text, "7cwxCoAgGAbQ3VN4AIVMjNz/rYzqBhYWDjmIDt6+uaEbfPODR/GOcgqNrz4XvtTnCFk4n+rlz1JzyB/Yqk8llsZ6O0ilrZFKLiRmp81Iu1AdI3z48OHDhw8fPnz48OH7+V4="),
+        ("LM358DR", "8/E1NrVwCQIA"),
+        ("LM358DR", "AQcA+P9MTTM1OERS"),
+    ]
+    for (plain, b64) in cases {
+        let out = try Inflate.decode([UInt8](try #require(Data(base64Encoded: b64))))
+        #expect(String(decoding: out, as: UTF8.self) == plain)
+    }
+    #expect(throws: Inflate.Bad.self) { try Inflate.decode([0xFF, 0xFF]) }
 }

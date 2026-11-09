@@ -384,7 +384,9 @@ enum ZipReader {
         guard n == size else { throw Bad() }
         return out
         #else
-        throw Bad()
+        let out = try Inflate.decode([UInt8](raw), expectedSize: size)
+        guard out.count == size else { throw Bad() }
+        return Data(out)
         #endif
     }
 }

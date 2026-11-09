@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(Network)
+import Network
+#endif
 
 /// An HTTP/1.1 server: one request per connection, answered by `handler`. Bound to 127.0.0.1 unless
 /// asked to listen on every interface. On Apple platforms this is Network.framework
