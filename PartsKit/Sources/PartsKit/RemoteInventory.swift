@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// A friend's published inventory: a folder (usually a GitHub repository) with `inventory.json` at its root —
 /// a backup file. Only that file is read.

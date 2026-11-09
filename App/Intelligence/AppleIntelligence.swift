@@ -72,6 +72,19 @@ nonisolated enum PartReader {
     }
 }
 
+/// Apple Intelligence as a `PartIdentificationModel` (PartsKit's AI/PartIdentificationModel.swift; see
+/// PORTABILITY.md) — the contract `OpenAICompatibleModel` also implements for every other platform.
+/// A thin adapter rather than `extension PartReader: PartIdentificationModel {}`: the protocol's `read`
+/// is an instance method (so OpenAICompatibleModel can carry its own endpoint/model per instance), and
+/// a static method like PartReader's can't satisfy an instance requirement. PartReader itself, and its
+/// behavior, are unchanged.
+nonisolated struct AppleIntelligenceModel: PartIdentificationModel {
+    init() {}
+    func read(ocrText: String, imageLabels: [String]) async throws -> Candidate? {
+        try await PartReader.read(ocrText: ocrText, imageLabels: imageLabels)
+    }
+}
+
 // ---------------------------------------------------------------- asking about the inventory
 
 /// A part, as the assistant sees it.

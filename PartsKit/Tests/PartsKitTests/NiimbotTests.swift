@@ -2,6 +2,10 @@ import Foundation
 import Testing
 @testable import PartsKit
 
+// This file tests only Niimbot.swift's packet protocol, not NiimbotBluetooth.swift's CoreBluetooth
+// transport — so it passes unmodified on platforms where NiimbotBluetooth.swift isn't even compiled
+// (see Package.swift and PORTABILITY.md), proving the protocol code has no hidden dependency on it.
+
 /// Hex string → bytes ("55 55 40 01 08 49 aa aa").
 private func hex(_ s: String) -> [UInt8] {
     s.split(separator: " ").compactMap { UInt8($0, radix: 16) }

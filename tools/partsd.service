@@ -1,0 +1,21 @@
+# partsd as a systemd user service. Install (the built-in catalog is a resource bundle and the web pages are files,
+# both read from beside the binary):
+#   mkdir -p ~/.local/lib/partsd && cp -r PartsKit/.build/release/{partsd,partlookup,PartsKit_PartsKit.resources} ~/.local/lib/partsd/
+#   rm -rf ~/.local/lib/partsd/web && cp -r PartsKit/Sources/PartsServer/Web ~/.local/lib/partsd/web
+#   install -Dm 600 /dev/null ~/.config/partsd/env    # then add DIGIKEY_CLIENT_ID=…, DIGIKEY_CLIENT_SECRET=…, MOUSER_API_KEY=…
+#   cp tools/partsd.service ~/.config/systemd/user/ && systemctl --user enable --now partsd
+# For photo identification, add PARTSD_AI_URL=http://127.0.0.1:11434/v1, PARTSD_VISION_MODEL=qwen2.5vl:7b and
+# PARTSD_TEXT_MODEL=qwen2.5:14b (with Ollama: `ollama pull` both). `loginctl enable-linger $USER` keeps it running
+# when you're logged out. Then open http://HOST:8765/ and sign in with `partsd --print-token`.
+[Unit]
+Description=e-Parts Inventory Manager server (web pages, REST API and MCP)
+After=network-online.target
+
+[Service]
+EnvironmentFile=%h/.config/partsd/env
+ExecStart=%h/.local/lib/partsd/partsd --all-interfaces --port 8765
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
