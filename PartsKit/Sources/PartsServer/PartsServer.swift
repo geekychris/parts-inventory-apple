@@ -14,12 +14,24 @@ public actor PartsServer {
     var b: Backup
     var photos: [InventoryStore.PhotoRecord]
     let lookup: SupplierLookup
+    let identifier: Identifier?
 
-    public init(dataDirectory: URL, lookup: SupplierLookup) throws {
+    /// Photo identification without Apple's frameworks: a vision model reads the markings, and optionally a text
+    /// model interprets them (see PhotoIdentify).
+    public struct Identifier: Sendable {
+        public var reader: OpenAICompatibleMarkingReader
+        public var model: OpenAICompatibleModel?
+        public init(reader: OpenAICompatibleMarkingReader, model: OpenAICompatibleModel? = nil) { self.reader = reader; self.model = model }
+    }
+
+    public init(dataDirectory: URL, lookup: SupplierLookup, identifier: Identifier? = nil) throws {
         store = try InventoryStore(dir: dataDirectory)
         (b, photos) = try store.load()
         self.lookup = lookup
+        self.identifier = identifier
     }
+
+    public var canIdentify: Bool { identifier != nil }
 
     public var partCount: Int { b.parts.count }
 
@@ -295,6 +307,21 @@ public actor PartsServer {
         guard !q.trimmed.isEmpty else { throw Self.fail(400, "Give a part number to look up (q).") }
         guard lookup.isConfigured else { throw Self.fail(409, "No supplier keys: start partsd with DIGIKEY_CLIENT_ID, DIGIKEY_CLIENT_SECRET and/or MOUSER_API_KEY set.") }
         return await lookup.lookup(q.trimmed)
+    }
+
+    /// What the photo's markings say, matched against the built-in list and this inventory — the app's identify JSON.
+    func identify(_ image: Data) async throws -> JSONValue {
+        guard let identifier else { throw Self.fail(501, Self.identifyUnsupported) }
+        let type = Self.imageType(image)
+        guard type != "image/heic" else { throw Self.fail(415, "Send the photo as JPEG or PNG; HEIC isn't read here.") }
+        let refs = b.parts.map { InventoryRef(id: $0.id, mpn: $0.mpn, supplierPNs: $0.suppliers.map(\.pn)) }
+        let r: PhotoIdentify.Result
+        do { r = try await PhotoIdentify.identify(image: image, type: type, inventory: refs, reader: identifier.reader, model: identifier.model) }
+        catch { throw Self.fail(502, "Reading the photo failed: \(error.localizedDescription)") }
+        var o: [String: JSONValue] = ["markings": .string(r.markings), "barcodes": .array([]),
+                                      "candidates": .array(r.candidates.prefix(8).map { InventoryCatalog.candidateJSON($0) })]
+        if let w = r.warning { o["warning"] = .string(w) }
+        return .object(o)
     }
 
     func photo(_ uid: String, index: Int) throws -> (Data, String) {

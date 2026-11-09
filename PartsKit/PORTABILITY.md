@@ -101,8 +101,9 @@ key, a model name), which the on-device Apple Intelligence model doesn't need bu
   still exercise the Windows socket path.
 - NIIMBOT printing has no Linux (BlueZ) or Windows (WinRT Bluetooth) backend. Out of scope here; no
   one has asked for it yet.
-- `partsd` can't identify a part from a photo: that needs Vision (OCR) and the app's Core ML look model.
-  `POST /api/identify` answers 501 and the `identify_photo` MCP tool isn't offered.
+- `partsd` identifies photos only with a vision model configured (otherwise `POST /api/identify` answers 501
+  and `identify_photo` isn't offered), and only by their markings: no bag-label barcodes (Vision) and no
+  recognising boards by look (the app's MobileCLIP model).
 - `partsd` and the app don't sync. Each has its own inventory; move one to the other with the backup
   file (`GET /api/export?photos=true` on one, `POST /api/import` on the other — a merge, newer wins).
 
@@ -121,6 +122,13 @@ same `curl` commands and `claude mcp add` line work against either.
   (`Server/InventoryCatalog.swift`). The operations themselves are written twice — `App/API/InventoryAPI.swift`
   over SwiftData, `PartsServer.swift` over `Backup` — because pulling a storage protocol out of the app's
   SwiftData code was a larger change than this one.
+- **Photo identification without Apple's frameworks** (`AI/PhotoIdentify.swift`): there's no OCR on Linux, so
+  `OpenAICompatibleModel` alone — which only interprets OCR text — would never be called. A vision model
+  (`OpenAICompatibleMarkingReader`) transcribes the markings instead; they go through the same `Identify.rank`
+  as the app's Vision text, and a text model's reading (`OpenAICompatibleModel`) is added when that isn't sure.
+  On spark: `qwen2.5vl:7b` reads (NE555P and NE555N photos read exactly in 1–6 s; an LM7805 misread as
+  "LM3805C" still matched L7805CV), and `qwen2.5:14b` interprets — `qwen2.5vl` itself is poor at it (it took a
+  lot code for the part number).
 - Run it with `swift run partsd` (or `partsd --data DIR --port N --all-interfaces`). The token is made on
   first run and kept in `DIR/token`; supplier keys come from `DIGIKEY_CLIENT_ID`, `DIGIKEY_CLIENT_SECRET`
   and `MOUSER_API_KEY`. `tools/partsd.service` is a systemd user unit for it.

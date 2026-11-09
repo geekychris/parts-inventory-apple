@@ -8,8 +8,11 @@ import PartsServer
 //
 // DIR (default $PARTSD_DATA, else ~/.local/share/partsd) holds inventory.json (the web tool's backup format),
 // photos/ and token, the bearer token, made on first run. Supplier lookups use DIGIKEY_CLIENT_ID,
-// DIGIKEY_CLIENT_SECRET and MOUSER_API_KEY from the environment. Move an inventory in from the app with
-// its JSON backup: `curl -H "Authorization: Bearer $(cat DIR/token)" --data-binary @backup.json http://HOST:8765/api/import`.
+// DIGIKEY_CLIENT_SECRET and MOUSER_API_KEY from the environment. Photo identification uses a vision model behind
+// an OpenAI-compatible API: PARTSD_AI_URL (e.g. http://127.0.0.1:11434/v1 for Ollama), PARTSD_VISION_MODEL, and
+// optionally PARTSD_TEXT_MODEL ("none" for none; the vision model by default) and PARTSD_AI_KEY.
+// Move an inventory in from the app with its JSON backup:
+//   curl -H "Authorization: Bearer $(cat DIR/token)" --data-binary @backup.json http://HOST:8765/api/import
 
 @main
 enum Partsd {
@@ -52,8 +55,17 @@ enum Partsd {
         if printToken { print(token); exit(0) }
 
         let lookup = SupplierLookup(digikeyID: env["DIGIKEY_CLIENT_ID"] ?? "", digikeySecret: env["DIGIKEY_CLIENT_SECRET"] ?? "", mouserKey: env["MOUSER_API_KEY"] ?? "")
+        // Photo identification: a vision model for the markings, and a text model (the same one unless set) to read them.
+        var identifier: PartsServer.Identifier?
+        if let base = env["PARTSD_AI_URL"], !base.isEmpty, let vision = env["PARTSD_VISION_MODEL"], !vision.isEmpty {
+            let full = base.hasSuffix("/chat/completions") ? base : base.trimmingCharacters(in: CharacterSet(charactersIn: "/")) + "/chat/completions"
+            guard let url = URL(string: full), url.scheme?.hasPrefix("http") == true else { die("PARTSD_AI_URL should be like http://127.0.0.1:11434/v1") }
+            let key = env["PARTSD_AI_KEY"] ?? "", text = env["PARTSD_TEXT_MODEL"].flatMap { $0.isEmpty ? nil : $0 } ?? vision
+            identifier = .init(reader: OpenAICompatibleMarkingReader(endpoint: url, apiKey: key, model: vision),
+                               model: text == "none" ? nil : OpenAICompatibleModel(endpoint: url, apiKey: key, model: text))
+        }
         let server: PartsServer
-        do { server = try PartsServer(dataDirectory: dataDir, lookup: lookup) } catch { die("can't read the inventory in \(dataDir.path): \(error.localizedDescription)") }
+        do { server = try PartsServer(dataDirectory: dataDir, lookup: lookup, identifier: identifier) } catch { die("can't read the inventory in \(dataDir.path): \(error.localizedDescription)") }
 
         let hostName = ProcessInfo.processInfo.hostName.lowercased()
         let hostNames: Set<String> = hostName.isEmpty ? [] : [hostName, hostName.replacingOccurrences(of: ".local", with: ""), hostName.hasSuffix(".local") ? hostName : hostName + ".local"]
@@ -71,6 +83,11 @@ enum Partsd {
         let parts = await server.partCount
         log("partsd \(PartsServer.version): \(parts) part\(parts == 1 ? "" : "s") in \(dataDir.path)")
         log("partsd: supplier lookups — Digi-Key: \(lookup.digikey == nil ? "no keys" : "keys set"), Mouser: \(lookup.mouser == nil ? "no key" : "key set")")
+        if let i = identifier {
+            log("partsd: identify — markings by \(i.reader.model), read by \(i.model?.model ?? "nothing else") at \(i.reader.endpoint.absoluteString)")
+        } else {
+            log("partsd: identify — off (set PARTSD_AI_URL and PARTSD_VISION_MODEL to turn it on)")
+        }
         log("partsd: token in \(tokenFile.path)")
         let base = "http://\(allInterfaces && !hostName.isEmpty ? hostName : "127.0.0.1"):\(port)"
         log("partsd: claude mcp add --transport http parts-inventory \(base)/mcp --header \"Authorization: Bearer $(cat \(tokenFile.path))\"")

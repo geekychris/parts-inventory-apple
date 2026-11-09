@@ -6,28 +6,28 @@ import PartsKit
 extension PartsServer {
     private typealias Route = (method: String, pattern: RoutePattern, run: @Sendable (isolated PartsServer, HTTPRequest, [String: String]) async throws -> HTTPResponse)
 
-    static let identifyUnsupported = "Identifying a part from a photo needs Apple’s Vision framework: use the Mac or iPhone app for that."
+    static let identifyUnsupported = "Identifying photos needs a vision model: start partsd with PARTSD_AI_URL and PARTSD_VISION_MODEL set (see PORTABILITY.md), or use the Mac or iPhone app."
 
-    /// The app's OpenAPI document, retitled for partsd and without /api/identify.
-    static let openAPI: Data = {
+    /// The app's OpenAPI document, retitled for partsd, without /api/identify when there's no vision model.
+    static func openAPI(identify: Bool) -> Data {
         guard case .object(var doc) = (try? JSONDecoder().decode(JSONValue.self, from: Data(InventoryCatalog.openAPI.utf8))) ?? .null else { return Data() }
         if case .object(var info) = doc["info"] ?? .null {
             info["title"] = .string("e-Parts Inventory Manager (partsd)")
             info["version"] = .string(version)
-            info["description"] = .string("The parts inventory served by partsd, the headless server. Parts have the same shape as the web version's backup file, plus locationPath, photoCount, isLow and summary. Every endpoint except /api/health needs Authorization: Bearer <token> (partsd prints where its token is kept). The same data is available as MCP tools at /mcp. Photo identification needs the Mac or iPhone app.")
+            info["description"] = .string("The parts inventory served by partsd, the headless server. Parts have the same shape as the web version's backup file, plus locationPath, photoCount, isLow and summary. Every endpoint except /api/health needs Authorization: Bearer <token> (partsd prints where its token is kept). The same data is available as MCP tools at /mcp. Photo identification needs a vision model configured (PARTSD_AI_URL, PARTSD_VISION_MODEL); the bag-label barcodes and look recognition are the app's alone.")
             doc["info"] = .object(info)
         }
-        if case .object(var paths) = doc["paths"] ?? .null { paths["/api/identify"] = nil; doc["paths"] = .object(paths) }
+        if !identify, case .object(var paths) = doc["paths"] ?? .null { paths["/api/identify"] = nil; doc["paths"] = .object(paths) }
         return JSONValue.encode(.object(doc))
-    }()
+    }
 
     private static let routes: [Route] = [
         ("GET", RoutePattern("/api/health"), { s, _, _ in
             .json(.object(["ok": .bool(true), "app": .string("e-Parts Inventory Manager (partsd)"), "version": .string(PartsServer.version),
-                           "parts": .number(Double(s.partCount))]))
+                           "parts": .number(Double(s.partCount)), "identify": .bool(s.canIdentify)]))
         }),
-        ("GET", RoutePattern("/api/openapi.json"), { _, _, _ in
-            HTTPResponse(status: 200, headers: [("Content-Type", "application/json; charset=utf-8")], body: PartsServer.openAPI)
+        ("GET", RoutePattern("/api/openapi.json"), { s, _, _ in
+            HTTPResponse(status: 200, headers: [("Content-Type", "application/json; charset=utf-8")], body: PartsServer.openAPI(identify: s.canIdentify))
         }),
         ("GET", RoutePattern("/api/parts"), { s, req, _ in
             let q = req.query
@@ -76,7 +76,7 @@ extension PartsServer {
             return .json(s.projectJSON(pr, lines: true))
         }),
         ("GET", RoutePattern("/api/lookup"), { s, req, _ in .json(InventoryCatalog.lookupJSON(try await s.supplierLookup(req.query["q"] ?? ""))) }),
-        ("POST", RoutePattern("/api/identify"), { _, _, _ in throw PartsServer.fail(501, PartsServer.identifyUnsupported) }),
+        ("POST", RoutePattern("/api/identify"), { s, req, _ in .json(try await s.identify(try imageBody(req))) }),
         ("GET", RoutePattern("/api/export"), { s, req, _ in
             HTTPResponse(status: 200, headers: [("Content-Type", "application/json; charset=utf-8")], body: try s.backup(photos: req.query["photos"] == "true").encoded())
         }),
@@ -110,6 +110,27 @@ extension PartsServer {
         if req.body.isEmpty { return [:] }
         guard let o = req.json?.object else { throw PartsServer.fail(400, "The body should be a JSON object.") }
         return o
+    }
+
+    /// An image sent as the body itself, as multipart/form-data, or as JSON {"image": "<base64>"} (as the app takes it).
+    private static func imageBody(_ req: HTTPRequest) throws -> Data {
+        let type = req.header("content-type")?.lowercased() ?? ""
+        if type.hasPrefix("multipart/form-data") {
+            guard let f = Multipart.firstFile(req.body, contentType: req.header("content-type") ?? "") else { throw PartsServer.fail(400, "No file in the form.") }
+            return f.data
+        }
+        if type.hasPrefix("application/json") || req.body.first == UInt8(ascii: "{") {
+            guard let d = req.json?["image"]?.string.flatMap(decodeBase64) else {
+                throw PartsServer.fail(400, "Send {\"image\": \"<base64 JPEG or PNG>\"}, or the image itself as the body.")
+            }
+            return d
+        }
+        guard !req.body.isEmpty else { throw PartsServer.fail(400, "Send a photo: the image as the body, a form upload, or {\"image\": \"<base64>\"}.") }
+        return req.body
+    }
+
+    static func decodeBase64(_ s: String) -> Data? {
+        Data(base64Encoded: s.replacingOccurrences(of: "^data:[^,]*,", with: "", options: .regularExpression), options: .ignoreUnknownCharacters)
     }
 
     // MARK: MCP tools
@@ -178,20 +199,26 @@ extension PartsServer {
             var s = "\(r.products.count) listing\(r.products.count == 1 ? "" : "s") at Digi-Key and Mouser" + (r.products.count > limit ? ", showing \(limit)." : ".")
             if !r.errors.isEmpty { s += " Problems: " + r.errors.map { "\($0.key): \($0.value)" }.joined(separator: "; ") }
             return MCPToolResult(summary: s, data: InventoryCatalog.lookupJSON(r, limit: limit))
+        case "identify_photo" where canIdentify:
+            guard let d = a["image_base64"]?.string.flatMap(Self.decodeBase64) else { throw Self.fail(400, "image_base64 should be a base64 JPEG or PNG.") }
+            let j = try await identify(d)
+            let top = j["candidates"]?.array?.first
+            let s = top.map { "Most likely \($0["name"]?.string ?? "?") (\($0["confidence"]?.string ?? ""))." } ?? "Nothing recognised."
+            return MCPToolResult(summary: s, data: j)
         default:
             throw Self.fail(404, "Unknown tool \(name).")
         }
     }
 }
 
-/// The inventory's MCP tools as partsd serves them: the app's, less identify_photo.
+/// The inventory's MCP tools as partsd serves them: the app's, less identify_photo when there's no vision model.
 public struct PartsServerTools: MCPToolProvider {
     public let server: PartsServer
     public init(server: PartsServer) { self.server = server }
 
-    static let list = InventoryCatalog.tools.filter { $0.name != "identify_photo" }
+    static let withoutIdentify = InventoryCatalog.tools.filter { $0.name != "identify_photo" }
 
-    public func tools() async -> [MCPTool] { Self.list }
+    public func tools() async -> [MCPTool] { await server.canIdentify ? InventoryCatalog.tools : Self.withoutIdentify }
 
     public func call(_ name: String, arguments a: [String: JSONValue]) async -> MCPToolResult {
         do { return try await server.runTool(name, a) }

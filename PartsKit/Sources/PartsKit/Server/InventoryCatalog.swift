@@ -82,6 +82,26 @@ public enum InventoryCatalog {
         return [best] + (twin.map { [$0] } ?? [])
     }
 
+    public static func candidateJSON(_ c: Candidate) -> JSONValue {
+        var o: [String: JSONValue] = ["score": .number((c.score * 100).rounded() / 100), "confidence": .string(c.confidence),
+                                      "byLook": .bool(c.byLook), "reasons": .array(c.reasons.map(JSONValue.string))]
+        switch c.source {
+        case .catalog(let e):
+            o["kind"] = .string("catalog"); o["name"] = .string(e.displayName); o["mpn"] = .string(e.mpn); o["manufacturer"] = .string(e.mfr)
+            o["description"] = .string(e.desc); o["category"] = .string(e.cat); o["datasheet"] = .string(e.ds ?? "")
+        case .inventory(let r):
+            o["kind"] = .string("inventory"); o["partId"] = .string(r.id); o["mpn"] = .string(r.mpn); o["name"] = .string(r.mpn)
+        case .generic(let g):
+            o["kind"] = .string("generic"); o["name"] = .string(g.name); o["category"] = .string(g.cat)
+        case .unknown(let t):
+            o["kind"] = .string("unknown"); o["name"] = .string(t); o["mpn"] = .string(t)
+        case .reading(let r):
+            o["kind"] = .string("reading"); o["name"] = .string(r.mpn); o["mpn"] = .string(r.mpn); o["manufacturer"] = .string(r.manufacturer)
+            o["description"] = .string(r.description); o["category"] = .string(r.category)
+        }
+        return .object(o)
+    }
+
     /// GET /api/openapi.json.
     public static let openAPI = #"""
 {

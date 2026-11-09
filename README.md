@@ -240,10 +240,15 @@ cd PartsKit && swift build -c release --static-swift-stdlib     # or in Docker: 
 .build/release/partsd --all-interfaces                          # token in ~/.local/share/partsd/token
 ```
 
+Copy `PartsKit_PartsKit.resources` along with the binary: it's the built-in catalog, read from beside it.
+
 Supplier lookups use `DIGIKEY_CLIENT_ID`, `DIGIKEY_CLIENT_SECRET` and `MOUSER_API_KEY`;
 `tools/partsd.service` runs it as a systemd user service with them in `~/.config/partsd/env`. Bring the
 app's inventory across with a backup: `curl -H "Authorization: Bearer $T" --data-binary @backup.json
-http://host:8765/api/import`. Identifying photos needs the app. See `PartsKit/PORTABILITY.md`.
+http://host:8765/api/import`. Photo identification needs a vision model behind an OpenAI-compatible API — with
+Ollama, `PARTSD_AI_URL=http://127.0.0.1:11434/v1 PARTSD_VISION_MODEL=qwen2.5vl:7b PARTSD_TEXT_MODEL=qwen2.5:14b`:
+the vision model reads the markings, which are matched as the app matches them, and the text model interprets
+them when that isn't sure. Bag-label barcodes and look recognition stay in the app. See `PartsKit/PORTABILITY.md`.
 
 ## Building
 

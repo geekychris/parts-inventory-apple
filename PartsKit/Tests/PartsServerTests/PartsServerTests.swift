@@ -93,10 +93,10 @@ private func call(_ s: PartsServer, _ method: String, _ target: String, _ body: 
     let dir = try tempDir()
     defer { try? FileManager.default.removeItem(at: dir) }
     let s = try server(dir)
-    #expect(!PartsServerTools.list.contains { $0.name == "identify_photo" })
-    #expect(PartsServerTools.list.count == InventoryCatalog.tools.count - 1)
-
     let tools = PartsServerTools(server: s)
+    // No vision model configured: no identify_photo.
+    #expect(await tools.tools().count == InventoryCatalog.tools.count - 1)
+    #expect(!(await tools.tools()).contains { $0.name == "identify_photo" })
     let added = await tools.call("add_part", arguments: ["mpn": .string("NE555P"), "qty": .number(3), "lookup": .bool(false)])
     #expect(!added.isError)
     let id = try #require(added.data?["id"]?.string)
@@ -108,5 +108,20 @@ private func call(_ s: PartsServer, _ method: String, _ target: String, _ body: 
     let rpc = JSONValue.object(["jsonrpc": .string("2.0"), "id": .number(1), "method": .string("tools/list")])
     let (status, res) = await call(s, "POST", "/mcp", rpc)
     #expect(status == 200)
-    #expect(res["result"]?["tools"]?.array?.count == PartsServerTools.list.count)
+    #expect(res["result"]?["tools"]?.array?.count == InventoryCatalog.tools.count - 1)
+}
+
+@Test func identifyIsOfferedWithAVisionModel() async throws {
+    let dir = try tempDir()
+    defer { try? FileManager.default.removeItem(at: dir) }
+    // Nothing listens here; only what's offered is checked, not a reading.
+    let url = URL(string: "http://127.0.0.1:9/v1/chat/completions")!
+    let s = try PartsServer(dataDirectory: dir, lookup: SupplierLookup(digikeyID: "", digikeySecret: "", mouserKey: ""),
+                            identifier: .init(reader: OpenAICompatibleMarkingReader(endpoint: url, model: "vision")))
+    #expect(await PartsServerTools(server: s).tools().contains { $0.name == "identify_photo" })
+    #expect(await call(s, "GET", "/api/openapi.json").1["paths"]?["/api/identify"] != nil)
+    #expect(await call(s, "GET", "/api/health").1["identify"]?.bool == true)
+    // An unreachable model is a bad gateway, not a crash.
+    let jpeg = Data([0xFF, 0xD8, 0xFF, 0xE0, 0, 0x10]).base64EncodedString()
+    #expect(await call(s, "POST", "/api/identify", .object(["image": .string(jpeg)])).0 == 502)
 }
