@@ -71,10 +71,12 @@ private func portFrom(_ addr: sockaddr_in) -> UInt16 {
 }
 
 #if os(Windows)
+/// Windows' SO_REUSEADDR lets a second socket take a port that's in use; SO_EXCLUSIVEADDRUSE (a macro Swift
+/// doesn't import: ~SO_REUSEADDR) is what makes a taken port fail to bind, as SO_REUSEADDR does elsewhere.
 private func setReuseAddr(_ fd: SocketFD) {
     var one: Int32 = 1
     _ = withUnsafeBytes(of: &one) { raw in
-        setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, raw.bindMemory(to: CHAR.self).baseAddress, Int32(MemoryLayout<Int32>.size))
+        setsockopt(fd, SOL_SOCKET, ~SO_REUSEADDR, raw.bindMemory(to: CHAR.self).baseAddress, Int32(MemoryLayout<Int32>.size))
     }
 }
 private func bindSocket(_ fd: SocketFD, _ addr: sockaddr_in) -> Bool {

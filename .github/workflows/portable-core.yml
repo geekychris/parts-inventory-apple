@@ -48,7 +48,5 @@ jobs:
       - name: swift test (PartsKit)
         working-directory: PartsKit
         run: swift test
-      - name: xcodebuild test (the app)
-        run: |
-          xcodebuild test -project PartsInventory.xcodeproj -scheme PartsInventory \
-            -destination 'platform=macOS,arch=arm64' CODE_SIGNING_ALLOWED=NO
+      # The app itself isn't built here: its Core ML models (App/Resources/MobileCLIP*.mlpackage) aren't in the
+      # repository — tools/make-clip-embeddings.py makes them — so a clean checkout can't compile it.
