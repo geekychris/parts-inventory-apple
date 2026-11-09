@@ -215,7 +215,10 @@ public actor PartsServer {
 
     func update(_ uid: String, _ f: [String: JSONValue]) throws -> Backup.Part {
         let i = try index(of: uid)
-        try apply(f, to: &b.parts[i])
+        // On a copy: apply reads the locations and may add some, which can't happen while b.parts[i] is lent out.
+        var p = b.parts[i]
+        try apply(f, to: &p)
+        b.parts[i] = p
         if let q = f["qty"]?.int, q != Int(b.parts[i].qty) { setQty(i, to: q, reason: f["reason"]?.string ?? "Set through the API") }
         try save()
         return b.parts[i]

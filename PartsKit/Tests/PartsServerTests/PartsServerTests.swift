@@ -125,3 +125,75 @@ private func call(_ s: PartsServer, _ method: String, _ target: String, _ body: 
     let jpeg = Data([0xFF, 0xD8, 0xFF, 0xE0, 0, 0x10]).base64EncodedString()
     #expect(await call(s, "POST", "/api/identify", .object(["image": .string(jpeg)])).0 == 502)
 }
+
+private let webRoot = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+    .appendingPathComponent("Sources/PartsServer/Web")
+
+@Test func webPagesAreServedWithoutTheToken() async throws {
+    let dir = try tempDir()
+    defer { try? FileManager.default.removeItem(at: dir) }
+    let s = try server(dir)
+    let site = try #require(WebSite.find([dir, webRoot]))
+    let gate = await s.gate(token: { token }, site: site)
+    func get(_ path: String, _ headers: [String: String] = [:]) async -> HTTPResponse {
+        await gate.handle(HTTPRequest(method: "GET", path: path, headers: ["host": "spark.local:8765"].merging(headers) { $1 }))
+    }
+    let page = await get("/")
+    #expect(page.status == 200)
+    #expect(page.header("content-type")?.hasPrefix("text/html") == true)
+    #expect(page.header("content-security-policy")?.contains("script-src 'self'") == true)
+    #expect(await get("/app.js").header("content-type")?.hasPrefix("text/javascript") == true)
+    #expect(await get("/app.css").status == 200)
+    // Only files in the directory, and no data without the token.
+    #expect(await get("/../Package.swift").status == 404)
+    #expect(await get("/.hidden.js").status == 404)
+    #expect(await get("/nope.html").status == 404)
+    #expect(await get("/api/parts").status == 401)
+    #expect(await gate.handle(HTTPRequest(method: "POST", path: "/", headers: ["host": "spark.local:8765"])).status == 405)
+
+    // The page's own requests pass the Origin check (with the token); another site's don't.
+    let own = HTTPRequest(method: "GET", path: "/api/parts", headers: ["host": "spark.local:8765", "origin": "http://spark.local:8765", "authorization": "Bearer \(token)"])
+    #expect(await gate.handle(own).status == 200)
+    var other = own
+    other.headers["origin"] = "http://evil.example"
+    #expect(await gate.handle(other).status == 403)
+    // Without pages, a same-origin request from elsewhere is refused as before.
+    #expect(await s.gate(token: { token }).handle(own).status == 403)
+}
+
+@Test func photosAndLocationsFromTheWebPages() async throws {
+    let dir = try tempDir()
+    defer { try? FileManager.default.removeItem(at: dir) }
+    let s = try server(dir)
+    let (_, part) = await call(s, "POST", "/api/parts", .object(["mpn": .string("NE555P"), "qty": .number(4), "location": .string("Cabinet A / Drawer 1 / Bin 2")]))
+    let id = try #require(part["id"]?.string)
+
+    // Photos: added as the image itself, read back, removed.
+    let png = Data([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 9, 9])
+    let res = await s.gate(token: { token }).handle(HTTPRequest(method: "POST", path: "/api/parts/\(id)/photos",
+                                                                 headers: ["host": "127.0.0.1:8765", "authorization": "Bearer \(token)", "content-type": "image/png"], body: png))
+    #expect(res.status == 201)
+    #expect(try await s.photo(id, index: 0).0 == png)
+    #expect(await call(s, "DELETE", "/api/parts/\(id)/photos/0").1["photoCount"]?.int == 0)
+    #expect(await call(s, "DELETE", "/api/parts/\(id)/photos/0").0 == 404)
+
+    // Locations: rename, no loops, remove (what was inside moves up).
+    let locs = await call(s, "GET", "/api/locations").1["locations"]?.array ?? []
+    func loc(_ name: String) -> String? { locs.first { $0["name"]?.string == name }?["id"]?.string }
+    let cabinet = try #require(loc("Cabinet A")), drawer = try #require(loc("Drawer 1")), bin = try #require(loc("Bin 2"))
+    #expect(await call(s, "PATCH", "/api/locations/\(drawer)", .object(["name": .string("Drawer One")])).1["path"]?.string == "Cabinet A › Drawer One")
+    #expect(await call(s, "PATCH", "/api/locations/\(cabinet)", .object(["parentId": .string(bin)])).0 == 400)
+    let (gone, removed) = await call(s, "DELETE", "/api/locations/\(bin)")
+    #expect(gone == 200 && removed["partsMoved"]?.int == 1)
+    #expect(await call(s, "GET", "/api/parts/\(id)").1["locationPath"]?.string == "Cabinet A › Drawer One")
+
+    // Moving a part by id or by path (which makes the places) — this once tripped Swift's exclusive-access check.
+    #expect(await call(s, "PATCH", "/api/parts/\(id)", .object(["locationId": .string(cabinet)])).1["locationPath"]?.string == "Cabinet A")
+    #expect(await call(s, "PATCH", "/api/parts/\(id)", .object(["location": .string("Shelf / Box 4")])).1["locationPath"]?.string == "Shelf › Box 4")
+    #expect(await PartsServerTools(server: s).call("update_part", arguments: ["id": .string(id), "location": .string("Shelf / Box 5")]).isError == false)
+
+    // Filling in needs supplier keys, as a lookup does.
+    #expect(await call(s, "POST", "/api/parts/\(id)/fill", .object([:])).0 == 409)
+    let doc = await call(s, "GET", "/api/openapi.json").1["paths"]
+    #expect(doc?["/api/parts/{uid}/photos/{index}"]?["get"] != nil && doc?["/api/parts/{uid}/photos/{index}"]?["delete"] != nil)
+}

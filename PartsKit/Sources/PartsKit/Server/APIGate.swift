@@ -8,18 +8,23 @@ public struct APIGate: Sendable {
     public var rest: HTTPServer.Handler
     /// Hosts allowed in an Origin header besides this machine's (when serving the local network).
     public var extraOriginHosts: Set<String>
+    /// The web pages served outside /api and /mcp, without the token (they hold no data; their requests carry it).
+    /// Their own requests pass the Origin check. Nil: nothing is served there.
+    public var site: HTTPServer.Handler?
 
-    public init(token: @escaping @Sendable () -> String, mcp: MCPEndpoint, extraOriginHosts: Set<String> = [], rest: @escaping HTTPServer.Handler) {
-        self.token = token; self.mcp = mcp; self.rest = rest; self.extraOriginHosts = extraOriginHosts
+    public init(token: @escaping @Sendable () -> String, mcp: MCPEndpoint, extraOriginHosts: Set<String> = [], site: HTTPServer.Handler? = nil,
+                rest: @escaping HTTPServer.Handler) {
+        self.token = token; self.mcp = mcp; self.rest = rest; self.extraOriginHosts = extraOriginHosts; self.site = site
     }
 
     public func handle(_ req: HTTPRequest) async -> HTTPResponse {
-        guard RequestGuard.originAllowed(req, extraHosts: extraOriginHosts) else {
+        guard RequestGuard.originAllowed(req, extraHosts: extraOriginHosts) || (site != nil && RequestGuard.sameOrigin(req)) else {
             return .error(403, "Requests from web pages on other sites aren't allowed.")
         }
         let path = req.path.count > 1 && req.path.hasSuffix("/") ? String(req.path.dropLast()) : req.path
         if path == "/api/health" { return await rest(req) }
         guard path == "/mcp" || path == "/api" || path.hasPrefix("/api/") else {
+            if let site { return await site(req) }
             return .error(404, "Nothing here. The REST API is under /api (see /api/openapi.json) and the MCP endpoint is /mcp.")
         }
         guard RequestGuard.authorised(req, token: token()) else {

@@ -240,7 +240,10 @@ cd PartsKit && swift build -c release --static-swift-stdlib     # or in Docker: 
 .build/release/partsd --all-interfaces                          # token in ~/.local/share/partsd/token
 ```
 
-Copy `PartsKit_PartsKit.resources` along with the binary: it's the built-in catalog, read from beside it.
+Copy `PartsKit_PartsKit.resources` along with the binary: it's the built-in catalog, read from beside it. Copy
+`Sources/PartsServer/Web` beside it as `web/` too: it's the web version — open `http://host:8765/` in any browser
+and sign in with the token for the inventory, a part's page (stock, location, suppliers, photos, history), adding
+parts with Digi-Key/Mouser lookup, identify from a photo, locations, projects, and backup import/export.
 
 Supplier lookups use `DIGIKEY_CLIENT_ID`, `DIGIKEY_CLIENT_SECRET` and `MOUSER_API_KEY`;
 `tools/partsd.service` runs it as a systemd user service with them in `~/.config/partsd/env`. Bring the

@@ -11,6 +11,7 @@ import PartsServer
 // DIGIKEY_CLIENT_SECRET and MOUSER_API_KEY from the environment. Photo identification uses a vision model behind
 // an OpenAI-compatible API: PARTSD_AI_URL (e.g. http://127.0.0.1:11434/v1 for Ollama), PARTSD_VISION_MODEL, and
 // optionally PARTSD_TEXT_MODEL ("none" for none; the vision model by default) and PARTSD_AI_KEY.
+// The web pages are served at / from web/ beside the binary (or $PARTSD_WEB, or the source tree in a build).
 // Move an inventory in from the app with its JSON backup:
 //   curl -H "Authorization: Bearer $(cat DIR/token)" --data-binary @backup.json http://HOST:8765/api/import
 
@@ -70,7 +71,8 @@ enum Partsd {
         let hostName = ProcessInfo.processInfo.hostName.lowercased()
         let hostNames: Set<String> = hostName.isEmpty ? [] : [hostName, hostName.replacingOccurrences(of: ".local", with: ""), hostName.hasSuffix(".local") ? hostName : hostName + ".local"]
         let fixedToken = token
-        let gate = await server.gate(token: { fixedToken }, extraOriginHosts: allInterfaces ? hostNames : [])
+        let site = WebSite.find(webCandidates(env))
+        let gate = await server.gate(token: { fixedToken }, extraOriginHosts: allInterfaces ? hostNames : [], site: site)
         let http = HTTPServer { req in await gate.handle(req) }
         http.onState = { state in
             switch state {
@@ -90,11 +92,28 @@ enum Partsd {
         }
         log("partsd: token in \(tokenFile.path)")
         let base = "http://\(allInterfaces && !hostName.isEmpty ? hostName : "127.0.0.1"):\(port)"
+        if let site {
+            log("partsd: web pages from \(site.root.path) — open \(base)/ and sign in with the token (partsd --print-token)")
+        } else {
+            log("partsd: no web pages found (install them as web/ beside partsd, or set PARTSD_WEB); the API and MCP work without them")
+        }
         log("partsd: claude mcp add --transport http parts-inventory \(base)/mcp --header \"Authorization: Bearer $(cat \(tokenFile.path))\"")
         do { try http.start(port: UInt16(port), allInterfaces: allInterfaces) } catch { die("couldn't start: \(error.localizedDescription)") }
 
         // Serve until stopped. Every change is already on disk, so SIGTERM and SIGINT can simply end the process.
         while true { try? await Task.sleep(nanoseconds: 3_600_000_000_000) }
+    }
+
+    /// Where the web pages may be: $PARTSD_WEB, web/ beside the binary (as installed; symlinks followed), then
+    /// the source tree this was built from (`swift run partsd`).
+    static func webCandidates(_ env: [String: String]) -> [URL] {
+        var dirs: [URL] = []
+        if let w = env["PARTSD_WEB"], !w.isEmpty { dirs.append(URL(fileURLWithPath: w, isDirectory: true)) }
+        let exe = URL(fileURLWithPath: CommandLine.arguments[0]).resolvingSymlinksInPath().deletingLastPathComponent()
+        dirs.append(exe.appendingPathComponent("web", isDirectory: true))
+        dirs.append(Bundle.main.executableURL?.resolvingSymlinksInPath().deletingLastPathComponent().appendingPathComponent("web", isDirectory: true) ?? exe)
+        dirs.append(URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("PartsServer/Web", isDirectory: true))
+        return dirs
     }
 
     /// A line to stdout, unbuffered, so it reaches the journal as it happens.

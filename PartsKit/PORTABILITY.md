@@ -72,13 +72,11 @@ key, a model name), which the on-device Apple Intelligence model doesn't need bu
   Mirrors the app's existing iPhone-camera-handoff UX and needs no backend change: it would pair with
   a running server using the address + token Settings › API & MCP already generates, `POST` a photo
   to `/api/identify`, and on confirmation `POST` to `/api/parts` or `/api/parts/{uid}/stock`.
-- **Windows/Linux desktop UI: reuse the project's own web tool, don't write a new native GUI
-  (roadmap, not this change).** The README already describes this Swift app as a port of
-  `geekychris.github.io/tools/parts-inventory`, which speaks the same backup JSON schema
-  (`Backup.swift`). Pointing that existing web UI at a new headless `partsd` server (hosting the same
-  `APIGate`/`HTTPServer`/MCP stack, over a new portable storage layer — SwiftData/CloudKit don't run
-  outside Apple platforms) avoids building and maintaining two more native GUI codebases for a result
-  no one asked for by name.
+- **Windows/Linux desktop UI: web pages served by `partsd`, not a new native GUI.** The first plan was to
+  point `geekychris.github.io/tools/parts-inventory` at `partsd`, but that tool keeps its whole inventory in
+  the browser and saves it all at once, so it would overwrite changes made meanwhile through MCP or another
+  browser. `Sources/PartsServer/Web` is instead a small page of its own, laid out like the Mac app, that reads
+  and changes the inventory through the REST API one edit at a time — see below.
 - **Priority order: Linux, then Windows, then `partsd`, then the Android companion, then the full desktop UI** — in
   increasing cost/risk order, since no timeline was given. Linux needed only the platform shim and
   CI; Windows needs the same shim plus the Winsock variant below.
@@ -104,6 +102,8 @@ key, a model name), which the on-device Apple Intelligence model doesn't need bu
 - `partsd` identifies photos only with a vision model configured (otherwise `POST /api/identify` answers 501
   and `identify_photo` isn't offered), and only by their markings: no bag-label barcodes (Vision) and no
   recognising boards by look (the app's MobileCLIP model).
+- The web pages don't have the app's bag-label scanning, order and BOM import, label printing or Ask; projects
+  are read-only there (they come across in a backup).
 - `partsd` and the app don't sync. Each has its own inventory; move one to the other with the backup
   file (`GET /api/export?photos=true` on one, `POST /api/import` on the other — a merge, newer wins).
 
@@ -129,13 +129,23 @@ same `curl` commands and `claude mcp add` line work against either.
   On spark: `qwen2.5vl:7b` reads (NE555P and NE555N photos read exactly in 1–6 s; an LM7805 misread as
   "LM3805C" still matched L7805CV), and `qwen2.5:14b` interprets — `qwen2.5vl` itself is poor at it (it took a
   lot code for the part number).
+- **Web pages** (`Sources/PartsServer/Web`: `index.html`, `app.js`, `app.css`, no libraries or build step):
+  Parts (filters by category, location, stock, maker, package and tag; list or table; the server's parametric
+  search), a part's page (stock ± and counts, location, fields, Digi-Key/Mouser fill-in, suppliers, photos,
+  history), Identify, Locations, Projects and Settings (backup import/export, the `claude mcp add` line). They're
+  files served from `web/` beside the binary (or `$PARTSD_WEB`, or the source tree in a dev build) by `WebSite`,
+  outside `/api` and `/mcp` and without the token — they hold no data. The browser is given the token once
+  (sign-in, or a `#token=…` link) and keeps it in localStorage. `APIGate` lets a page's own requests through the
+  Origin check only when it serves pages (`RequestGuard.sameOrigin`); the token is still required, and the
+  pages are sent with a strict Content-Security-Policy (no inline script, nothing from other origins). The
+  edits the pages make that the app's API doesn't have are partsd-only endpoints, listed in its OpenAPI
+  document: `POST/DELETE /api/parts/{uid}/photos[/{index}]`, `POST /api/parts/{uid}/fill` and
+  `PATCH/DELETE /api/locations/{id}`.
 - Run it with `swift run partsd` (or `partsd --data DIR --port N --all-interfaces`). The token is made on
   first run and kept in `DIR/token`; supplier keys come from `DIGIKEY_CLIENT_ID`, `DIGIKEY_CLIENT_SECRET`
   and `MOUSER_API_KEY`. `tools/partsd.service` is a systemd user unit for it.
 
 ## Roadmap (not implemented in this change)
 
-1. **Windows/Linux UI** — point `geekychris.github.io/tools/parts-inventory` at `partsd`'s REST API;
-   confirm (or extend) `RequestGuard.originAllowed`'s `extraHosts` for the web tool's origin.
-2. **Android camera companion** — a Kotlin/Jetpack Compose app that takes a photo and calls
+1. **Android camera companion** — a Kotlin/Jetpack Compose app that takes a photo and calls
    `/api/identify` on a running instance, exactly like the iPhone-camera-handoff flow.

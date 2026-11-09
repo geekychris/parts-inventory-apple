@@ -17,9 +17,36 @@ extension PartsServer {
             info["description"] = .string("The parts inventory served by partsd, the headless server. Parts have the same shape as the web version's backup file, plus locationPath, photoCount, isLow and summary. Every endpoint except /api/health needs Authorization: Bearer <token> (partsd prints where its token is kept). The same data is available as MCP tools at /mcp. Photo identification needs a vision model configured (PARTSD_AI_URL, PARTSD_VISION_MODEL); the bag-label barcodes and look recognition are the app's alone.")
             doc["info"] = .object(info)
         }
-        if !identify, case .object(var paths) = doc["paths"] ?? .null { paths["/api/identify"] = nil; doc["paths"] = .object(paths) }
+        if case .object(var paths) = doc["paths"] ?? .null {
+            if !identify { paths["/api/identify"] = nil }
+            for (path, ops) in extraPaths {
+                // Beside any operations the app's document already has on the path (GET a photo).
+                var merged = paths[path]?.object ?? [:]
+                for (k, v) in ops.object ?? [:] { merged[k] = v }
+                paths[path] = .object(merged)
+            }
+            doc["paths"] = .object(paths)
+        }
         return JSONValue.encode(.object(doc))
     }
+
+    /// The endpoints only partsd has (its web pages use them): photos, filling in from a supplier, editing locations.
+    static let extraPaths: [String: JSONValue] = {
+        func op(_ summary: String, _ id: String, body: String? = nil) -> JSONValue {
+            var o: [String: JSONValue] = ["summary": .string(summary), "operationId": .string(id),
+                                          "responses": .object(["200": .object(["description": .string("The changed part or location as JSON.")])])]
+            if let body { o["requestBody"] = .object(["description": .string(body)]) }
+            return .object(o)
+        }
+        return [
+            "/api/parts/{uid}/photos": .object(["post": op("Add a photo to a part", "addPhoto", body: "The JPEG or PNG itself, a form upload, or {\"image\": \"<base64>\"}.")]),
+            "/api/parts/{uid}/photos/{index}": .object(["delete": op("Remove a part's photo", "deletePhoto")]),
+            "/api/parts/{uid}/fill": .object(["post": op("Fill a part's empty fields from Digi-Key and Mouser", "fillPart",
+                                                         body: "{\"query\"?: number to look up (default the part's), \"supplier\"?, \"spn\"?: the listing to use (default the best, and its twin at the other supplier)}")]),
+            "/api/locations/{id}": .object(["patch": op("Rename, move or annotate a location", "updateLocation", body: "{\"name\"?, \"notes\"?, \"parentId\"?: id or null}"),
+                                            "delete": op("Remove a location; its parts and places move up a level", "deleteLocation")]),
+        ]
+    }()
 
     private static let routes: [Route] = [
         ("GET", RoutePattern("/api/health"), { s, _, _ in
@@ -65,7 +92,24 @@ extension PartsServer {
             let (d, type) = try s.photo(m["uid"]!, index: i)
             return HTTPResponse(status: 200, headers: [("Content-Type", type)], body: d)
         }),
+        ("POST", RoutePattern("/api/parts/{uid}/photos"), { s, req, m in .json(s.partJSON(try s.addPhoto(m["uid"]!, try imageBody(req))), status: 201) }),
+        ("DELETE", RoutePattern("/api/parts/{uid}/photos/{index}"), { s, _, m in
+            guard let i = Int(m["index"]!) else { throw PartsServer.fail(400, "The photo index is a number from 0.") }
+            return .json(s.partJSON(try s.deletePhoto(m["uid"]!, index: i)))
+        }),
+        ("POST", RoutePattern("/api/parts/{uid}/fill"), { s, req, m in
+            let f = try body(req)
+            let (p, used) = try await s.fill(m["uid"]!, query: f["query"]?.string, supplier: f["supplier"]?.string, spn: f["spn"]?.string)
+            var o = s.partJSON(p).object ?? [:]
+            o["filledFrom"] = .array(used.map { InventoryCatalog.productJSON($0) })
+            return .json(.object(o))
+        }),
         ("GET", RoutePattern("/api/locations"), { s, _, _ in .json(.object(["locations": .array(s.locations().map { s.locationJSON($0) })])) }),
+        ("PATCH", RoutePattern("/api/locations/{id}"), { s, req, m in .json(s.locationJSON(try s.updateLocation(m["id"]!, try body(req)))) }),
+        ("DELETE", RoutePattern("/api/locations/{id}"), { s, _, m in
+            let r = try s.deleteLocation(m["id"]!)
+            return .json(.object(["deleted": .string(m["id"]!), "path": .string(r.name), "partsMoved": .number(Double(r.moved))]))
+        }),
         ("POST", RoutePattern("/api/locations"), { s, req, _ in
             guard let path = try body(req)["path"]?.string else { throw PartsServer.fail(400, "Send {\"path\": \"Cabinet A / Drawer 3\"}.") }
             return .json(s.locationJSON(try s.addLocation(path)), status: 201)
@@ -228,9 +272,9 @@ public struct PartsServerTools: MCPToolProvider {
 }
 
 extension PartsServer {
-    /// The whole front door: Origin check, token, /mcp and /api.
-    public func gate(token: @escaping @Sendable () -> String, extraOriginHosts: Set<String> = []) -> APIGate {
+    /// The whole front door: Origin check, token, /mcp and /api, and the web pages everywhere else when there are some.
+    public func gate(token: @escaping @Sendable () -> String, extraOriginHosts: Set<String> = [], site: WebSite? = nil) -> APIGate {
         let mcp = MCPEndpoint(name: "parts-inventory", version: Self.version, instructions: InventoryCatalog.instructions, provider: PartsServerTools(server: self))
-        return APIGate(token: token, mcp: mcp, extraOriginHosts: extraOriginHosts) { [self] req in await self.handle(req) }
+        return APIGate(token: token, mcp: mcp, extraOriginHosts: extraOriginHosts, site: site.map { w in { @Sendable req in w.handle(req) } }) { [self] req in await self.handle(req) }
     }
 }

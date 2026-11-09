@@ -25,8 +25,9 @@ var targets: [Target] = [
             linkerSettings: [.linkedLibrary("ws2_32", .when(platforms: [.windows]))]),
     // Try the supplier APIs from a terminal: `swift run partlookup LM358DR`.
     .executableTarget(name: "partlookup", dependencies: ["PartsKit"]),
-    // The REST API and MCP server without the app, over a backup-format file store: `swift run partsd`.
-    .target(name: "PartsServer", dependencies: ["PartsKit"]),
+    // The REST API and MCP server without the app, over a backup-format file store: `swift run partsd`. Web/ is
+    // its web pages, served from files (installed beside partsd as web/), not built into it.
+    .target(name: "PartsServer", dependencies: ["PartsKit"], exclude: ["Web"]),
     .executableTarget(name: "partsd", dependencies: ["PartsServer"]),
     .testTarget(name: "PartsServerTests", dependencies: ["PartsServer"]),
     .testTarget(name: "PartsKitTests", dependencies: ["PartsKit"], resources: [.copy("Fixtures")]),
