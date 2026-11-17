@@ -167,30 +167,8 @@ func mcpPost(_ e: MCPEndpoint, _ body: String, headers: [String: String] = [:]) 
     #expect((await e.handle(HTTPRequest(method: "GET", path: "/mcp"))).status == 405)
 }
 
-// MARK: - The server, end to end
-
-@Test func serverAnswersOverTheNetwork() async throws {
-    let server = HTTPServer { req in
-        if req.path == "/echo" { return .json(.object(["method": .string(req.method), "body": .string(String(decoding: req.body, as: UTF8.self)), "q": .string(req.query["q"] ?? "")])) }
-        return .error(404, "nope")
-    }
-    try server.start(port: 0)
-    defer { server.stop() }
-    guard case .listening(let port) = await server.waitUntilReady() else { Issue.record("not listening: \(server.state)"); return }
-    var req = URLRequest(url: URL(string: "http://127.0.0.1:\(port)/echo?q=a%20b")!)
-    req.httpMethod = "POST"
-    req.httpBody = Data(String(repeating: "x", count: 300_000).utf8)   // more than one read
-    let (data, res) = try await URLSession.shared.data(for: req)
-    #expect((res as? HTTPURLResponse)?.statusCode == 200)
-    let j = try JSONDecoder().decode(JSONValue.self, from: data)
-    #expect(j["method"]?.string == "POST")
-    #expect(j["q"]?.string == "a b")
-    #expect(j["body"]?.string?.count == 300_000)
-    let (_, res404) = try await URLSession.shared.data(from: URL(string: "http://127.0.0.1:\(port)/other")!)
-    #expect((res404 as? HTTPURLResponse)?.statusCode == 404)
-}
-
 // MARK: - The front door
+// (HTTPServer itself, end to end over real sockets, is covered in HTTPServerTests.swift.)
 
 @Test func gateChecksOriginTokenAndRoutes() async throws {
     let mcp = MCPEndpoint(name: "p", version: "1", instructions: "", provider: FakeTools())

@@ -42,16 +42,7 @@ final class InventoryAPI {
                  "notes": .string(l.notes), "parts": .number(Double(l.parts?.count ?? 0)), "partsBelow": .number(Double(l.partCount))])
     }
 
-    nonisolated static func productJSON(_ p: SupplierProduct) -> JSONValue {
-        .object([
-            "supplier": .string(p.supplier), "supplierName": .string(p.supplierName), "spn": .string(p.spn), "mpn": .string(p.mpn),
-            "manufacturer": .string(p.manufacturer), "description": .string(p.description), "detail": .string(p.detail),
-            "datasheet": .string(p.datasheet), "url": .string(p.url), "image": .string(p.image),
-            "stock": p.stock.map { .number(Double($0)) } ?? .null, "package": .string(p.package), "category": .string(p.category), "status": .string(p.status),
-            "prices": .array(p.prices.map { .object(["qty": .number(Double($0.qty)), "unit": .number($0.unit), "currency": .string($0.currency)]) }),
-            "parameters": .array(p.parameters.map { .object(["name": .string($0.name), "value": .string($0.value)]) }),
-        ])
-    }
+    nonisolated static func productJSON(_ p: SupplierProduct) -> JSONValue { InventoryCatalog.productJSON(p) }
 
     // MARK: Parts
 
@@ -145,13 +136,7 @@ final class InventoryAPI {
     }
 
     /// The best listing for a number and its twin at the other supplier (same MPN and maker).
-    nonisolated static func sameMPN(_ products: [SupplierProduct], _ mpn: String) -> [SupplierProduct] {
-        func key(_ s: String) -> String { s.uppercased().filter { $0.isLetter || $0.isNumber } }
-        let exact = products.filter { key($0.mpn) == key(mpn) }
-        guard let best = exact.first ?? products.first else { return [] }
-        let twin = products.first { $0.supplier != best.supplier && key($0.mpn) == key(best.mpn) && $0.manufacturer.lowercased().prefix(4) == best.manufacturer.lowercased().prefix(4) }
-        return [best] + (twin.map { [$0] } ?? [])
-    }
+    nonisolated static func sameMPN(_ products: [SupplierProduct], _ mpn: String) -> [SupplierProduct] { InventoryCatalog.sameMPN(products, mpn) }
 
     func update(_ uid: String, _ f: [String: JSONValue]) throws -> Part {
         let p = try part(uid)
@@ -232,10 +217,7 @@ final class InventoryAPI {
         return await l.lookup(q.trimmed)
     }
 
-    nonisolated static func lookupJSON(_ r: SupplierLookup.Result, limit: Int = 20) -> JSONValue {
-        .object(["results": .array(r.products.prefix(limit).map { productJSON($0) }), "count": .number(Double(r.products.count)),
-                 "errors": .object(r.errors.mapValues(JSONValue.string))])
-    }
+    nonisolated static func lookupJSON(_ r: SupplierLookup.Result, limit: Int = 20) -> JSONValue { InventoryCatalog.lookupJSON(r, limit: limit) }
 
     /// What Identify makes of a photo: markings, any bag label, and the ranked candidates.
     func identify(_ image: Data) async throws -> JSONValue {
@@ -253,25 +235,7 @@ final class InventoryAPI {
         return .object(o)
     }
 
-    nonisolated static func candidateJSON(_ c: Candidate) -> JSONValue {
-        var o: [String: JSONValue] = ["score": .number((c.score * 100).rounded() / 100), "confidence": .string(c.confidence),
-                                      "byLook": .bool(c.byLook), "reasons": .array(c.reasons.map(JSONValue.string))]
-        switch c.source {
-        case .catalog(let e):
-            o["kind"] = .string("catalog"); o["name"] = .string(e.displayName); o["mpn"] = .string(e.mpn); o["manufacturer"] = .string(e.mfr)
-            o["description"] = .string(e.desc); o["category"] = .string(e.cat); o["datasheet"] = .string(e.ds ?? "")
-        case .inventory(let r):
-            o["kind"] = .string("inventory"); o["partId"] = .string(r.id); o["mpn"] = .string(r.mpn); o["name"] = .string(r.mpn)
-        case .generic(let g):
-            o["kind"] = .string("generic"); o["name"] = .string(g.name); o["category"] = .string(g.cat)
-        case .unknown(let t):
-            o["kind"] = .string("unknown"); o["name"] = .string(t); o["mpn"] = .string(t)
-        case .reading(let r):
-            o["kind"] = .string("reading"); o["name"] = .string(r.mpn); o["mpn"] = .string(r.mpn); o["manufacturer"] = .string(r.manufacturer)
-            o["description"] = .string(r.description); o["category"] = .string(r.category)
-        }
-        return .object(o)
-    }
+    nonisolated static func candidateJSON(_ c: Candidate) -> JSONValue { InventoryCatalog.candidateJSON(c) }
 
     func photo(_ uid: String, index: Int) throws -> (Data, String) {
         let photos = try part(uid).sortedPhotos

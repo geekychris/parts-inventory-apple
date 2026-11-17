@@ -1,0 +1,52 @@
+name: PartsKit portable core
+
+# PartsKit had never been built or tested outside Xcode before PI-1. This proves it actually
+# compiles and its tests actually pass on Linux and Windows, not just macOS — see PORTABILITY.md.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "PartsKit/**"
+      - ".github/workflows/portable-core.yml"
+  pull_request:
+    paths:
+      - "PartsKit/**"
+      - ".github/workflows/portable-core.yml"
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    # The official toolchain image: setup-swift doesn't know newer Ubuntu runners. The tests also need zip and unzip.
+    container: swift:6.2
+    steps:
+      - uses: actions/checkout@v4
+      - run: apt-get update -qq && apt-get install -y -qq zip unzip
+      - run: swift --version
+      - name: swift test
+        working-directory: PartsKit
+        run: swift test
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: compnerd/gha-setup-swift@main
+        with:
+          swift-version: swift-6.2-release
+          swift-build: 6.2-RELEASE
+      - run: swift --version
+      - name: swift test
+        working-directory: PartsKit
+        run: swift test
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift --version
+      - name: swift test (PartsKit)
+        working-directory: PartsKit
+        run: swift test
+      # The app itself isn't built here: its Core ML models (App/Resources/MobileCLIP*.mlpackage) aren't in the
+      # repository — tools/make-clip-embeddings.py makes them — so a clean checkout can't compile it.

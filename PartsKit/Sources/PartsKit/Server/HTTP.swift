@@ -206,6 +206,15 @@ public enum RequestGuard {
         return ["localhost", "127.0.0.1", "::1", "[::1]"].contains(host) || extraHosts.contains(host)
     }
 
+    /// The page making the request was served by this server: its Origin names the Host the request went to.
+    /// Only for a server that serves pages itself; the token is still needed (a rebound name passes this, but
+    /// its page never has the token, which is kept in the real origin's storage).
+    public static func sameOrigin(_ req: HTTPRequest) -> Bool {
+        guard let origin = req.header("origin"), let url = URL(string: origin), let host = url.host, let to = req.header("host") else { return false }
+        let here = url.port.map { "\(host):\($0)" } ?? host
+        return here.lowercased() == to.lowercased()
+    }
+
     /// A random token for the API: 32 bytes, base64url.
     public static func makeToken() -> String {
         var g = SystemRandomNumberGenerator()

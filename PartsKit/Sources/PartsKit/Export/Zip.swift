@@ -68,9 +68,11 @@ public struct ZipWriter: Sendable {
         var cal = Calendar(identifier: .gregorian)
         cal.timeZone = TimeZone(identifier: "UTC")!
         let c = cal.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
-        let time = UInt16((c.hour ?? 0) << 11 | (c.minute ?? 0) << 5 | (c.second ?? 0) / 2)
-        let day = UInt16(max(0, (c.year ?? 1980) - 1980) << 9 | (c.month ?? 1) << 5 | (c.day ?? 1))
-        return le16(time) + le16(day)
+        let hour: Int = c.hour ?? 0, minute: Int = c.minute ?? 0, second: Int = c.second ?? 0
+        let year: Int = max(0, (c.year ?? 1980) - 1980), month: Int = c.month ?? 1, day: Int = c.day ?? 1
+        let time = UInt16(hour << 11 | minute << 5 | second / 2)
+        let dosDay = UInt16(year << 9 | month << 5 | day)
+        return le16(time) + le16(dosDay)
     }
 }
 
